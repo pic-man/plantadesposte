@@ -890,4 +890,4 @@ $pdf->ln(5);
 
 $pdf->Cell(190, 5, utf8_decode('FIRMA:____________________________'), 0, 1, '');
  */
-$pdf->Output('formato_recepcion', 'I');
+$pdf->Output('formato_recepcion.pdf', 'I');

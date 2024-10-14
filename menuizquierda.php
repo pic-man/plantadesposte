@@ -39,11 +39,11 @@
 <?php }?>      
       
       <li class="nav-item">
-        <a class="nav-link collapsed" data-bs-target="#forms-nav" data-bs-toggle="collapse" href="#">
-          <i class="bi bi-journal-text"></i><span>Proceso</span><i class="bi bi-chevron-down ms-auto"></i>
+        <a class="nav-link collapsed" data-bs-target="#forms-nav1" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-journal-text"></i><span>Planta Desposte</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
         
-        <ul id="forms-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+        <ul id="forms-nav1" class="nav-content collapse " data-bs-parent="#sidebar-nav">
         <?php if(($_SESSION['tipo'] == 0)or($_SESSION['tipo'] == 1)){?>  
           <li>
             <a href="recepcion.php">
@@ -60,6 +60,20 @@
               <span>Despacho</span>
             </a>
           </li> 
+        <?php }elseif($_SESSION['tipo'] == 2){?>
+          
+        <?php }?>
+        </ul>
+
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#forms-nav2" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-journal-text"></i><span>Planta Desprese</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        
+        <ul id="forms-nav2" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+        <?php if(($_SESSION['tipo'] == 0)or($_SESSION['tipo'] == 1)){?>  
           <li>
             <a href="despachopollo.php">
               <span>Despacho Pollo</span>
@@ -70,8 +84,7 @@
         <?php }?>
         </ul>
 
-      </li>
-
+      </li>    
     </ul>
 
   </aside>

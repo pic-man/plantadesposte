@@ -15,6 +15,11 @@ $listaDestinos = listaDestinos();?>
   <title>Planta de Desposte | Despacho</title>
   <?php include_once('encabezado.php');?>
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/select/1.3.3/css/select.dataTables.min.css">
+<style>
+	#jtable th, #jtable td {
+    width: 20%; 
+}
+</style>
 </head>
 <body>
  <?php include_once('menu.php');?>
@@ -695,6 +700,20 @@ function eliminarItem(id_item_proveedor) {
 				url: 'controlador/controlador.php',
 				data: {
 					idBloquear: idBloquear
+				},
+				success: function(data) {
+					$('#jtable').DataTable().ajax.reload();
+				}
+			});
+		}
+
+		function desbloquearEdicion(idDesbloquear) {
+			 $.ajax({
+				type: 'POST',
+				dataType: 'json',
+				url: 'controlador/controlador.php',
+				data: {
+					idDesbloquear: idDesbloquear
 				},
 				success: function(data) {
 					$('#jtable').DataTable().ajax.reload();

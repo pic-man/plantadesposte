@@ -15,6 +15,11 @@ $listaDestinos = listaDestinos();?>
   <title>Planta de Desposte | Despacho</title>
   <?php include_once('encabezado.php');?>
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/select/1.3.3/css/select.dataTables.min.css">
+<style>
+	#jtable th, #jtable td {
+    width: 20%; 
+}
+</style>
 </head>
 <body>
  <?php include_once('menu.php');?>
@@ -490,7 +495,7 @@ function eliminarItem(id_item_proveedor) {
 			}else if(producto == "POLLO BLANCO MERCAMIO MARINADO" || producto == "POLLO CAMPO MERCAMIO MARINADO"){
 				unidades = cajas *10;
 			}else if(producto == "POLLO ENTERO ASADERO"){
-				unidades = cajas *10;
+				unidades = cajas *15;
 			}
 
 			validacionesCri = validacionesC();
@@ -682,12 +687,15 @@ function eliminarItem(id_item_proveedor) {
 					idcriterioP: idcriterio
 				},
 				success: function(data) {
+					console.log('datos recibidos: ',data);
 					$('#valorCriterio').val(data[0].item);
+    	    		$('#descripcionCriterio').val(data[0].descripcion);
 					$('#lotes').val(data[0].lote);
 					$('#temperatura').val(data[0].temperatura);
 					$('#unidades').val(data[0].unidades);
 					$('#cajas').val(data[0].cajas);
 					$('#peso').val(data[0].peso);
+					$('#base').val(data[0].base);
 				}
 			});
 		}
@@ -699,6 +707,20 @@ function eliminarItem(id_item_proveedor) {
 				url: 'controlador/controlador.php',
 				data: {
 					idBloquearP: idBloquear
+				},
+				success: function(data) {
+					$('#jtable').DataTable().ajax.reload();
+				}
+			});
+		}
+
+		function desbloquearEdicion(idDesbloquearP) {
+			 $.ajax({
+				type: 'POST',
+				dataType: 'json',
+				url: 'controlador/controlador.php',
+				data: {
+					idDesbloquearP: idDesbloquearP
 				},
 				success: function(data) {
 					$('#jtable').DataTable().ajax.reload();
@@ -813,13 +835,13 @@ function eliminarItem(id_item_proveedor) {
 			if (validacionesCri == "") {
 				infoCriEditP = {
 					"id_criterio": $('#id_criterio').val(),
-					"item": $('#datalistValorCriterio [value="' + $('#valorCriterio').val() + '"]').data(
-                                'value'),
+					"item": $('#datalistValorCriterio [value="' + $('#valorCriterio').val() + '"]').data('value'),
 					"lote": $('#lotes').val(),
 					"temperatura": $('#temperatura').val(),
 					"unidades": unidades,
 					"cajas": $('#cajas').val(),
 					"peso": $('#peso').val(),
+					"base": $('#base').val(),
 				};
 				console.log('datos enviados:',infoCriEditP);
 				$.ajax({
@@ -838,6 +860,7 @@ function eliminarItem(id_item_proveedor) {
 						$('#unidades').val('');
 						$('#cajas').val('');
 						$('#peso').val('');
+						$('#base').val('');
 						console.log('modificado');
 						$('#jtableCriterio').DataTable().ajax.reload();
 						$('#jtable').DataTable().ajax.reload();

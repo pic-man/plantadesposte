@@ -302,4 +302,4 @@ if($rs2['responsable'] != 12345678){
         $pdf->Image($firma, $x+15, $y-4, 30, 10);
         $pdf->Cell(190, 5, utf8_decode('FIRMA:____________________________'), 0, 1, '');
 }
-$pdf->Output('formato_guia', 'I');
+$pdf->Output('formato_guia.pdf', 'D');

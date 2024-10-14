@@ -107,6 +107,22 @@ if(isset($_POST['idBloquearP'])){
 	echo json_encode(bloquearGuiaP($_POST['idBloquearP']));
 }
 
+if(isset($_POST['idBloquearR'])){
+	echo json_encode(bloquearGuiaR($_POST['idBloquearR']));
+}
+
+if(isset($_POST['idDesbloquear'])){
+	echo json_encode(desbloquearGuia($_POST['idDesbloquear']));
+}
+
+if(isset($_POST['idDesbloquearP'])){
+	echo json_encode(desbloquearGuiaP($_POST['idDesbloquearP']));
+}
+
+if(isset($_POST['idDesbloquearR'])){
+	echo json_encode(desbloquearGuiaR($_POST['idDesbloquearR']));
+}
+
 if(isset($_POST['datos'])){
 	echo json_encode(agregarItem($_POST['datos']));
 }

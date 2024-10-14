@@ -34,6 +34,9 @@ $fecha_actual = date('Y-m-d');
 		.text-left-custom {
         	text-align: left !important;
     	}
+		#jtable th, #jtable td {
+    		width: 20%; 
+		}
     </style>
 </head>
 <body>
@@ -892,7 +895,7 @@ document.getElementById('abrirTerceraModal').addEventListener('click', function(
 			});
 		} */
 
-		function eliminarItem(id_item_proveedor) {
+	function eliminarItem(id_item_proveedor) {
     Swal.fire({
         title: '¿Esta seguro que desea eliminar este registro?',
         icon: 'warning',
@@ -923,6 +926,7 @@ document.getElementById('abrirTerceraModal').addEventListener('click', function(
     					showConfirmButton: false
                     });
                     $('#jtableCriterio').DataTable().ajax.reload();
+					$('#jtable').DataTable().ajax.reload();
                 }
             });
         }
@@ -1129,7 +1133,7 @@ $('#btnNuevoCriterio').click(function() {
 					$('#foto').val('');
 					$('#temperaturap').val('');
 					$('#jtableCriterio').DataTable().ajax.reload();
-
+					$('#jtable').DataTable().ajax.reload();
                     Swal.fire({
                         title: 'Peso registrado',
                         text: data.message,
@@ -1204,7 +1208,7 @@ $('#btnNuevoCriterioCerdo').click(function() {
                     $('#peso').val('');
 					$('#temperaturap').val('');
 					$('#jtableCriterio').DataTable().ajax.reload();
-
+					$('#jtable').DataTable().ajax.reload();
                     Swal.fire({
                         title: 'Peso registrado',
                         text: data.message,
@@ -1766,13 +1770,28 @@ $('#btnNuevoCriterioCerdo').click(function() {
 				dataType: 'json',
 				url: 'controlador/controlador.php',
 				data: {
-					idBloquear: idBloquear
+					idBloquearR: idBloquear
 				},
 				success: function(data) {
 					$('#jtable').DataTable().ajax.reload();
 				}
 			});
 		}
+
+		function desbloquearEdicion(idDesbloquear) {
+			 $.ajax({
+				type: 'POST',
+				dataType: 'json',
+				url: 'controlador/controlador.php',
+				data: {
+					idDesbloquearR: idDesbloquear
+				},
+				success: function(data) {
+					$('#jtable').DataTable().ajax.reload();
+				}
+			});
+		}
+
 		$('#btnEditProveedor').click(function() {
 			validacionesF = validaciones();
 			if (validacionesF == ""){	
@@ -1994,6 +2013,7 @@ $('#btnNuevoCriterioCerdo').click(function() {
 						$('#turnoE').val('');
 						$('#temperaturaEdicion').val(''); 
 						$('#jtableCriterio').DataTable().ajax.reload();
+						$('#jtable').DataTable().ajax.reload();
 						Swal.fire({
         					title: 'Turno modificado satisfactoriamente',
         					text: '',
@@ -2041,6 +2061,7 @@ $('#btnNuevoCriterioCerdo').click(function() {
 						$('#peso').val('');
 						$('#temperaturap').val('');
 						$('#jtableCriterio').DataTable().ajax.reload();
+						$('#jtable').DataTable().ajax.reload();
 						Swal.fire({
         					title: 'Turno modificado satisfactoriamente',
         					text: '',

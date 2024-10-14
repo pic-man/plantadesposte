@@ -716,7 +716,8 @@ function cargarCriterioP($idcriterio){
         temperatura,
         unidades,
         cajas,
-        peso
+        peso,
+        base
     FROM 
         item_proveedorpollo
     INNER JOIN 
@@ -772,6 +773,11 @@ function editarGuia($info){
               fechaexp = '".$info['fechaexp']."',canales='".$info['canales']."',consecutivog='".$info['consecutivog']."',responsable='".$info['responsable']."',destino = '".$info['destino']."',conductor = '".$info['conductor']."',placa = '".$info['placa']."',tipo = '".$info['producto']."',precinto = '".$info['precinto']."',observaciones='".$info['observaciones']."' where id_guia = ".$info['id_guia'];
       
       $rs_operacion=mysqli_query($link,$sql);
+
+      $sql2 = "UPDATE item_proveedor set 
+              lote = '".$info['consecutivog']."' where proveedor = ".$info['id_guia'];
+      
+      $rs_operacion2=mysqli_query($link,$sql2);
       
       if (!$rs_operacion) {
         return mysqli_error($link);
@@ -906,19 +912,212 @@ function editarCriterio($infoCriEdit){
      } 
 }
 
-function editarCriterioP($infoCriEdit){
+function editarCriterioP($datos){
+    
     include('../config.php');
+    $hora = date("Y-m-d H:i:s");
+    $peso_base = round($datos['base'] *1.8);
+    if($datos['item'] != '999999'){
+        /* $peso_real = number_format(round($datos['peso'] - ($datos['cajas'] * 2) - ($datos['base'] *1.8)),2,",","."); */
+        $peso_real = number_format($datos['peso'] - (($datos['cajas']) * 2) - (($datos['base'] *1.8)),2,",","."); 
+        
+        /* $sql=" INSERT INTO item_proveedorpollo(item,proveedor,lote,temperatura,unidades,cajas,base,peso,peso_real,registro) 
+               VALUES (
+                        '".$datos['item']."',
+                        '".$datos['proveedor']."',
+                        '".$datos['lote']."',
+                        '".$datos['temperatura']."',
+                        '".$datos['unidades']."',
+                        '".$datos['cajas']."',
+                        '".$datos['base']."',
+                        '".$datos['peso']."',
+                        '".$peso_real."',
+                        '".$hora."'
+                       );"; */
+
+        $sql = "UPDATE item_proveedorpollo set 
+                       item = '".$datos['item']."',
+                       lote='".$datos['lote']."',
+                       temperatura='".$datos['temperatura']."',
+                       unidades = '".$datos['unidades']."',
+                       cajas = '".$datos['cajas']."',
+                       peso = '".$datos['peso']."',
+                       base = '".$datos['base']."',
+                       peso_real = '".$peso_real."' 
+                       where id_item_proveedor = ".$datos['id_criterio'];
+
+        $rs_operacion=mysqli_query($link,$sql);
+    }else{
+        $porcentaje_pechugas = 36;
+        $porcentaje_muslos = 21;
+        $porcentaje_contramuslos = 23;
+        $porcentaje_alas = 20;
+
+        $peso_pechugas = ($porcentaje_pechugas / 100) * $datos['peso'];
+        $peso_muslos = ($porcentaje_muslos / 100) * $datos['peso'];
+        $peso_contramuslos = ($porcentaje_contramuslos / 100) * $datos['peso'];
+        $peso_alas = ($porcentaje_alas / 100) * $datos['peso'];
+        //alas
+        $item = '050514';
+        $unidades = $datos['unidades'] * 2;
+        $peso = number_format(round($peso_alas),2,",",".");
+        $peso_real = number_format($peso - (($datos['cajas']/4) * 2) - (($datos['base'] *1.8)/4),2,",",".");
+        $cajas = $datos['cajas']/4;
+        
+        /* $sql=" INSERT INTO item_proveedorpollo(item,proveedor,lote,temperatura,unidades,cajas,base,peso,peso_real,registro) 
+               VALUES (
+                        '".$item."',
+                        '".$datos['proveedor']."',
+                        '".$datos['lote']."',
+                        '".$datos['temperatura']."',
+                        '".$unidades."',
+                        '".$cajas."',
+                        '".$datos['base']."',
+                        '".$peso."',
+                        '".$peso_real."',
+                        '".$hora."'
+                       );"; */
+        
+        $sql = "UPDATE item_proveedorpollo set 
+                       item = '".$datos['item']."',
+                       lote='".$datos['lote']."',
+                       temperatura='".$datos['temperatura']."',
+                       unidades = '".$datos['unidades']."',
+                       cajas = '".$datos['cajas']."',
+                       peso = '".$datos['peso']."',
+                       base = '".$datos['base']."',
+                       peso_real = '".$peso_real."' 
+                       where id_item_proveedor = ".$datos['id_criterio'];        
+        
+        $rs_operacion=mysqli_query($link,$sql);
+        //muslo
+        $item = '050516';
+        $unidades = $datos['unidades'] * 2;
+        $peso = number_format(round($peso_muslos),2,",",".");
+        $peso_real = number_format($peso - (($datos['cajas']/4) * 2) - (($datos['base'] *1.8)/4),2,",",".");
+        $cajas = $datos['cajas']/4;
+
+        /* $sql=" INSERT INTO item_proveedorpollo(item,proveedor,lote,temperatura,unidades,cajas,base,peso,peso_real,registro) 
+               VALUES (
+                        '".$item."',
+                        '".$datos['proveedor']."',
+                        '".$datos['lote']."',
+                        '".$datos['temperatura']."',
+                        '".$unidades."',
+                        '".$cajas."',
+                        '".$datos['base']."',
+                        '".$peso."',
+                        '".$peso_real."',
+                        '".$hora."'
+                       );"; */
+        
+        $sql = "UPDATE item_proveedorpollo set 
+                       item = '".$datos['item']."',
+                       lote='".$datos['lote']."',
+                       temperatura='".$datos['temperatura']."',
+                       unidades = '".$datos['unidades']."',
+                       cajas = '".$datos['cajas']."',
+                       peso = '".$datos['peso']."',
+                       base = '".$datos['base']."',
+                       peso_real = '".$peso_real."' 
+                       where id_item_proveedor = ".$datos['id_criterio'];
+        
+        $rs_operacion=mysqli_query($link,$sql);
+        //contra
+        $item = '050515';
+        $unidades = $datos['unidades'] * 2;
+        $peso = number_format(round($peso_contramuslos),2,",",".");
+        $peso_real = number_format($peso - (($datos['cajas']/4) * 2) - (($datos['base'] *1.8)/4),2,",",".");
+        $cajas = $datos['cajas']/4;
+        
+        /* $sql=" INSERT INTO item_proveedorpollo(item,proveedor,lote,temperatura,unidades,cajas,base,peso,peso_real,registro) 
+               VALUES (
+                        '".$item."',
+                        '".$datos['proveedor']."',
+                        '".$datos['lote']."',
+                        '".$datos['temperatura']."',
+                        '".$unidades."',
+                        '".$cajas."',
+                        '".$datos['base']."',
+                        '".$peso."',
+                        '".$peso_real."',
+                        '".$hora."'
+                       );"; */
+        
+        $sql = "UPDATE item_proveedorpollo set 
+                       item = '".$datos['item']."',
+                       lote='".$datos['lote']."',
+                       temperatura='".$datos['temperatura']."',
+                       unidades = '".$datos['unidades']."',
+                       cajas = '".$datos['cajas']."',
+                       peso = '".$datos['peso']."',
+                       base = '".$datos['base']."',
+                       peso_real = '".$peso_real."' 
+                       where id_item_proveedor = ".$datos['id_criterio'];
+        
+        $rs_operacion=mysqli_query($link,$sql);
+        //pechuga
+        $item = '050517';
+        $unidades = $datos['unidades'] * 2;
+        $peso = number_format(round($peso_pechugas),2,",",".");
+        $peso_real = number_format($peso - (($datos['cajas']/4) * 2) - (($datos['base'] *1.8)/4),2,",",".");
+        $cajas = $datos['cajas']/4;
+        
+        /* $sql=" INSERT INTO item_proveedorpollo(item,proveedor,lote,temperatura,unidades,cajas,base,peso,peso_real,registro) 
+               VALUES (
+                        '".$item."',
+                        '".$datos['proveedor']."',
+                        '".$datos['lote']."',
+                        '".$datos['temperatura']."',
+                        '".$unidades."',
+                        '".$cajas."',
+                        '".$datos['base']."',
+                        '".$peso."',
+                        '".$peso_real."',
+                        '".$hora."'
+                       );"; */
+        
+        $sql = "UPDATE item_proveedorpollo set 
+                       item = '".$datos['item']."',
+                       lote='".$datos['lote']."',
+                       temperatura='".$datos['temperatura']."',
+                       unidades = '".$datos['unidades']."',
+                       cajas = '".$datos['cajas']."',
+                       peso = '".$datos['peso']."',
+                       base = '".$datos['base']."',
+                       peso_real = '".$peso_real."' 
+                       where id_item_proveedor = ".$datos['id_criterio'];
+        
+        $rs_operacion=mysqli_query($link,$sql);                       
+    }
+    if (!$rs_operacion) {
+        echo "Error al ejecutar la consulta: " . mysqli_error($link);
+        exit();
+      }
+    else{
+        return mysqli_insert_id($link);
+    }
+
+    /* include('../config.php');
     $peso_real = $infoCriEdit['peso'] - ($infoCriEdit['cajas'] * 2);
     $sql = "UPDATE item_proveedorpollo set 
-              item = '".$infoCriEdit['item']."',lote='".$infoCriEdit['lote']."',temperatura='".$infoCriEdit['temperatura']."',unidades = '".$infoCriEdit['unidades']."',cajas = '".$infoCriEdit['cajas']."',peso = '".$infoCriEdit['peso']."',peso_real = '".$peso_real."' where id_item_proveedor = ".$infoCriEdit['id_criterio'];
-      
+              item = '".$infoCriEdit['item']."',
+              lote='".$infoCriEdit['lote']."',
+              temperatura='".$infoCriEdit['temperatura']."',
+              unidades = '".$infoCriEdit['unidades']."',
+              cajas = '".$infoCriEdit['cajas']."',
+              peso = '".$infoCriEdit['peso']."',
+              base = '".$infoCriEdit['base']."',
+              peso_real = '".$peso_real."' 
+              where id_item_proveedor = ".$infoCriEdit['id_criterio'];
+    
       $rs_operacion=mysqli_query($link,$sql);
       
       if (!$rs_operacion) {
         return mysqli_error($link);
       }else{        
         return $infoCriEdit['id_criterio'];
-     } 
+     }  */
 }
 
 function editarCriterioPeso($infoCriEdit){
@@ -979,6 +1178,66 @@ function bloquearGuiaP($idBloquear){
     $rs_operacion=mysqli_query($link,$sql);
 
     $sql = "UPDATE item_proveedorpollo set status = '2' where proveedor = ".$idBloquear;
+    $rs_operacion=mysqli_query($link,$sql);
+      
+    if (!$rs_operacion) {
+        return mysqli_error($link);
+    }else{        
+        return $idBloquear;
+     } 
+}
+
+function bloquearGuiaR($idBloquear){
+    include('../config.php');
+    $sql = "UPDATE recepcion set status = '2' where id_recepcion = ".$idBloquear;
+    $rs_operacion=mysqli_query($link,$sql);
+
+    $sql = "UPDATE recepcion_pesos set status = '2' where id_recepcion = ".$idBloquear;
+    $rs_operacion=mysqli_query($link,$sql);
+      
+    if (!$rs_operacion) {
+        return mysqli_error($link);
+    }else{        
+        return $idBloquear;
+     } 
+}
+
+function desbloquearGuia($idBloquear){
+    include('../config.php');
+    $sql = "UPDATE guias set status = '1' where id_guia = ".$idBloquear;
+    $rs_operacion=mysqli_query($link,$sql);
+
+    $sql = "UPDATE item_proveedor set status = '1' where proveedor = ".$idBloquear;
+    $rs_operacion=mysqli_query($link,$sql);
+      
+    if (!$rs_operacion) {
+        return mysqli_error($link);
+    }else{        
+        return $idBloquear;
+     } 
+}
+
+function desbloquearGuiaP($idBloquear){
+    include('../config.php');
+    $sql = "UPDATE guiaspollo set status = '1' where id_guia = ".$idBloquear;
+    $rs_operacion=mysqli_query($link,$sql);
+
+    $sql = "UPDATE item_proveedorpollo set status = '1' where proveedor = ".$idBloquear;
+    $rs_operacion=mysqli_query($link,$sql);
+      
+    if (!$rs_operacion) {
+        return mysqli_error($link);
+    }else{        
+        return $idBloquear;
+     } 
+}
+
+function desbloquearGuiaR($idBloquear){
+    include('../config.php');
+    $sql = "UPDATE recepcion set status = '1' where id_recepcion = ".$idBloquear;
+    $rs_operacion=mysqli_query($link,$sql);
+
+    $sql = "UPDATE recepcion_pesos set status = '1' where id_recepcion = ".$idBloquear;
     $rs_operacion=mysqli_query($link,$sql);
       
     if (!$rs_operacion) {
@@ -1067,6 +1326,7 @@ function listaProveedoresPPaginada($inicio, $fin, $busqueda){
             $sql .= " OR responsables.nombres LIKE '%$busqueda%'";
             $sql .= " OR codigog LIKE '%$busqueda%'";
             $sql .= " OR guiaspollo.tipo LIKE '%$busqueda%'";
+            $sql .= " OR id_guia LIKE '%$busqueda%'";
             $sql .= " OR placa LIKE '%$busqueda%')";
         }
     
@@ -1596,7 +1856,7 @@ function listaItemsPorProveedorPPaginada($proveedor, $inicio, $fin, $busqueda){
     }
     
     $sql .= " ORDER BY id_item_proveedor desc";
-    $sql .= " LIMIT $inicio, $fin";
+    //$sql .= " LIMIT $inicio, $fin";
         
     $rs_operacion = mysqli_query($link, $sql);
 

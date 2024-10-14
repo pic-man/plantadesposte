@@ -1683,4 +1683,4 @@ if($rs2['responsable'] != 12345678){
         $pdf->Cell(130, 5, '', 0, 0, '');
         $pdf->Cell(60, 5, utf8_decode('Firma Responsable:____________________________'), 0, 1, '');
 }
-$pdf->Output('formato_recepcion', 'I');
+$pdf->Output('formato_recepcion.pdf', 'D');

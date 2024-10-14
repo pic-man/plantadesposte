@@ -40,6 +40,9 @@ $fecha_actual = date('Y-m-d');
 		#jtableCriterio_length {   
     		display: none;
 		}
+		#jtable th, #jtable td {
+    		width: 20%; 
+		}
     </style>
 </head>
 <body>

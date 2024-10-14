@@ -185,7 +185,12 @@ while ($row = mysqli_fetch_assoc($c)) {
         AND item_proveedorpollo.proveedor=" . $id . "
         GROUP BY item, lote";  */   
 
-    $sql2 = "SELECT lote, SUM(unidades) as cant_unidades, SUM(peso) as cant_pesos, SUM(cajas) as cant_cajas
+    $sql2 = "SELECT lote, 
+                    SUM(unidades) as cant_unidades, 
+                    SUM(peso) as cant_pesos, 
+                    SUM(cajas) as cant_cajas,
+                    SUM(base) as cant_bases,
+                    temperatura
         FROM item_proveedorpollo 
         WHERE item_proveedorpollo.item = '" . $row['item'] . "' 
         AND item_proveedorpollo.proveedor = ".$id."
@@ -201,7 +206,13 @@ while ($row = mysqli_fetch_assoc($c)) {
     }    
     
     $cont++;
-    $subtotal = round($row2['cant_pesos']-($row2['cant_cajas']*2));
+    if(($row['item'] == '050514')||($row['item'] == '050515')||($row['item'] == '050516')||($row['item'] == '050517')){
+        $subtotal = round($row2['cant_pesos']-($row2['cant_cajas']*2)-(($row2['cant_bases']*1.8)/4));
+        $stotal_peso = round($row2['cant_pesos']-(($row2['cant_bases']*1.8)/4));
+    }else{
+        $subtotal = round($row2['cant_pesos']-($row2['cant_cajas']*2)-($row2['cant_bases']*1.8));
+        $stotal_peso = round($row2['cant_pesos']-($row2['cant_bases']*1.8));
+    }
     $pdf->Cell(10, 4, utf8_decode($cont), 1, 0, 'C');
     $pdf->Cell(13, 4, utf8_decode($row['item']), 1, 0, 'C');
     $pdf->Cell(65, 4, utf8_decode($row['descripcion']), 1, 0, '');
@@ -214,13 +225,14 @@ while ($row = mysqli_fetch_assoc($c)) {
     /* if($row['item']!='050514' && $row['item']!='050515' && $row['item']!='050516' && $row['item']!='050517' && $row['item']!='051513'){ */
         $peso='si';
         $pdf->Cell(10, 4, number_format($subtotal, 0, ',', '.'), 1, 1, 'C');
+        //$pdf->Cell(10, 4, $row2['cant_pesos']."-".(($row2['cant_cajas']*2))."-".(($row2['cant_bases']*1.8)/4), 1, 1, 'C');
     /* }else{
         $peso='no';
         $pdf->Cell(10, 4, '', 1, 1, 'C');
     } */
     $total_unidades = $total_unidades+$row2['cant_unidades'];
     $total_cajas = $total_cajas+$row2['cant_cajas'];
-    $total_peso = $total_peso+$row2['cant_pesos'];
+    $total_peso = $total_peso+$stotal_peso;
 }
 
 
@@ -330,4 +342,4 @@ if($rs2['responsable'] != 12345678){
         $pdf->Image($firma, $x+15, $y-4, 30, 10);
         $pdf->Cell(190, 5, utf8_decode('FIRMA:____________________________'), 0, 1, '');
 }
-$pdf->Output('formato_guia', 'I');
+$pdf->Output('formato_guia.pdf', 'D');

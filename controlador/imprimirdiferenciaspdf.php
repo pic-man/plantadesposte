@@ -237,4 +237,4 @@ $pdf->Cell(31, 10, utf8_decode('Hora Final: '.$inicio), 0, 0, '');
 $pdf->Cell(31, 10, utf8_decode('Tiempo Total: '.$tiempoTranscurrido), 0, 0, '');
 $pdf->Cell(28, 10,'Canales: '.$canales, 0, 0, '');
 $pdf->Cell(65, 10, utf8_decode('Firma Responsable:____________________________'), 0, 1, ''); */
-$pdf->Output('formato_recepcion', 'I');
+$pdf->Output('formato_recepcion.pdf', 'D');

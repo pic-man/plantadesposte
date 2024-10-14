@@ -38,31 +38,76 @@ while ($row = mysqli_fetch_array($listaProveedores)) {
     $subdata[] = '<center><a style="z-index: 0;color:#000" data-bs-target="#modalCriterios" onclick="abrirModal(\''.$row[0].'\',\''.$row[9].'\',\''.$_SESSION['tipo'].'\',\''.$row[8].'\',\''.$row[5].'\'); buscarItems(\''.$row[0].'\',\''.$row[8].'\');" data-bs-toggle="modal">'.$row[3].'<br>'.$row[4].'</a></center>';
 
     $subdata[] = '<center><a style="z-index: 0;color:#000" data-bs-target="#modalCriterios" onclick="abrirModal(\''.$row[0].'\',\''.$row[9].'\',\''.$_SESSION['tipo'].'\',\''.$row[8].'\',\''.$row[5].'\'); buscarItems(\''.$row[0].'\',\''.$row[8].'\');" data-bs-toggle="modal">'.$canales.'/'.$row[5].'<br>'.$row[6].'</a></center>';
+
 if($_SESSION['tipoR'] != 2){    
-    if(($row[9] == '1')||($_SESSION['tipo'] == 0)){
+    if(($_SESSION['tipo'] == 0)){
         $estadoBtn = '
-        <a style="z-index: 0;color:#000; margin-right:10px" data-bs-toggle="modal" data-bs-target="#modalNuevoProveedor" onclick="buscarGuia(\''.$row[0].'\')"><i class="bi bi-pencil-square fs-2 text-warning"></i></a>';
-     if($canales == $row[5]){ 
-      if($row[8] == 'RES'){
-        $estadoBtn .= '<a style="z-index: 0;color:#000" onclick="bloquearEdicion(\''.$row[0].'\')" href="controlador/imprimiringresopdf.php?id='.$row[0].'" target="_blank"><i class="bi bi-printer fs-2 text-primary"></i></a>';
-      }else{
-        $estadoBtn .= '<a style="z-index: 0;color:#000" onclick="bloquearEdicion(\''.$row[0].'\')" href="controlador/imprimiringresoCerdopdf.php?id='.$row[0].'" target="_blank"><i class="bi bi-printer fs-2 text-primary"></i></a>';
-      }  
-    } 
+        <a style="z-index: 0;color:#000;" data-bs-toggle="modal" data-bs-target="#modalNuevoProveedor" onclick="buscarGuia(\''.$row[0].'\')"><i class="bi bi-pencil-square fs-2 me-3 text-warning"></i></a>';
+
+        if($canales == $row[5]){ 
+            if($row[8] == 'RES'){
+                $estadoBtn .= '<a style="z-index: 0;color:#000" onclick="bloquearEdicion(\''.$row[0].'\')" href="controlador/imprimiringresopdf.php?id='.$row[0].'" target="_blank"><i class="bi bi-printer fs-2  me-3 text-primary"></i></a>';
+            }else{
+                $estadoBtn .= '<a style="z-index: 0;color:#000" onclick="bloquearEdicion(\''.$row[0].'\')" href="controlador/imprimiringresoCerdopdf.php?id='.$row[0].'" target="_blank"><i class="bi bi-printer fs-2 me-3 text-primary"></i></a>';
+            }  
+        }else{
+            $estadoBtn .= '<i class="bi bi-pencil-square fs-2 me-3 text-warning" style="visibility: hidden;""></i>';
+        } 
+
+        if($row[9] == '1'){
+            $estadoBtn .='<a style="z-index: 0;color:#000" onclick="bloquearEdicion(\''.$row[0].'\')" ><i class="bi bi-unlock fs-2 me-3 style="color:#ff0000;"></i></a></center>';
+        }else{
+            $estadoBtn .='<a style="z-index: 0;color:#000" onclick="desbloquearEdicion(\''.$row[0].'\')"><i class="bi-lock fs-2 me-3 style="color:#00a45f;"></i></a></center>';
+        }
         
     }else{
+
         if($row[8] == 'RES'){
-            $estadoBtn = '<a style="z-index: 0;color:#000" onclick="bloquearEdicion(\''.$row[0].'\')" href="controlador/imprimiringresopdf.php?id='.$row[0].'" target="_blank">aqui'.$row[9].'<i class="bi bi-printer fs-2 text-primary"></i></a>';
+            if($row[9] == '1'){
+                $estadoBtn = '
+                <a style="z-index: 0;color:#000;" data-bs-toggle="modal" data-bs-target="#modalNuevoProveedor" onclick="buscarGuia(\''.$row[0].'\')"><i class="bi bi-pencil-square fs-2 me-3 text-warning"></i></a>';
+                if($canales == $row[5]){
+                    $estadoBtn .= '<a style="z-index: 0;color:#000" onclick="bloquearEdicion(\''.$row[0].'\')" href="controlador/imprimiringresopdf.php?id='.$row[0].'" target="_blank"><i class="bi bi-printer fs-2 me-3 text-primary"></i></a>';
+                }else{
+                    $estadoBtn .= '<i class="bi bi-pencil-square fs-2 me-3 text-warning" style="visibility: hidden;""></i>';
+                }
+            }else{
+                $estadoBtn = '
+                <i class="bi bi-pencil-square fs-2 me-3 text-warning" style="visibility: hidden;""></i>';
+                if($canales == $row[5]){
+                    $estadoBtn = '<a style="z-index: 0;color:#000" onclick="bloquearEdicion(\''.$row[0].'\')" href="controlador/imprimiringresopdf.php?id='.$row[0].'" target="_blank"><i class="bi bi-printer fs-2 me-3 text-primary"></i></a>';
+                }else{
+                    $estadoBtn .= '<i class="bi bi-pencil-square fs-2 me-3 text-warning" style="visibility: hidden;""></i>';
+                }
+            }    
           }else{
-            $estadoBtn = '<a style="z-index: 0;color:#000" onclick="bloquearEdicion(\''.$row[0].'\')" href="controlador/imprimiringresoCerdopdf.php?id='.$row[0].'" target="_blank"><i class="bi bi-printer fs-2 text-primary"></i></a>';
+             if($row[9] == '1'){
+                $estadoBtn = '
+                <a style="z-index: 0;color:#000;" data-bs-toggle="modal" data-bs-target="#modalNuevoProveedor" onclick="buscarGuia(\''.$row[0].'\')"><i class="bi bi-pencil-square fs-2 me-3 text-warning"></i></a>';
+
+                if($canales == $row[5]){
+                    $estadoBtn .= '<a style="z-index: 0;color:#000" onclick="bloquearEdicion(\''.$row[0].'\')" href="controlador/imprimiringresoCerdopdf.php?id='.$row[0].'" target="_blank"><i class="bi bi-printer fs-2 me-3 text-primary"></i></a>';
+                }else{
+                    $estadoBtn .= '<i class="bi bi-pencil-square fs-2 me-3 text-warning" style="visibility: hidden;""></i>';
+                }    
+             }else{
+                $estadoBtn = '
+                <i class="bi bi-pencil-square fs-2 me-3 text-warning" style="visibility: hidden;""></i>';
+                if($canales == $row[5]){
+                    $estadoBtn .= '<a style="z-index: 0;color:#000" onclick="bloquearEdicion(\''.$row[0].'\')" href="controlador/imprimiringresoCerdopdf.php?id='.$row[0].'" target="_blank"><i class="bi bi-printer fs-2 me-3 text-primary"></i></a>';
+                }else{
+                    $estadoBtn .= '<i class="bi bi-pencil-square fs-2 me-3 text-warning" style="visibility: hidden;""></i>';
+                } 
+             }   
           }
             
-        /* if($row[11]!=''){
+        
+        if($row[11]!=''){
             $estadoBtn .= '<a style="z-index: 0;color:#ff8a00;margin: 5px;" onclick="buscarObservacion(\''.$row[11].'\')"><i class="bi bi-exclamation-diamond fs-2"></i></a>';
         }
         if($row[12]!=''){
             $estadoBtn .= '<a style="z-index: 0;color:#0023bc;margin: 5px;" onclick="mostrarImagen(\''.$row[12].'\')"><i class="bi bi-image fs-2"></i></i></a>';
-        } */
+        }
     }
 }else{
 
