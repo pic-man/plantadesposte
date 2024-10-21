@@ -402,6 +402,7 @@ function eliminarItem(id_item_proveedor) {
 				id: id,
 				tipo: tipo,
 			};
+			console.log('datos items: ',datosItems);
 			$.ajax({
 				type: 'POST',
 				dataType: 'json',

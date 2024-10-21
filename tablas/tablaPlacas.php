@@ -1,44 +1,56 @@
 <?php
-//session_start();
 error_reporting(0);
 require_once('../modelo/funciones.php');
-function fsalida($cad2){
-   $uno = substr($cad2, 11, 5);
-   return $uno;
-}
 $request = $_REQUEST;
 $inicio = $request['start'];
 $fin = $request['length'];
 $busqueda = $request['search']['value'];
 
-$listaItems = listaPlacasCompleta($inicio,$fin,$busqueda);
-$totalData = mysqli_num_rows($listaItems);
-$totalFiltro = $totalData;
+$col = array(
+    0   =>  'placa',
+    1   =>  'status',
+    2   =>  'id'
+);
+
+include('../config.php');
+$sql = "SELECT `placa`, `status`, `id` FROM `placas`";
+$query = mysqli_query($link, $sql);
+$totalData = mysqli_num_rows($query);
+
+$totalFilter = $totalData;
+
+if (!empty($busqueda)) {
+    $sql .= " WHERE (placa LIKE '%$busqueda%'";
+    $sql .= " OR status LIKE '%$busqueda%')";
+    
+    $query = mysqli_query($link, $sql);
+    $totalFilter = mysqli_num_rows($query); 
+}
+
+$sql .= " ORDER BY " . $col[$request['order'][0]['column']] . " " . $request['order'][0]['dir'] . " LIMIT $inicio, $fin";
+$query = mysqli_query($link, $sql);
 
 $data = array();
-$cont=0;
-while ($row = mysqli_fetch_array($listaItems)) {
-    $cont++;
-    $btns = '';
-    $subdata = array();
-    $subdata[] = $cont;
-    $subdata[] = "<center>".$row[0]."</center>";
-    $subdata[] = "<center>".$row[1]."</center>";
-    
-        /* $estadoLabel = '<span class="label label-danger" rel="tooltip" data-placement="bottom" title="Inactivo">x</span>'; */
-    $estadoBtn = '<center><a class="btn btn-primary" style="z-index: 0;color:#fff" data-target="#modalNuevoProveedor" data-toggle="modal" onclick="buscarConductor(\''.$row[4].'\')">M</a>&nbsp;&nbsp;</center>';
 
+while ($row = mysqli_fetch_array($query)) {
+    $subdata = array();
+    
+    $subcategoria = ($row[5] != 0) ? $row[5] : '';
+    
+    $subdata[] = "<center>" . $row[0] . "</center>";
+    $subdata[] = "<center>" . $row[1] . "</center>";
+    
+    $estadoBtn = '<center><a style="z-index: 0;color:#fff" data-bs-target="#modalNuevoProveedor" data-bs-toggle="modal" onclick="buscarItems(\''.$row[2].'\')"><i class="bi bi-pencil-square fs-2 me-3 text-warning"></i></center>';
     $subdata[] = $estadoBtn;
 
     $data[] = $subdata;
 }
 
 $json_data = array(
-    "draw"            => intval($request['draw']),
-    "recordsTotal"    => intval($totalData),
-    "recordsFiltered" => intval($totalFiltro),
-    "data"            => $data
+    "draw"              => intval($request['draw']),
+    "recordsTotal"      => intval($totalData),         
+    "recordsFiltered"   => intval($totalFilter),       
+    "data"              => $data                     
 );
-
 echo json_encode($json_data);
 ?>

@@ -47,6 +47,26 @@ if(isset($_POST['idItem'])){
 	echo json_encode(cargarItem($_POST['idItem']));
 }
 
+if(isset($_POST['idResponsable'])){
+	echo json_encode(cargarResponsables($_POST['idResponsable']));
+}
+
+if(isset($_POST['idPlanta'])){
+	echo json_encode(cargarPlanta($_POST['idPlanta']));
+}
+
+if(isset($_POST['idProveedor'])){
+	echo json_encode(cargarProveedor($_POST['idProveedor']));
+}
+
+if(isset($_POST['idPlacasD'])){
+	echo json_encode(cargarPlacasD($_POST['idPlacasD']));
+}
+
+if(isset($_POST['idConductor'])){
+	echo json_encode(cargarConductores($_POST['idConductor']));
+}
+
 if(isset($_POST['idcriterio'])){
 	echo json_encode(cargarCriterio($_POST['idcriterio']));
 }
@@ -75,12 +95,33 @@ if(isset($_POST['infoEditResp'])){
 	echo json_encode(editarResponsable($_POST['infoEditResp']));
 }
 
-if(isset($_POST['infoEditCond'])){
-	echo json_encode(editarConductor($_POST['infoEditCond']));
+if(isset($_POST['infoEditPlacasD'])){
+	echo json_encode(editarPlacasD($_POST['infoEditPlacasD']));
 }
+
+
+/* if(isset($_POST['infoEditCond'])){
+	echo json_encode(editarConductor($_POST['infoEditCond']));
+} */
 
 if(isset($_POST['infoEditItem'])){
 	echo json_encode(editarItem($_POST['infoEditItem']));
+}
+
+if(isset($_POST['infoEditResponsable'])){
+	echo json_encode(editarResponsables($_POST['infoEditResponsable']));
+}
+
+if(isset($_POST['infoEditPlanta'])){
+	echo json_encode(editarPlanta($_POST['infoEditPlanta']));
+}
+
+if(isset($_POST['infoEditProveedorPollo'])){
+	echo json_encode(editarProveedorPollo($_POST['infoEditProveedorPollo']));
+}
+
+if(isset($_POST['infoEditConductor'])){
+	echo json_encode(editarConductores($_POST['infoEditConductor']));
 }
 
 if(isset($_POST['infoCriEdit'])){
@@ -147,12 +188,15 @@ if(isset($_POST['datosCond'])){
 	echo json_encode(agregarConductor($_POST['datosCond']));
 }
 
-if(isset($_POST['datosItem'])){
+/* if(isset($_POST['datosItem'])){
 	echo json_encode(agregarNuevoItem($_POST['datosItem']));
-}
-
+} */
 if(isset($_POST['datosPlaca'])){
 	echo json_encode(agregarPlaca($_POST['datosPlaca']));
+}
+
+if(isset($_POST['datosPlacasD'])){
+	echo json_encode(agregarPlacaD($_POST['datosPlacasD']));
 }
 
 if(isset($_POST['datosSede'])){
@@ -193,6 +237,10 @@ if(isset($_POST['datosRecepcion'])){
 	echo json_encode(agregarRecepcion($_POST['datosRecepcion']));
 }
 
+if(isset($_POST['datosRecepcionPollo'])){
+	echo json_encode(agregarRecepcionPollo($_POST['datosRecepcionPollo']));
+}
+
 if(isset($_POST['datosCompra'])){
 	echo json_encode(agregarItemCompra($_POST['datosCompra']));
 }
@@ -201,17 +249,53 @@ if(isset($_POST['cedula'])){
 	echo json_encode(buscarCedula($_POST['cedula']));
 }
 
+if(isset($_POST['cedulaPollo'])){
+	echo json_encode(buscarCedulaPollo($_POST['cedulaPollo']));
+}
+
+if(isset($_POST['validarNitPlanta'])){
+	echo json_encode(buscarNitPlanta($_POST['validarNitPlanta']));
+}
+
+if(isset($_POST['validarNitProveedor'])){
+	echo json_encode(buscarNitProveedorPollo($_POST['validarNitProveedor']));
+}
+
+if(isset($_POST['validarItem'])){
+	echo json_encode(buscarItem($_POST['validarItem']));
+}
+
+if(isset($_POST['validarCodigo'])){
+	echo json_encode(buscarCodigo($_POST['validarCodigo']));
+}
+
+if(isset($_POST['validarCedulaResponsable'])){
+	echo json_encode(buscarCedulaResponsable($_POST['validarCedulaResponsable']));
+}
+
+if(isset($_POST['validarPlacaD'])){
+	echo json_encode(buscarPlacaD($_POST['validarPlacaD']));
+}
+
+if(isset($_POST['validarCedulaConductor'])){
+	echo json_encode(buscarCedulaConductor($_POST['validarCedulaConductor']));
+}
+
 if(isset($_POST['datosConductor'])){
 	echo json_encode(agregarConductorRecepcion($_POST['datosConductor']));
+}
+
+if(isset($_POST['datosConductorPollo'])){
+	echo json_encode(agregarConductorRecepcionPollo($_POST['datosConductorPollo']));
 }
 
 if(isset($_POST['datosPlacaR'])){
 	echo json_encode(buscarPlaca($_POST['datosPlacaR']));
 }
 
-/* if(isset($_POST['datosConductor'])){
-	echo json_encode(agregarConductorRecepcion($_POST['datosConductor']));
-} */
+if(isset($_POST['datosPlacaRPollo'])){
+	echo json_encode(buscarPlacaPollo($_POST['datosPlacaRPollo']));
+}
 
 if(isset($_POST['datosPesoRecepcion'])){
 	echo json_encode(calcularDiferencia($_POST['datosPesoRecepcion']));
@@ -219,5 +303,30 @@ if(isset($_POST['datosPesoRecepcion'])){
 
 if(isset($_POST['datosEPesoRecepcion'])){
 	echo json_encode(eliminarCalculoDiferencia($_POST['datosEPesoRecepcion']));
+}
+
+if (isset($_POST['datosItem'])) {
+    $resultado = agregarNuevoItem($_POST['datosItem']);
+    echo json_encode($resultado);
+}
+
+if (isset($_POST['datosResponsable'])) {
+    $resultado = agregarNuevoResponsable($_POST['datosResponsable']);
+    echo json_encode($resultado);
+}
+
+if (isset($_POST['datosPlanta'])) {
+    $resultado = agregarNuevaPlanta($_POST['datosPlanta']);
+    echo json_encode($resultado);
+}
+
+if (isset($_POST['datosProveedorP'])) {
+    $resultado = agregarProveedorPollo($_POST['datosProveedorP']);
+    echo json_encode($resultado);
+}
+
+if (isset($_POST['datosConductorD'])) {
+    $resultado = agregarNuevoConductorD($_POST['datosConductorD']);
+    echo json_encode($resultado);
 }
 ?>

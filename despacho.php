@@ -79,7 +79,7 @@ $listaDestinos = listaDestinos();?>
 								<div class="form-group label-floating" id="fechaExpDiv">
 									<input type="date" class="form-control" autocomplete="off" id="fechaexp" name="fechaexp" placeholder="Ingrese fecha Expedicion" >
 								</div>
-								<div class="alert alert-danger" role="alert" id="fechaExpE">
+								<div class="alert alert-danger" role="alert" id="fechaExpE" style="display: none;">
 									Debes ingresar fecha de expedicion
 								</div>
 							</div>
@@ -542,20 +542,12 @@ function eliminarItem(id_item_proveedor) {
         	var month = String(today.getMonth() + 1).padStart(2, '0'); // Enero es 0
         	var year = today.getFullYear();
 	        var formattedDate = year + '-' + month + '-' + day;
-        
 			$('#titulo').text('AGREGAR GUIA');
 			$('#btnNuevoProveedor').css('display', 'initial');
 			$('#btnEditProveedor').css('display', 'none');
         	$('#fechaexp').val(formattedDate);
 			$('#consecutivog').val('');
-			$('#responsable').val(<?php echo $_SESSION['usuario'];?>);
-			$('#canales').val('');
-			$('#destino').val('');
-			$('#conductor').val('');
-			$('#placa').val('');
-			$('#producto').val('');
-			$('#precinto').val('');
-			$('#observaciones').val('');
+			
 			$('#fechaExpE').css('display', 'none');
 			$('#productoE').css('display', 'none');
 			$('#consecutivogE').css('display', 'none');
@@ -565,6 +557,16 @@ function eliminarItem(id_item_proveedor) {
 			$('#conductorE').css('display', 'none');
 			$('#placaE').css('display', 'none');
 			$('#precintoE').css('display', 'none');
+			<?php if($_SESSION['usuario']!='ADMINISTRADOR'){?>
+				$('#responsable').val(<?php echo $_SESSION['usuario'];?>);
+			<?php }?>
+			$('#canales').val('');
+			$('#destino').val('');
+			$('#conductor').val('');
+			$('#placa').val('');
+			$('#producto').val('');
+			$('#precinto').val('');
+			$('#observaciones').val('');
 		});
 
 		$('#btnNuevoProveedor').click(function() {

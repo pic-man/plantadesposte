@@ -7,32 +7,27 @@ $fin = $request['length'];
 $busqueda = $request['search']['value'];
 
 $col = array(
-    0   =>  'item',
-    1   =>  'codigo',
-    2   =>  'descripcion',
-    3   =>  'tipo',
-    4   =>  'categoria',
-    5   =>  'categoriadestino',
-    6   =>  'status',
-    7   =>  'id',
+    0   =>  'nit',
+    1   =>  'razon',
+    2   =>  'direccion',
+    3  =>  'municipio',
+    4   =>  'status',
+    5   =>  'id',
 );
 
 include('../config.php');
-$sql = "SELECT `item`, `codigo`, `descripcion`, `tipo`, `categoria`, `categoriadestino`, `status`, `id` FROM `plantilla`";
+$sql = "SELECT `nit`, `sede`, `direccion`, `municipio`, `status`, `id` FROM `beneficio`";
 $query = mysqli_query($link, $sql);
 $totalData = mysqli_num_rows($query);
 
 $totalFilter = $totalData;
 
 if (!empty($busqueda)) {
-    $sql .= " WHERE (item LIKE '%$busqueda%'";
-    $sql .= " OR codigo LIKE '%$busqueda%'";
-    $sql .= " OR descripcion LIKE '%$busqueda%'";
-    $sql .= " OR tipo LIKE '%$busqueda%'";
-    $sql .= " OR status LIKE '%$busqueda%'";
-    $sql .= " OR categoria LIKE '%$busqueda%'";
-    $sql .= " OR categoriadestino LIKE '%$busqueda%'";
-    $sql .= " OR tipo LIKE '%$busqueda%')";
+    $sql .= " WHERE (nit LIKE '%$busqueda%'";
+    $sql .= " OR sede LIKE '%$busqueda%'";
+    $sql .= " OR direccion LIKE '%$busqueda%'";
+    $sql .= " OR municipio LIKE '%$busqueda%'";
+    $sql .= " OR status LIKE '%$busqueda%')";
     
     $query = mysqli_query($link, $sql);
     $totalFilter = mysqli_num_rows($query); 
@@ -48,12 +43,13 @@ while ($row = mysqli_fetch_array($query)) {
     
     $subcategoria = ($row[5] != 0) ? $row[5] : '';
     
-    $subdata[] = "<center>" . $row[0] . "<br>" . $row[1] . "</center>";
+    $subdata[] = "<center>" . $row[0] . "</center>";
+    $subdata[] = "<center>" . $row[1] . "</center>";
     $subdata[] = "<center>" . $row[2] . "</center>";
-    $subdata[] = "<center>" . $row[3] . "<br>" . $row[4] . "</center>";
-    $subdata[] = "<center>" . $subcategoria . "<br>" . $row[6] . "</center>";
+    $subdata[] = "<center>" . $row[3] . "</center>";
+    $subdata[] = "<center>" . $row[4] . "</center>";
     
-    $estadoBtn = '<center><a style="z-index: 0;color:#fff" data-bs-target="#modalNuevoProveedor" data-bs-toggle="modal" onclick="buscarItems(\''.$row[7].'\')"><i class="bi bi-pencil-square fs-2 me-3 text-warning"></i></center>';
+    $estadoBtn = '<center><a style="z-index: 0;color:#fff" data-bs-target="#modalNuevoProveedor" data-bs-toggle="modal" onclick="buscarItems(\''.$row[5].'\')"><i class="bi bi-pencil-square fs-2 me-3 text-warning"></i></center>';
     $subdata[] = $estadoBtn;
 
     $data[] = $subdata;

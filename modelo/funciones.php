@@ -76,7 +76,83 @@ function listaPlacasCompleta($inicio,$fin,$busqueda){
 
 function listaResponsables(){   
     include('config.php');
-    $sql = "SELECT cedula,nombres FROM responsables where status=1";
+    $sql = "SELECT cedula,nombres FROM responsables where status='ACTIVO'";
+    $rs_operacion = mysqli_query($link, $sql);
+
+    if (!$rs_operacion) {
+        echo "Error al ejecutar la consulta 1: " . mysqli_error($link);
+        exit();
+      }
+    else{
+        $items = [];
+        while ($row = mysqli_fetch_assoc($rs_operacion)) {
+          $items[] = $row;
+         }
+        mysqli_free_result($rs_operacion);
+        return $items;
+    }  
+}
+
+function listaTipos(){   
+    include('config.php');
+    $sql = "SELECT id,descripcion FROM tipo where status='ACTIVO'";
+    $rs_operacion = mysqli_query($link, $sql);
+
+    if (!$rs_operacion) {
+        echo "Error al ejecutar la consulta 1: " . mysqli_error($link);
+        exit();
+      }
+    else{
+        $items = [];
+        while ($row = mysqli_fetch_assoc($rs_operacion)) {
+          $items[] = $row;
+         }
+        mysqli_free_result($rs_operacion);
+        return $items;
+    }  
+}
+
+function listaMunicipios(){   
+    include('config.php');
+    $sql = "SELECT descripcion FROM municipios";
+    $rs_operacion = mysqli_query($link, $sql);
+
+    if (!$rs_operacion) {
+        echo "Error al ejecutar la consulta 1: " . mysqli_error($link);
+        exit();
+      }
+    else{
+        $items = [];
+        while ($row = mysqli_fetch_assoc($rs_operacion)) {
+          $items[] = $row;
+         }
+        mysqli_free_result($rs_operacion);
+        return $items;
+    }  
+}
+
+function listaCategorias(){   
+    include('config.php');
+    $sql = "SELECT id,descripcion FROM categoria where status='ACTIVO'";
+    $rs_operacion = mysqli_query($link, $sql);
+
+    if (!$rs_operacion) {
+        echo "Error al ejecutar la consulta 1: " . mysqli_error($link);
+        exit();
+      }
+    else{
+        $items = [];
+        while ($row = mysqli_fetch_assoc($rs_operacion)) {
+          $items[] = $row;
+         }
+        mysqli_free_result($rs_operacion);
+        return $items;
+    }  
+}
+
+function listaSubCategorias(){   
+    include('config.php');
+    $sql = "SELECT id,descripcion FROM categoriadestino where status='ACTIVO'";
     $rs_operacion = mysqli_query($link, $sql);
 
     if (!$rs_operacion) {
@@ -113,6 +189,7 @@ function listaConductores()
         return $items;
     }  
 }
+
 function listaConductores_recepcion(){   
     include('config.php');
     $sql = "SELECT cedula, nombres FROM conductores_recepcion ORDER BY nombres asc";
@@ -131,9 +208,44 @@ function listaConductores_recepcion(){
     }  
 }
 
+function listaConductores_recepcion_pollo(){   
+    include('config.php');
+    $sql = "SELECT cedula, nombres FROM conductores_recepcion_pollo ORDER BY nombres asc";
+    $rs_operacion = mysqli_query($link, $sql);
+    if (!$rs_operacion) {
+        echo "Error al ejecutar la consulta 1: " . mysqli_error($link);
+        exit();
+      }
+    else{
+        $items = [];
+        while ($row = mysqli_fetch_assoc($rs_operacion)) {
+          $items[] = $row;
+         }
+        mysqli_free_result($rs_operacion);
+        return $items;
+    }  
+}
+
 function listaConductores_recepcion_registro(){   
     include('../config.php');
     $sql = "SELECT empresa,cedula,nombres FROM conductores_recepcion";
+    $rs_operacion = mysqli_query($link, $sql);
+    if (!$rs_operacion) {
+        echo "Error al ejecutar la consulta 1: " . mysqli_error($link);
+        exit();
+      }
+    else{
+        $items = [];
+        while ($row = mysqli_fetch_assoc($rs_operacion)) {
+           $items[] = $row;
+        }
+        return $items;
+    }  
+}
+
+function listaConductores_recepcion_registro_pollo(){   
+    include('../config.php');
+    $sql = "SELECT empresa,cedula,nombres FROM conductores_recepcion_pollo";
     $rs_operacion = mysqli_query($link, $sql);
     if (!$rs_operacion) {
         echo "Error al ejecutar la consulta 1: " . mysqli_error($link);
@@ -168,11 +280,29 @@ function listaPlacas()
         return $items;
     }  
 }
-function listaPlacas_recepcion()
-{   include('config.php');
 
-        $sql = "SELECT placa FROM placas_recepcion ORDER BY placa ASC";
-    
+function listaPlacas_recepcion(){   
+    include('config.php');
+    $sql = "SELECT placa FROM placas_recepcion ORDER BY placa ASC";
+    $rs_operacion = mysqli_query($link, $sql);
+
+    if (!$rs_operacion) {
+        echo "Error al ejecutar la consulta 1: " . mysqli_error($link);
+        exit();
+      }
+    else{
+        $items = [];
+        while ($row = mysqli_fetch_assoc($rs_operacion)) {
+          $items[] = $row;
+         }
+        mysqli_free_result($rs_operacion);
+        return $items;
+    }  
+}
+
+function listaPlacas_recepcion_pollo(){   
+    include('config.php');
+    $sql = "SELECT placa FROM placas_recepcion_pollo ORDER BY placa ASC";
     $rs_operacion = mysqli_query($link, $sql);
 
     if (!$rs_operacion) {
@@ -206,11 +336,26 @@ function listaPlacas_recepcion_registro(){
     }  
 }
 
-function listaDestinos()
-{   include('config.php');
+function listaPlacas_recepcion_registro_pollo(){   
+    include('../config.php');
+    $sql = "SELECT placa FROM placas_recepcion_pollo";
+    $rs_operacion = mysqli_query($link, $sql);
+    if (!$rs_operacion) {
+        echo "Error al ejecutar la consulta 2: " . mysqli_error($link);
+        exit();
+      }
+    else{
+        $items = [];
+        while ($row = mysqli_fetch_assoc($rs_operacion)) {
+          $items[] = $row;
+         }
+        return $items;
+    }  
+}
 
-        $sql = "SELECT id,empresa,sede FROM destinos";
-    
+function listaDestinos(){   
+    include('config.php');
+    $sql = "SELECT id,empresa,sede FROM destinos";
     $rs_operacion = mysqli_query($link, $sql);
 
     if (!$rs_operacion) {
@@ -226,11 +371,28 @@ function listaDestinos()
         return $items;
     }  
 }
-function listaOrigen()
-{   include('config.php');
+function listaOrigen(){   
+    include('config.php');
+    $sql = "SELECT id,nit,sede FROM beneficio";
+    $rs_operacion = mysqli_query($link, $sql);
 
-        $sql = "SELECT id,nit,sede FROM beneficio";
-    
+    if (!$rs_operacion) {
+        echo "Error al ejecutar la consulta 1: " . mysqli_error($link);
+        exit();
+      }
+    else{
+        $items = [];
+        while ($row = mysqli_fetch_assoc($rs_operacion)) {
+          $items[] = $row;
+         }
+        mysqli_free_result($rs_operacion);
+        return $items;
+    }  
+}
+
+function listaProveedores(){   
+    include('config.php');
+    $sql = "SELECT id,nit,sede FROM proveedorpollo";
     $rs_operacion = mysqli_query($link, $sql);
 
     if (!$rs_operacion) {
@@ -650,17 +812,152 @@ function cargarConductor($idCond){
         return $items;
     }  
 }
+
 function cargarItem($idItem){
     include('../config.php');
         $sql = "SELECT item,
         descripcion,
         codigo,
         tipo,
-        status
+        categoria,
+        categoriadestino,
+        status,
+        id
     FROM 
         plantilla
     WHERE
         id=".$idItem;
+
+    $rs_operacion = mysqli_query($link, $sql);
+
+    if (!$rs_operacion) {
+        echo "Error al ejecutar la consulta: " . mysqli_error($link);
+        exit();
+    }else{        
+        $items = [];
+        while ($row = mysqli_fetch_assoc($rs_operacion)) {
+          $items[] = $row;
+         }
+        return $items;
+    }  
+}
+
+function cargarResponsables($idResponsables){
+    include('../config.php');
+        $sql = "SELECT cedula,
+        nombres,
+        telefono,
+        status,
+        id
+    FROM 
+        responsables
+    WHERE
+        id=".$idResponsables;
+
+    $rs_operacion = mysqli_query($link, $sql);
+
+    if (!$rs_operacion) {
+        echo "Error al ejecutar la consulta: " . mysqli_error($link);
+        exit();
+    }else{        
+        $items = [];
+        while ($row = mysqli_fetch_assoc($rs_operacion)) {
+          $items[] = $row;
+         }
+        return $items;
+    }  
+}
+
+function cargarPlanta($idResponsables){
+    include('../config.php');
+        $sql = "SELECT nit,
+        sede,
+        direccion,
+        municipio,
+        status,
+        id
+    FROM 
+        beneficio
+    WHERE
+        id=".$idResponsables;
+
+    $rs_operacion = mysqli_query($link, $sql);
+
+    if (!$rs_operacion) {
+        echo "Error al ejecutar la consulta: " . mysqli_error($link);
+        exit();
+    }else{        
+        $items = [];
+        while ($row = mysqli_fetch_assoc($rs_operacion)) {
+          $items[] = $row;
+         }
+        return $items;
+    }  
+}
+
+function cargarProveedor($idPlanta){
+    include('../config.php');
+        $sql = "SELECT nit,
+        sede,
+        direccion,
+        municipio,
+        polloporcanastillas,
+        status,
+        id
+    FROM 
+        proveedorpollo
+    WHERE
+        id=".$idPlanta;
+
+    $rs_operacion = mysqli_query($link, $sql);
+
+    if (!$rs_operacion) {
+        echo "Error al ejecutar la consulta: " . mysqli_error($link);
+        exit();
+    }else{        
+        $items = [];
+        while ($row = mysqli_fetch_assoc($rs_operacion)) {
+          $items[] = $row;
+         }
+        return $items;
+    }  
+}
+
+function cargarPlacasD($idPlacasD){
+    include('../config.php');
+        $sql = "SELECT placa,
+        status,
+        id
+    FROM 
+        placas
+    WHERE
+        id=".$idPlacasD;
+
+    $rs_operacion = mysqli_query($link, $sql);
+
+    if (!$rs_operacion) {
+        echo "Error al ejecutar la consulta: " . mysqli_error($link);
+        exit();
+    }else{        
+        $items = [];
+        while ($row = mysqli_fetch_assoc($rs_operacion)) {
+          $items[] = $row;
+         }
+        return $items;
+    }  
+}
+
+function cargarConductores($idResponsables){
+    include('../config.php');
+        $sql = "SELECT cedula,
+        nombres,
+        telefono,
+        status,
+        id
+    FROM 
+        conductores
+    WHERE
+        id=".$idResponsables;
 
     $rs_operacion = mysqli_query($link, $sql);
 
@@ -864,10 +1161,51 @@ function editarResponsable($info){
      } 
 }
 
-function editarConductor($info){
+function editarPlacasD($info){
     include('../config.php');
-      $sql = "UPDATE conductores set 
-              cedula = '".$info['cedula']."',nombres='".$info['nombres']."',telefono='".$info['telefono']."',status='".$info['status']."' where id = ".$info['id_guia'];
+      $sql = "UPDATE placas set 
+              placa = '".$info['placa']."',status='".$info['status']."' where id = ".$info['id'];
+      
+      $rs_operacion=mysqli_query($link,$sql);
+      
+      if (!$rs_operacion) {
+        return mysqli_error($link);
+      }else{        
+        return $info['id'];
+     } 
+}
+function editarConductores($info){
+    include('../config.php');
+
+    $sql = "UPDATE conductores set 
+            cedula = '".$info['cedula']."',
+            nombres ='".$info['nombres']."',
+            telefono='".$info['telefono']."',
+            status='".$info['status']."'
+            where id = ".$info['id'];
+    
+    $rs_operacion=mysqli_query($link,$sql);
+    
+    if (!$rs_operacion) {
+      //return mysqli_error($link);
+        return $sql;  
+  }else{        
+      return $info['id_guia'];
+   } 
+}
+
+function editarItem($info){
+    include('../config.php');
+    
+      $sql = "UPDATE plantilla set 
+              item = '".$info['item']."',
+              descripcion='".$info['descripcion']."',
+              codigo='".$info['codigo']."',
+              tipo='".$info['tipo']."',
+              categoria='".$info['categoria']."',
+              categoriadestino='".$info['subcategoria']."',
+              status='".$info['status']."'
+              where id = ".$info['id'];
       
       $rs_operacion=mysqli_query($link,$sql);
       
@@ -878,23 +1216,70 @@ function editarConductor($info){
      } 
 }
 
-function editarItem($info){
-    include('../config.php');
-      $sql = "UPDATE plantilla set 
-              item = '".$info['codigo']."',
-              descripcion='".$info['descripcion']."',
-              codigo='".$info['plu']."',
-              tipo='".$info['producto']."',
+function editarResponsables($info){
+      include('../config.php');
+      
+      $clave = md5($info['clave']); 
+
+      $sql = "UPDATE responsables set 
+              cedula = '".$info['cedula']."',
+              nombres ='".$info['nombres']."',
+              telefono='".$info['telefono']."',
+              clave='".$clave."',
               status='".$info['status']."'
-              where id = ".$info['id_guia'];
+              where id = ".$info['id'];
       
       $rs_operacion=mysqli_query($link,$sql);
       
       if (!$rs_operacion) {
-        return mysqli_error($link);
-      }else{        
+        //return mysqli_error($link);
+          return $sql;  
+    }else{        
         return $info['id_guia'];
      } 
+}
+
+function editarPlanta($info){
+    include('../config.php');
+    
+    $sql = "UPDATE beneficio set 
+            nit = '".$info['nit']."',
+            sede ='".$info['razon']."',
+            direccion ='".$info['direccion']."',
+            municipio ='".$info['municipio']."',
+            status='".$info['status']."'
+            where id = ".$info['id'];
+    
+    $rs_operacion=mysqli_query($link,$sql);
+    
+    if (!$rs_operacion) {
+      //return mysqli_error($link);
+        return $sql;  
+  }else{        
+      return $info['id_guia'];
+   } 
+}
+
+function editarProveedorPollo($info){
+    include('../config.php');
+    
+    $sql = "UPDATE proveedorpollo set 
+            nit = '".$info['nit']."',
+            sede ='".$info['razon']."',
+            direccion ='".$info['direccion']."',
+            municipio ='".$info['municipio']."',
+            polloporcanastillas ='".$info['polloporcanastillas']."',
+            status='".$info['status']."'
+            where id = ".$info['id'];
+    
+    $rs_operacion=mysqli_query($link,$sql);
+    
+    if (!$rs_operacion) {
+      //return mysqli_error($link);
+        return $sql;  
+  }else{        
+      return $info['id_guia'];
+   } 
 }
 
 function editarCriterio($infoCriEdit){
@@ -1455,14 +1840,34 @@ function listaCompradoresPaginada($inicio, $fin, $busqueda)
 } */
 //termina compadores
 
+function listaItemsTablaCompleta($inicio,$fin){   
+    include('../config.php');
+    $sql = "SELECT `item`,`codigo`,`descripcion`,`tipo`,`categoria`,`categoriadestino`,`status`,`id` FROM `plantilla`";
+    $sql .= " ORDER BY descripcion DESC";
+    $sql .= " LIMIT $inicio, $fin";
+
+    $rs_operacion = mysqli_query($link, $sql);
+
+    if (!$rs_operacion) {
+        //echo "Error al ejecutar la consulta 1: " . mysqli_error($link);
+        echo $sql;
+        exit();
+      }
+    else{
+        return $rs_operacion;
+    }  
+}
+
 function listaItemsTabla($inicio,$fin,$busqueda){   
     include('../config.php');
-    $sql = "SELECT `item`,`descripcion`,`tipo`,`codigo`,`status`,`id` FROM `plantilla`";
+    $sql = "SELECT `item`,`codigo`,`descripcion`,`tipo`,`categoria`,`categoriadestino`,`status`,`id` FROM `plantilla`";
     
     if (!empty($busqueda)) {
         $sql .= " WHERE (item LIKE '%$busqueda%'";
         $sql .= " OR descripcion LIKE '%$busqueda%'";
         $sql .= " OR codigo LIKE '%$busqueda%'";
+        $sql .= " OR categoria LIKE '%$busqueda%'";
+        $sql .= " OR categoriadestino LIKE '%$busqueda%'";
         $sql .= " OR tipo LIKE '%$busqueda%')";
     }
 
@@ -1487,7 +1892,7 @@ function listaItemsCompleta($inicio, $fin, $busqueda){
     
     $sql = "SELECT item, descripcion, unidad 
             FROM plantilla 
-            WHERE status = 1";
+            WHERE status = 'ACTIVO'";
 
     if (!empty($busqueda)) {
         $busqueda = mysqli_real_escape_string($link, $busqueda);
@@ -1570,15 +1975,15 @@ function listarItemsP($proveedor){
         $sql="SELECT item, descripcion, codigo 
           FROM plantilla p 
           WHERE tipo = '".$proveedor['tipo']."' and 
-          categoriadestino = ".$categoria." and
-          status = '1'
+          categoriadestino = '".$categoria."' and
+          status = 'ACTIVO'
           order by descripcion asc";
 
     }else{
         $sql="SELECT item, descripcion, codigo 
           FROM plantilla p 
           WHERE tipo = '".$proveedor['tipo']."' and
-                status = '1'
+                status = 'ACTIVO'
           ORDER BY categoria, descripcion asc";
     }
 
@@ -2509,22 +2914,99 @@ function agregarConductor($datosCond){
 
 function agregarNuevoItem($datosItem){
     include('../config.php');
-    $sql=" INSERT INTO plantilla(item,descripcion,codigo,tipo,status) 
+    $sql=" INSERT INTO plantilla(item,descripcion,codigo,tipo,categoria,categoriadestino,status) 
     VALUES (
-        '".$datosItem['codigo']."',
+        '".$datosItem['item']."',
         '".$datosItem['descripcion']."',
-        '".$datosItem['plu']."',
-        '".$datosItem['producto']."',
+        '".$datosItem['codigo']."',
+        '".$datosItem['tipo']."',
+        '".$datosItem['categoria']."',
+        '".$datosItem['subcategoria']."',
         '".$datosItem['status']."'
         );";
     $rs_operacion=mysqli_query($link,$sql);
     
     if (!$rs_operacion) {
-        echo "Error al ejecutar la consulta: " . mysqli_error($link);
-        exit();
-      }
-    else{
-        return mysqli_insert_id($link);
+        return array("status" => "error", "message" => "Error al ejecutar la consulta: " . mysqli_error($link));
+    } else {
+        return array("status" => "success", "id" => mysqli_insert_id($link));
+    }
+}
+
+function agregarNuevoResponsable($datosResponsable){
+    include('../config.php');
+    $clave = md5($datosResponsable['clave']);
+    $sql=" INSERT INTO responsables(cedula,nombres,telefono,status,clave) 
+    VALUES (
+        '".$datosResponsable['cedula']."',
+        '".$datosResponsable['nombres']."',
+        '".$datosResponsable['telefono']."',
+        '".$datosResponsable['status']."',
+        '".$clave."'
+        );";
+    $rs_operacion=mysqli_query($link,$sql);
+    
+    if (!$rs_operacion) {
+        return array("status" => "error", "message" => "Error al ejecutar la consulta: " . mysqli_error($link));
+    } else {
+        return array("status" => "success", "id" => mysqli_insert_id($link));
+    }
+}
+
+function agregarNuevaPlanta($datosResponsable){
+    include('../config.php');
+    $sql=" INSERT INTO beneficio(nit,sede,direccion,municipio,status) 
+    VALUES (
+        '".$datosResponsable['nit']."',
+        '".$datosResponsable['razon']."',
+        '".$datosResponsable['direccion']."',
+        '".$datosResponsable['municipio']."',
+        '".$datosResponsable['status']."'
+        );";
+    $rs_operacion=mysqli_query($link,$sql);
+    
+    if (!$rs_operacion) {
+        return array("status" => "error", "message" => "Error al ejecutar la consulta: " . mysqli_error($link));
+    } else {
+        return array("status" => "success", "id" => mysqli_insert_id($link));
+    }
+}
+
+function agregarProveedorPollo($datosProveedorP){
+    include('../config.php');
+    $sql=" INSERT INTO proveedorpollo(nit,sede,direccion,municipio,polloporcanastillas,status) 
+    VALUES (
+        '".$datosProveedorP['nit']."',
+        '".$datosProveedorP['razon']."',
+        '".$datosProveedorP['direccion']."',
+        '".$datosProveedorP['municipio']."',
+        '".$datosProveedorP['polloporcanastillas']."',
+        '".$datosProveedorP['status']."'
+        );";
+    $rs_operacion=mysqli_query($link,$sql);
+    
+    if (!$rs_operacion) {
+        return array("status" => "error", "message" => "Error al ejecutar la consulta: " . mysqli_error($link));
+    } else {
+        return array("status" => "success", "id" => mysqli_insert_id($link));
+    }
+}
+
+function agregarNuevoConductorD($datosConductorD){
+    include('../config.php');
+    $sql=" INSERT INTO conductores(cedula,nombres,telefono,status) 
+    VALUES (
+        '".$datosConductorD['cedula']."',
+        '".$datosConductorD['nombres']."',
+        '".$datosConductorD['telefono']."',
+        '".$datosConductorD['status']."'
+        );";
+    $rs_operacion=mysqli_query($link,$sql);
+    
+    if (!$rs_operacion) {
+        return array("status" => "error", "message" => "Error al ejecutar la consulta: " . mysqli_error($link));
+    } else {
+        return array("status" => "success", "id" => mysqli_insert_id($link));
     }
 }
 
@@ -2543,6 +3025,28 @@ function agregarPlaca($datosPlaca){
       }
     else{
         return mysqli_insert_id($link);
+    }
+}
+
+function agregarPlacaD($datosPlaca){
+    include('../config.php');
+    $sql=" INSERT INTO placas(placa,status) 
+    VALUES (
+        '".$datosPlaca['placa']."',
+        '".$datosPlaca['status']."'
+        );";
+    $rs_operacion=mysqli_query($link,$sql);
+    
+    if (!$rs_operacion) {
+        echo "Error al ejecutar la consulta: " . mysqli_error($link);
+        exit();
+      }
+    else{
+        if (!$rs_operacion) {
+            return array("status" => "error", "message" => "Error al ejecutar la consulta: " . mysqli_error($link));
+        } else {
+            return array("status" => "success", "id" => mysqli_insert_id($link));
+        }
     }
 }
 
@@ -2751,6 +3255,71 @@ function agregarRecepcion($datosGuia){
     }
 }
 
+function agregarRecepcionPollo($datosGuia){
+    include('../config.php');
+    $sql=" INSERT INTO 
+    recepcionpollo(
+        fecharec,
+        fechasac,
+        canales,
+        consecutivog,
+        responsable,
+        beneficio,
+        destino,
+        conductor,
+        placa,
+        cph1,
+        cph2,
+        cph3,
+        cph4,
+        cph5,
+        chv1,
+        chv2,
+        chv3,
+        chv4,
+        ccoh1,
+        ccoh2,
+        ccoh3,
+        ccoh4,
+        ccoh5,
+        observaciones
+        ) 
+        VALUES (
+            '".$datosGuia['fecharec']."',
+            '".$datosGuia['fechasac']."',
+            '".$datosGuia['canales']."',
+            '".$datosGuia['consecutivog']."',
+            '".$datosGuia['responsable']."',
+            '".$datosGuia['beneficio']."',
+            '".$datosGuia['destino']."',
+            '".$datosGuia['conductor']."',
+            '".$datosGuia['placa']."',
+            '".$datosGuia['cph1']."',
+            '".$datosGuia['cph2']."',
+            '".$datosGuia['cph3']."',
+            '".$datosGuia['cph4']."',
+            '".$datosGuia['cph5']."',
+            '".$datosGuia['chv1']."',
+            '".$datosGuia['chv2']."',
+            '".$datosGuia['chv3']."',
+            '".$datosGuia['chv4']."',
+            '".$datosGuia['ccoh1']."',
+            '".$datosGuia['ccoh2']."',
+            '".$datosGuia['ccoh3']."',
+            '".$datosGuia['ccoh4']."',
+            '".$datosGuia['ccoh5']."',
+            '".$datosGuia['observaciones']."');";
+    $rs_operacion=mysqli_query($link,$sql);
+    
+    if (!$rs_operacion) {
+        echo "Error al ejecutar la consulta: " . mysqli_error($link);
+        exit();
+      }
+    else{
+        return mysqli_insert_id($link);
+    }
+}
+
 function agregarItemCompra($datosCompra){
     include('../config.php');
     $contador = 0;
@@ -2863,6 +3432,127 @@ function buscarCedula($cedula){
         return $respuesta; 
     }
 }
+
+function buscarCedulaPollo($cedulaPollo){    
+    include('../config.php');
+    $sql = "SELECT cedula 
+            FROM conductores_recepcion_pollo 
+            WHERE cedula = '".$cedula."'";
+    $result = mysqli_query($link, $sql);
+    if ($row = mysqli_fetch_array($result)) {
+        $respuesta = "OC";
+        return $respuesta;
+    }else{
+        $respuesta = "DESOCUPADO";
+        return $respuesta; 
+    }
+}
+
+function buscarNitPlanta($nit){    
+    include('../config.php');
+    $sql = "SELECT nit 
+            FROM beneficio 
+            WHERE nit = '".$nit."'";
+    $result = mysqli_query($link, $sql);
+    if ($row = mysqli_fetch_array($result)) {
+        $respuesta = "OC";
+        return $respuesta;
+    }else{
+        $respuesta = "DESOCUPADO";
+        return $respuesta; 
+    }
+}
+
+function buscarNitProveedorPollo($nit){    
+    include('../config.php');
+    $sql = "SELECT nit 
+            FROM proveedorpollo 
+            WHERE nit = '".$nit."'";
+    $result = mysqli_query($link, $sql);
+    if ($row = mysqli_fetch_array($result)) {
+        $respuesta = "OC";
+        return $respuesta;
+    }else{
+        $respuesta = "DESOCUPADO";
+        return $respuesta; 
+    }
+}
+
+function buscarItem($item){    
+    include('../config.php');
+    $sql = "SELECT item 
+            FROM plantilla 
+            WHERE item = '".$item."'";
+    $result = mysqli_query($link, $sql);
+    if ($row = mysqli_fetch_array($result)) {
+        $respuesta = "OC";
+        return $respuesta;
+    }else{
+        $respuesta = "DESOCUPADO";
+        return $respuesta; 
+    }
+}
+
+function buscarCodigo($codigo){    
+    include('../config.php');
+    $sql = "SELECT codigo 
+            FROM plantilla 
+            WHERE codigo = '".$codigo."'";
+    $result = mysqli_query($link, $sql);
+    if ($row = mysqli_fetch_array($result)) {
+        $respuesta = "OC";
+        return $respuesta;
+    }else{
+        $respuesta = "DESOCUPADO";
+        return $respuesta; 
+    }
+}
+
+function buscarCedulaResponsable($cedula){    
+    include('../config.php');
+    $sql = "SELECT cedula 
+            FROM responsables 
+            WHERE cedula = '".$cedula."'";
+    $result = mysqli_query($link, $sql);
+    if ($row = mysqli_fetch_array($result)) {
+        $respuesta = "OC";
+        return $respuesta;
+    }else{
+        $respuesta = "DESOCUPADO";
+        return $respuesta; 
+    }
+}
+
+function buscarPlacaD($cedula){    
+    include('../config.php');
+    $sql = "SELECT placa 
+            FROM placas 
+            WHERE placa = '".$cedula."'";
+    $result = mysqli_query($link, $sql);
+    if ($row = mysqli_fetch_array($result)) {
+        $respuesta = "OC";
+        return $respuesta;
+    }else{
+        $respuesta = "DESOCUPADO";
+        return $respuesta; 
+    }
+}
+
+function buscarCedulaConductor($cedula){    
+    include('../config.php');
+    $sql = "SELECT cedula 
+            FROM conductores 
+            WHERE cedula = '".$cedula."'";
+    $result = mysqli_query($link, $sql);
+    if ($row = mysqli_fetch_array($result)) {
+        $respuesta = "OC";
+        return $respuesta;
+    }else{
+        $respuesta = "DESOCUPADO";
+        return $respuesta; 
+    }
+}
+
 function buscarPlaca($datosPlacaR){    
     include('../config.php');
     $sql = "SELECT placa 
@@ -2876,6 +3566,21 @@ function buscarPlaca($datosPlacaR){
         return agregarPlacaRecepcion($datosPlacaR); 
     }
 }
+
+function buscarPlacaPollo($datosPlacaR){    
+    include('../config.php');
+    $sql = "SELECT placa 
+            FROM placas_recepcion_pollo 
+            WHERE placa = '".$datosPlacaR['placa']."'";
+    $result = mysqli_query($link, $sql);
+    if ($row = mysqli_fetch_array($result)) {
+        $respuesta = "OC";
+        return $respuesta;
+    }else{
+        return agregarPlacaRecepcionPollo($datosPlacaR); 
+    }
+}
+
 function agregarConductorRecepcion($datosConductor){
     include('../config.php');
     $sql=" INSERT INTO conductores_recepcion(cedula,nombres) 
@@ -2895,6 +3600,25 @@ function agregarConductorRecepcion($datosConductor){
     }
 }
 
+function agregarConductorRecepcionPollo($datosConductor){
+    include('../config.php');
+    $sql=" INSERT INTO conductores_recepcion_pollo(cedula,nombres) 
+    VALUES (
+        '".$datosConductor['cedula']."',
+        '".$datosConductor['nombresConductor']."'
+        );";
+    $rs_operacion=mysqli_query($link,$sql);
+        
+    if (!$rs_operacion) {
+        echo "Error al ejecutar la consulta: " . mysqli_error($link);
+        exit();
+      }
+    else{
+        $listaConductores_recepcion = listaConductores_recepcion_registro_pollo();
+        return json_encode($listaConductores_recepcion);
+    }
+}
+
 function agregarPlacaRecepcion($datosPlacaR){
     include('../config.php');
     $sql=" INSERT INTO placas_recepcion(placa) 
@@ -2907,6 +3631,22 @@ function agregarPlacaRecepcion($datosPlacaR){
       }
     else{
         $listaPlacas_recepcion = listaPlacas_recepcion_registro();
+        return json_encode($listaPlacas_recepcion);
+    }
+}
+
+function agregarPlacaRecepcionPollo($datosPlacaR){
+    include('../config.php');
+    $sql=" INSERT INTO placas_recepcion_pollo(placa) 
+    VALUES ('".$datosPlacaR['placa']."');";
+    $rs_operacion=mysqli_query($link,$sql);
+    
+    if (!$rs_operacion) {
+        echo "Error al ejecutar la consulta: " . mysqli_error($link);
+        exit();
+      }
+    else{
+        $listaPlacas_recepcion = listaPlacas_recepcion_registro_pollo();
         return json_encode($listaPlacas_recepcion);
     }
 }
