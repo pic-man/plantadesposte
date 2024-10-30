@@ -1,6 +1,6 @@
 <?php
 session_start();
-error_reporting(0);
+//error_reporting(0);
 $_SESSION['tipoR'] = 1;
 date_default_timezone_set("America/bogota");
 require_once('./modelo/funciones.php');
@@ -50,7 +50,7 @@ $fecha_actual = date('Y-m-d'); ?>
 	<main id="main" class="main">
 
 		<div class="pagetitle">
-			<h1>Recepción de canales bovinas / porcinas</h1>
+			<h1>Recepción de aves</h1>
 		</div>
 
 		<section class="section">
@@ -62,14 +62,14 @@ $fecha_actual = date('Y-m-d'); ?>
 							<h5 class="card-title">
 								<center>
 									<a href="#" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#modalNuevoProveedor"
-										title="Agregar Nueva Guia" id="crearProveedor">AGREGAR GUIA DE RECEPCIÓN DE POLLO</a>
+										title="Agregar Nueva Guia" id="crearProveedor">AGREGAR GUIA DE RECEPCIÓN DE AVES</a>
 								</center>
 								<table id="jtable" class="table table-striped table-bordered table-hover datatable">
 									<thead>
 										<tr>
-											<th>Consecutivo</th>
+											<th>Consecutivo<br>Especie - Tipo</th>
 											<th>Fecha</th>
-											<th>Proveedor</th>
+											<th>Proveedor<br>Empresa Destino</th>
 											<th>Pollos<br>Lote</th>
 											<th>Acción<br>&nbsp;</th>
 										</tr>
@@ -114,33 +114,43 @@ $fecha_actual = date('Y-m-d'); ?>
 								Debes ingresar fecha de vencimiento
 							</div>
 						</div>
-						<div class="col-md-6">
-							Proveedor<span class="text-danger">*</span>
-							<div class="form-group label-floating" id="conseGuiaDiv">
-								<select class="form-control" id="beneficio" name="beneficio">
-									<option value="">Seleccione Planta de Beneficio</option>
-									<?php foreach ($listaOrigen as $perm) : ?>
-										<option value="<?php echo $perm['id'] ?>">
-											<?php echo $perm['nit'] . " - " . $perm['sede'] ?></option>
-									<?php endforeach ?>
+						<div class="col-md-3">
+							Especie
+							<div class="form-group label-floating" id="telefonoDiv">
+								<select class="form-control" id="especie" name="especie">
+									<option value="">Seleccione Especie</option>
+									<option value="POLLO">POLLO</option>
 								</select>
 							</div>
-							<div class="alert alert-danger" role="alert" id="beneficioE" style="display: none">
-								Debe seleccinar el proveedor
+							<div class="alert alert-danger" role="alert" id="especieE" style="display: none">
+								Debes seleccionar la especie a recibir
+							</div>
+						</div>
+						<div class="col-md-3">
+							Tipo
+							<div class="form-group label-floating" id="telefonoDiv">
+								<select class="form-control" id="tipo" name="tipo">
+									<option value="">Seleccione Tipo</option>
+									<option value="BLANCO">BLANCO</option>
+									<option value="CAMPO">CAMPO</option>
+								</select>
+							</div>
+							<div class="alert alert-danger" role="alert" id="tipoE" style="display: none">
+								Debes seleccionar el tipo de item a recibir
 							</div>
 						</div>
 
-						<div class="col-md-2">
-							Cantidad Pollos<span class="text-danger">*</span>
+						<div class="col-md-3">
+							Cantidad a recibir
 							<div class="form-group label-floating" id="conseGuiaDiv">
 								<input class="form-control" type="number" name="canales" autocomplete="off" id="canales" placeholder="Ingrese el Nro de Pollos">
 							</div>
 							<div class="alert alert-danger" role="alert" id="canalesE" style="display: none">
-								Debe ingresar la cantidad de Canales
+								Debe ingresar la cantidad a recibir
 							</div>
 						</div>
 
-						<div class="col-md-2">
+						<div class="col-md-3">
 							<center>Lote</center>
 							<div class="form-group label-floating" id="codigoAutoDiv">
 								<input type="text" class="form-control" autocomplete="off" id="consecutivog" name="consecutivog">
@@ -148,17 +158,6 @@ $fecha_actual = date('Y-m-d'); ?>
 							</div>
 							<div class="alert alert-danger" role="alert" id="consecutivogE" style="display: none">
 								Debes ingresar el lote
-							</div>
-						</div>
-
-						<div class="col-md-2">
-							<center>Guia Transporte</center>
-							<div class="form-group label-floating" id="codigoAutoDiv">
-								<input type="text" class="form-control" autocomplete="off" id="consecutivog" name="consecutivog">
-								<input type="hidden" id="id_guia">
-							</div>
-							<div class="alert alert-danger" role="alert" id="consecutivogE" style="display: none">
-								Debes ingresar la guia de transporte
 							</div>
 						</div>
 
@@ -218,6 +217,61 @@ $fecha_actual = date('Y-m-d'); ?>
 							<a style="z-index: 0;color:#000; margin-right:10px" id="abrirTerceraModal">
 								<i class="bi bi-folder-plus fs-2 text-warning" style="margin-top: 29px;margin-left: -10px;"></i>
 							</a>
+						</div>
+
+						<div class="col-md-12 mt-3">
+							<center>
+								<label style="text-align: center;font-weight: bold;" id="titulo">INFORMACIÓN GUÍAS DE TRANSPORTE Y CERTIFICADO DE CALIDAD</label>
+							</center>
+						</div>
+
+						<div class="col-md-4">
+							Proveedor
+							<div class="form-group label-floating" id="conseGuiaDiv">
+								<select class="form-control" id="beneficio" name="beneficio">
+									<option value="">Seleccione Planta de Beneficio</option>
+									<?php foreach ($listaOrigen as $perm) : ?>
+										<option value="<?php echo $perm['id'] ?>">
+											<?php echo $perm['nit'] . " - " . $perm['sede'] ?></option>
+									<?php endforeach ?>
+								</select>
+							</div>
+							<div class="alert alert-danger" role="alert" id="beneficioE" style="display: none">
+								Debe seleccinar el proveedor
+							</div>
+						</div>
+
+						<div class="col-md-3">
+							Destino
+							<div class="form-group label-floating" id="conseGuiaDiv">
+								<select class="form-control" id="destino" name="destino">
+									<option value="">Seleccione la Empresa Destino</option>
+									<option value="MERCAMIO">MERCAMIO</option>
+									<option value="MERCATODO">MERCATODO</option>
+								</select>
+							</div>
+							<div class="alert alert-danger" role="alert" id="destinoE" style="display: none">
+								Debe seleccinar la Empresa Destino
+							</div>
+						</div>
+
+						<div class="col-md-2">
+							<center>Guia Transporte</center>
+							<div class="form-group label-floating" id="codigoAutoDiv">
+								<input type="text" class="form-control" autocomplete="off" id="consecutivog" name="consecutivog">
+								<input type="hidden" id="id_guia">
+							</div>
+							<div class="alert alert-danger" role="alert" id="consecutivogE" style="display: none">
+								Debes ingresar la guia de transporte
+							</div>
+						</div>
+
+						<div class="col-md-3">
+							<center>Certificado de Calidad</center>
+							<div class="form-group label-floating" id="codigoAutoDiv">
+								<input type="text" class="form-control" autocomplete="off" id="certificadoc" name="certificadoc">
+								<input type="hidden" id="id_guia">
+							</div>
 						</div>
 
 						<div class="col-md-12 mt-3">
@@ -437,25 +491,43 @@ $fecha_actual = date('Y-m-d'); ?>
 					<input type="hidden" name="id" id="id">
 					<input type="hidden" name="tipo" id="tipo">
 					<div class="row">
-						<div class="col-md-3 mb-3">
+						<div class="col-md-4 mb-3">
 							<label for="valorCriterio">Item</label>
 							<div class="form-group">
 								<input class="form-control" list="datalistValorCriterio" autocomplete="off" id="valorCriterio" placeholder="Busca el Item para agregarlo">
+								<input type="hidden" id="id_criterio" name="id_criterio">
 								<datalist id="datalistValorCriterio"></datalist>
 							</div>
 							<div class="alert alert-danger" role="alert" id="itemE" style="display: none">
 								Debe seleccionar el item
 							</div>
 						</div>
-						
-						<div class="col-md-3 mb-3">
+						<div class="col-md-4 mb-3">
+							<label for="base">Pollos por Canastilla</label>
+							<div class="form-group">
+								<input class="form-control" type="number" min="1" name="pollosxcanastilla" autocomplete="off" id="pollosxcanastilla" placeholder="Ingrese la cantidad de Pollos por Canastilla" disabled>
+							</div>
+							<div class="alert alert-danger" role="alert" id="baseE" style="display: none">
+								Debe ingresar la cantidad de pollos por canastilla
+							</div>
+						</div>
+						<div class="col-md-4 mb-3">
+							<label for="base">Canastillas Base</label>
+							<div class="form-group">
+								<input class="form-control" type="number" min="1" name="base" autocomplete="off" id="base" placeholder="Ingrese la cantidad de Canastillas Base">
+							</div>
+							<div class="alert alert-danger" role="alert" id="baseE" style="display: none">
+								Debe ingresar la cantidad de canastillas base
+							</div>
+						</div>
+						<div class="col-md-4 mb-3">
 							<label for="temperatura">Temperatura</label>
 							<div class="form-group">
 								<input class="form-control" type="number" name="temperatura" autocomplete="off" id="temperatura" placeholder="Selecciona la Temperatura del Item">
 							</div>
 						</div>
 
-						<div class="col-md-3 mb-3">
+						<div class="col-md-4 mb-3">
 							<label for="peso">Peso</label>
 							<div class="form-group">
 								<input type="number" class="form-control" name="peso" autocomplete="off" id="peso" placeholder="Ingrese el Peso del Item">
@@ -464,7 +536,7 @@ $fecha_actual = date('Y-m-d'); ?>
 								Debe ingresar el peso del item
 							</div>
 						</div>
-						<div class="col-md-3 mb-3">
+						<div class="col-md-4 mb-3">
 							<label for="cajas">Canastillas</label>
 							<div class="form-group">
 								<input class="form-control" type="number" min="1" name="cajas" autocomplete="off" id="cajas" placeholder="Ingrese la cantidad de Canastillas del Item">
@@ -487,7 +559,6 @@ $fecha_actual = date('Y-m-d'); ?>
 								<th>#</th>
 								<th>Item</th>
 								<th>Descripción</th>
-								<th>Lote</th>
 								<th>Temperatura</th>
 								<th>Und</th>
 								<th>Canastillas</th>
@@ -513,17 +584,17 @@ $fecha_actual = date('Y-m-d'); ?>
 
 <script>
 	document.getElementById('abrirSegundaModal').addEventListener('click', function(event) {
-		event.preventDefault(); // Evita que el enlace realice su acción predeterminada
+		event.preventDefault();
 		var segundaModal = new bootstrap.Modal(document.getElementById('modalNuevoConductor'), {
-			backdrop: false // Permite interacción con la primera modal
+			backdrop: false
 		});
 		segundaModal.show();
 	});
 
 	document.getElementById('abrirTerceraModal').addEventListener('click', function(event) {
-		event.preventDefault(); // Evita que el enlace realice su acción predeterminada
+		event.preventDefault();
 		var terceraModal = new bootstrap.Modal(document.getElementById('modalNuevaPlaca'), {
-			backdrop: false // Permite interacción con la primera modal
+			backdrop: false
 		});
 		terceraModal.show();
 	});
@@ -610,7 +681,7 @@ $fecha_actual = date('Y-m-d'); ?>
 			});
 		});
 
-		$('#tipo').change(function() {
+		/* $('#tipo').change(function() {
 			var selectedValue = $(this).val();
 			if (selectedValue === 'CERDO') {
 				$('#ccoh1t').text('Olor');
@@ -655,7 +726,7 @@ $fecha_actual = date('Y-m-d'); ?>
 				$('#ccoh9').prop('checked', false);
 				$('#ccoh10').prop('checked', false);
 			}
-		});
+		}); */
 
 		Date.prototype.getWeek = function() {
 			const onejan = new Date(this.getFullYear(), 0, 1);
@@ -668,44 +739,7 @@ $fecha_actual = date('Y-m-d'); ?>
 			return Math.ceil((dayOfYear + 1) / 7);
 		};
 
-		function generarCodigo() {
-			const tipo = $('#tipo').val();
-			const despacho = $('#despacho').val();
-			if (tipo && despacho) {
-				const tipoCodigo = tipo === 'CERDO' ? '2' : '1';
-				const fecha = new Date();
-				const year = fecha.getFullYear();
-				const ultimosDosDigitos = year.toString().slice(-2);
-				const semana = ("0" + fecha.getWeek()).slice(-2);
-				const diaSemana = fecha.getDay();
-				const codigo = tipoCodigo + ultimosDosDigitos + semana + diaSemana + despacho;
-				$('#consecutivog').val(codigo);
-			} else {
-				$('#consecutivog').val('');
-			}
-		}
-
-		$('#tipo, #despacho').change(generarCodigo);
-
 	});
-
-	/* function eliminarItem(id_item_proveedor) {
-		const datosEPeso = {
-			id_item_proveedor: id_item_proveedor
-		};
-		console.log('datos para eliminar: ',datosEPeso);
-		$.ajax({
-			type: 'POST',
-			dataType: 'json',
-			url: 'controlador/controlador.php',
-			data: {
-				datosEPeso: datosEPeso
-			},
-			success: function(data) {
-				$('#jtableCriterio').DataTable().ajax.reload();
-			}
-		});
-	} */
 
 	function eliminarItem(id_item_proveedor) {
 		Swal.fire({
@@ -718,70 +752,61 @@ $fecha_actual = date('Y-m-d'); ?>
 			cancelButtonText: 'Cancelar'
 		}).then((result) => {
 			if (result.isConfirmed) {
-				const datosEPeso = {
-					id_item_proveedor: id_item_proveedor
+				const datosEPolloR = {
+					id_item_proveedor: id_item_proveedor,
+					proveedor: $('#id').val()
 				};
 
+				console.log('datos para eliminar: ', datosEPolloR);
 				$.ajax({
 					type: 'POST',
 					dataType: 'json',
 					url: 'controlador/controlador.php',
 					data: {
-						datosEPeso: datosEPeso
+						datosEPolloR: datosEPolloR
 					},
 					success: function(data) {
-						Swal.fire({
-							title: 'Eliminado',
-							text: 'El elemento ha sido eliminado con éxito.',
-							icon: 'success',
-							timer: 1000,
-							showConfirmButton: false
-						});
 						$('#jtableCriterio').DataTable().ajax.reload();
 						$('#jtable').DataTable().ajax.reload();
+						buscarItems($('#id').val(), $('#tipo').val());
 					}
 				});
 			}
 		});
 	}
 
+	function abrirModal(consecutivoRecepcion, proveedor, status, pc, canales, tipo) {
+		console.log('Valor recibido para pollosxcanatilla:', pc);
 
-	function abrirModal(consecutivoRecepcion, proveedor, status, raza, canales) {
 		$('#titulo2').text('Consecutivo Recepcion: ' + consecutivoRecepcion + ' Proveedor: ' + proveedor);
-		console.log('raza: ', raza);
 
-		$('#turnoE').css('display', 'none');
-		$('#parteE').css('display', 'none');
 		$('#pesoE').css('display', 'none');
+
+		$('#pollosxcanastilla').val(pc);
 
 		$('#btnNuevoCriterio').css('display', 'none');
 		$('#btnEditarCriterio').css('display', 'none');
 
-		$('#parteDiv').css('display', 'none');
-		$("#turnoDiv").removeClass("col-md-3");
 		$("#pesoDiv").removeClass("col-md-3");
 		$("#temperaturaDiv").removeClass("col-md-3");
-		$("#turnoDiv").addClass("col-md-4");
 		$("#pesoDiv").addClass("col-md-4");
 		$("#temperaturaDiv").addClass("col-md-4");
 
 		if ((status == 1) || (tipo == 0)) {
-			$('#btnNuevoCriterioCerdo').css('display', 'initial');
-			$('#btnEditarCriterioCerdo').css('display', 'none');
+			$('#btnNuevoCriterio').css('display', 'initial');
+			$('#btnEditarCriterio').css('display', 'none');
 		} else {
-			$('#btnNuevoCriterioCerdo').css('display', 'none');
-			$('#btnEditarCriterioCerdo').css('display', 'none');
+			$('#btnNuevoCriterio').css('display', 'none');
+			$('#btnEditarCriterio').css('display', 'none');
 		}
-		$('#turno').val('');
-		$('#parte').val('');
 		$('#peso').val('');
 	}
 
 	function buscarItems(id, tipo) {
-		$('#itemE').css('display', 'none');
+		/* $('#itemE').css('display', 'none');
 		$('#loteItemE').css('display', 'none');
 		$('#canastillasE').css('display', 'none');
-		$('#pesoE').css('display', 'none');
+		$('#pesoE').css('display', 'none'); */
 		$('#id').val(id);
 		$('#tipo').val('tipo');
 		const datosItems = {
@@ -801,9 +826,11 @@ $fecha_actual = date('Y-m-d'); ?>
 				/* for (i = 0; i < data.length; i++) {
 					$('#datalistValorCriterio').append("<option data-value='" + data[i]['item'] + "' value='" + data[i]['descripcion'] + "'>" + data[i]['codigo'] + "</option>");
 				} */
-
-				$('#datalistValorCriterio').append("<option data-value='POLLO BLANCO' value='POLLO BLANCO'>POLLO BLANCO</option>");
-				$('#datalistValorCriterio').append("<option data-value='POLLO CAMPO' value='POLLO CAMPO'>POLLO CAMPO</option>");
+				if (tipo == 'BLANCO') {
+					$('#datalistValorCriterio').append("<option data-value='059759' value='POLLO BLANCO'>POLLO BLANCO</option>");
+				} else {
+					$('#datalistValorCriterio').append("<option data-value='059755' value='POLLO CAMPO'>POLLO CAMPO</option>");
+				}
 				$('#valorCriterio').val('');
 			}
 		});
@@ -823,10 +850,10 @@ $fecha_actual = date('Y-m-d'); ?>
 			],
 			"columnDefs": [{
 				"orderable": false,
-				"targets": [9]
+				"targets": [8]
 			}],
 			"ajax": {
-				url: "tablas/tablaCriteriosP.php",
+				url: "tablas/tablaCriteriosP2.php",
 				type: "post",
 				data: {
 					proveedor: id
@@ -843,7 +870,7 @@ $fecha_actual = date('Y-m-d'); ?>
 				"sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
 				"sInfoPostFix": "",
 				"sSearch": "Consultar:",
-				"sUrl": "",	
+				"sUrl": "",
 				"sInfoThousands": ",",
 				"sLoadingRecords": "Cargando...",
 				"oPaginate": {
@@ -874,7 +901,7 @@ $fecha_actual = date('Y-m-d'); ?>
 		$('#edicionPesos').css('display', 'none');
 	});
 
-	$('#btnCancelarEdicionCerdo').click(function() {
+	/* $('#btnCancelarEdicionCerdo').click(function() {
 		$('#turno').prop('disabled', false);
 		$('#btnNuevoCriterioCerdo').css('display', 'initial');
 		$('#btnEditarCriterioCerdo').css('display', 'none');
@@ -885,7 +912,7 @@ $fecha_actual = date('Y-m-d'); ?>
 		$('#turno').val('');
 		$('#peso').val('');
 		$('#temperaturap').val('');
-	});
+	}); */
 
 	$('#btnCerrarCriterios').click(function() {
 		$('#turno').prop('disabled', false);
@@ -901,74 +928,52 @@ $fecha_actual = date('Y-m-d'); ?>
 	});
 
 	$('#btnNuevoCriterio').click(function() {
-		validacionesCri = validacionesC('RES');
-		if (validacionesCri == "") {
-			const datosPeso = {
-				turno: $('#turno').val(),
-				parte: $('#parte').val(),
-				peso: $('#peso').val(),
-				temperaturap: $('#temperaturap').val(),
-				recepcion: $('#id').val()
-			};
-			console.log('datos a registrar: ', datosPeso);
+		console.log('item: ', $('#valorCriterio').val());
+		let producto;
+		let unidades;
+		let cajas;
 
+		cajas = $('#cajas').val();
+		producto = $('#valorCriterio').val();
+		pollosxcanastilla = $('#pollosxcanastilla').val();
+
+		unidades = cajas * pollosxcanastilla;
+
+		validacionesCri = validacionesC();
+		if (validacionesCri == "") {
+			const datos = {
+				item: $('#datalistValorCriterio [value="' + $('#valorCriterio').val() + '"]').data('value'),
+				temperatura: $('#temperatura').val(),
+				unidades: unidades,
+				cajas: $('#cajas').val(),
+				base: $('#base').val(),
+				peso: $('#peso').val(),
+				proveedor: $('#id').val()
+			};
+			console.log('datos a enviar: ', datos);
 			$.ajax({
 				type: 'POST',
 				dataType: 'json',
 				url: 'controlador/controlador.php',
 				data: {
-					datosPeso: datosPeso
+					datosItemRecepcionPollo: datos
 				},
 				success: function(data) {
-					console.log('respuesta:', data);
-					if (data.status === 'success') {
-						$('#valorCriterio').val('');
-						/* $('#turno').val('');
-						$('#parte').val(''); */
-						$('#peso').val('');
-						$('#observacionPeso').val('');
-						$('#foto').val('');
-						$('#temperaturap').val('');
-						$('#jtableCriterio').DataTable().ajax.reload();
-						$('#jtable').DataTable().ajax.reload();
-						Swal.fire({
-							title: 'Peso registrado',
-							text: data.message,
-							icon: 'success',
-							timer: 1000,
-							showConfirmButton: false
-						});
-					} else if (data.status === 'warning') {
-						Swal.fire({
-							title: 'Advertencia',
-							text: data.message,
-							icon: 'warning',
-							confirmButtonText: 'OK'
-						});
-					} else if (data.status === 'error') {
-						Swal.fire({
-							title: 'Error',
-							text: data.message,
-							icon: 'error',
-							confirmButtonText: 'OK'
-						});
-					} else {
-						Swal.fire({
-							title: 'Error',
-							text: 'Respuesta del servidor no válida',
-							icon: 'error',
-							confirmButtonText: 'OK'
-						});
-					}
-				},
-				error: function(jqXHR, textStatus, errorThrown) {
-					console.log('Error:', textStatus, errorThrown);
-
+					$('#valorCriterio').val('');
+					$('#temperatura').val('');
+					$('#unidades').val('');
+					$('#cajas').val('');
+					$('#base').val('');
+					$('#peso').val('');
+					$('#jtableCriterio').DataTable().ajax.reload();
+					$('#jtable').DataTable().ajax.reload();
+					buscarItems($('#id').val(), $('#tipo').val());
 					Swal.fire({
-						title: 'Error',
-						text: 'Ocurrió un error inesperado: ' + textStatus,
-						icon: 'error',
-						confirmButtonText: 'OK'
+						title: 'Item registrado satisfactoriamente',
+						text: '',
+						icon: 'success',
+						timer: 1000,
+						showConfirmButton: false
 					});
 				}
 			});
@@ -1056,11 +1061,20 @@ $fecha_actual = date('Y-m-d'); ?>
 		var month = String(today.getMonth() + 1).padStart(2, '0'); // Enero es 0
 		var year = today.getFullYear();
 		var formattedDate = year + '-' + month + '-' + day;
-
+		let guardarTiempoRecepcionPollo = 1;
+		$.ajax({
+			type: 'POST',
+			url: 'controlador/controlador.php',
+			data: {
+				guardarTiempoRecepcionPollo
+			},
+			success: function(data) {
+				console.log(data);
+			}
+		});
 		$('#fecharec').val(formattedDate);
 		$('#fechasac').val('');
 		$('#tipo').val('');
-		$('#remision').val('');
 		$('#canales').val('');
 		$('#consecutivog').val('');
 		$('#responsable').val(<?php echo $_SESSION['usuario']; ?>);
@@ -1068,7 +1082,6 @@ $fecha_actual = date('Y-m-d'); ?>
 		$('#destino').val('');
 		$('#conductor').val('');
 		$('#placa').val('');
-		$('#ica').val('');
 		$('#guiat').val('');
 		$('#certificadoc').val('');
 		$('#cph1').val('');
@@ -1089,6 +1102,10 @@ $fecha_actual = date('Y-m-d'); ?>
 		$('#chv3').prop('checked', false);
 		$('#chv4').val('');
 		$('#chv4').prop('checked', false);
+		$('#chv5').val('');
+		$('#chv5').prop('checked', false);
+		$('#chv6').val('');
+		$('#chv6').prop('checked', false);
 		$('#ccoh1').val('');
 		$('#ccoh1').prop('checked', false);
 		$('#ccoh2').val('');
@@ -1135,7 +1152,6 @@ $fecha_actual = date('Y-m-d'); ?>
 	});
 
 	$('#abrirTerceraModal').click(function() {
-
 		$('#placav').val('');
 		$('#placavE').css('display', 'none');
 	});
@@ -1148,6 +1164,8 @@ $fecha_actual = date('Y-m-d'); ?>
 			const datosRecepcionPollo = {
 				fecharec: $('#fecharec').val(),
 				fechasac: $('#fechasac').val(),
+				especie: $('#especie').val(),
+				tipo: $('#tipo').val(),
 				canales: $('#canales').val(),
 				despacho: $('#despacho').val(),
 				consecutivog: $('#consecutivog').val(),
@@ -1202,6 +1220,8 @@ $fecha_actual = date('Y-m-d'); ?>
 					$('#chv2').val('');
 					$('#chv3').val('');
 					$('#chv4').val('');
+					$('#chv5').val('');
+					$('#chv6').val('');
 					$('#ccoh1').val('');
 					$('#ccoh2').val('');
 					$('#ccoh3').val('');
@@ -1317,25 +1337,25 @@ $fecha_actual = date('Y-m-d'); ?>
 		}
 	});
 
-	function buscarGuia(idRecepcion) {
-		$('#id_guia').val(idRecepcion);
+	function buscarGuia(idRecepcionPollo) {
+		$('#id_guia').val(idRecepcionPollo);
 		$('#titulo').text('Editar Guia');
 		$('#btnNuevoProveedor').css('display', 'none');
 		$('#btnEditProveedor').css('display', 'initial');
-		console.log('consulta: ', idRecepcion);
+		console.log('consulta: ', idRecepcionPollo);
 		$.ajax({
 			type: 'POST',
 			dataType: 'json',
 			url: 'controlador/controlador.php',
 			data: {
-				idRecepcion: idRecepcion
+				idRecepcionPollo: idRecepcionPollo
 			},
 			success: function(data) {
 				console.log('datos: ', data);
 				$('#fecharec').val(data[0].fecharec);
 				$('#fechasac').val(data[0].fechasac);
+				$('#especie').val(data[0].especie);
 				$('#tipo').val(data[0].tipo);
-				$('#remision').val(data[0].remision);
 				$('#canales').val(data[0].canales);
 				$('#despacho').val(data[0].recibo);
 				$('#consecutivog').val(data[0].consecutivog);
@@ -1344,14 +1364,10 @@ $fecha_actual = date('Y-m-d'); ?>
 				$('#destino').val(data[0].destino);
 				$('#conductor').val(data[0].conductor);
 				$('#placa').val(data[0].placa);
-				$('#lotep').val(data[0].lotep);
-				$('#ica').val(data[0].ica);
 				$('#guiat').val(data[0].guiat);
 				$('#certificadoc').val(data[0].conductor);
-				$('#remision').css('border', '');
 				$('#destino').css('border', '');
 				$('#canales').css('border', '');
-				$('#ica').css('border', '');
 				$('#certificadoc').css('border', '');
 
 				if (data[0].cph1 == 1) {
@@ -1402,6 +1418,18 @@ $fecha_actual = date('Y-m-d'); ?>
 					$('#chv4').prop('checked', true);
 				} else {
 					$('#chv4').prop('checked', false);
+				}
+
+				if (data[0].chv5 == 1) {
+					$('#chv5').prop('checked', true);
+				} else {
+					$('#chv5').prop('checked', false);
+				}
+
+				if (data[0].chv6 == 1) {
+					$('#chv6').prop('checked', true);
+				} else {
+					$('#chv6').prop('checked', false);
 				}
 
 				if (data[0].ccoh1 == 1) {
@@ -1491,10 +1519,8 @@ $fecha_actual = date('Y-m-d'); ?>
 				$('#placa').val(data[0].placa);
 				$('#guiat').val(data[0].guiat);
 
-				$('#remision').css('border', '2px solid red');
 				$('#destino').css('border', '2px solid red');
 				$('#canales').css('border', '2px solid red');
-				$('#ica').css('border', '2px solid red');
 				$('#certificadoc').css('border', '2px solid red');
 
 				if (data[0].cph1 == 1) {
@@ -1587,26 +1613,24 @@ $fecha_actual = date('Y-m-d'); ?>
 		$('#titulo').text('Editar Registro');
 		$('#btnNuevoCriterio').css('display', 'none');
 		$('#btnEditarCriterio').css('display', 'initial');
-		$('#btnCancelarEdicion').css('display', 'initial');
-		$('#registrosPesos').css('display', 'none');
-		$('#edicionPesos').css('display', '');
 		console.log('consulta: ', idcriterio);
 		$.ajax({
 			type: 'POST',
 			dataType: 'json',
 			url: 'controlador/controlador.php',
 			data: {
-				idPeso: idcriterio
+				idcriterioRecepcionPollo: idcriterio
 			},
 			success: function(data) {
 				console.log('datos recibidos: ', data);
-				$('#id_recepcion_pesos').val(data[0].id_recepcion_pesos);
-				$('#turnoEdicion').val(data[0].turno);
-				$('#estomago1Edicion').val(data[0].estomago1);
-				$('#estomago2Edicion').val(data[0].estomago2);
-				$('#pierna1Edicion').val(data[0].piernas1);
-				$('#pierna2Edicion').val(data[0].piernas2);
-				$('#temperaturaEdicion').val(data[0].temperatura);
+				$('#valorCriterio').val(data[0].item);
+				$('#descripcionCriterio').val(data[0].descripcion);
+				$('#lotes').val(data[0].lote);
+				$('#temperatura').val(data[0].temperatura);
+				$('#unidades').val(data[0].unidades);
+				$('#cajas').val(data[0].cajas);
+				$('#peso').val(data[0].peso);
+				$('#base').val(data[0].base);
 			}
 		});
 	}
@@ -1642,7 +1666,7 @@ $fecha_actual = date('Y-m-d'); ?>
 			dataType: 'json',
 			url: 'controlador/controlador.php',
 			data: {
-				idBloquearR: idBloquear
+				idBloquearRPollo: idBloquear
 			},
 			success: function(data) {
 				$('#jtable').DataTable().ajax.reload();
@@ -1668,10 +1692,11 @@ $fecha_actual = date('Y-m-d'); ?>
 		validacionesF = validaciones();
 		if (validacionesF == "") {
 			console.log('validaciones: ', validacionesF);
-			datosEdit = {
+			datosEditPollo = {
 				"id_guia": $('#id_guia').val(),
 				"fecharec": $('#fecharec').val(),
 				"fechasac": $('#fechasac').val(),
+				"especie": $('#especie').val(),
 				"tipo": $('#tipo').val(),
 				"remision": $('#remision').val(),
 				"canales": $('#canales').val(),
@@ -1682,8 +1707,6 @@ $fecha_actual = date('Y-m-d'); ?>
 				"destino": $('#destino').val(),
 				"conductor": $('#conductor').val(),
 				"placa": $('#placa').val(),
-				"lotep": $('#lotep').val(),
-				"ica": $('#ica').val(),
 				"guiat": $('#guiat').val(),
 				"certificadoc": $('#certificadoc').val(),
 				"chv1": $('#chv1').val(),
@@ -1695,6 +1718,8 @@ $fecha_actual = date('Y-m-d'); ?>
 				"chv2": $('#chv2').is(':checked') ? 1 : 0,
 				"chv3": $('#chv3').is(':checked') ? 1 : 0,
 				"chv4": $('#chv4').is(':checked') ? 1 : 0,
+				"chv5": $('#chv5').is(':checked') ? 1 : 0,
+				"chv6": $('#chv6').is(':checked') ? 1 : 0,
 				"ccoh1": $('#ccoh1').is(':checked') ? 1 : 0,
 				"ccoh2": $('#ccoh2').is(':checked') ? 1 : 0,
 				"ccoh3": $('#ccoh3').is(':checked') ? 1 : 0,
@@ -1707,13 +1732,13 @@ $fecha_actual = date('Y-m-d'); ?>
 				"ccoh10": $('#ccoh10').is(':checked') ? 1 : 0,
 				"observaciones": $('#observaciones').val()
 			};
-			console.log('datos a actualizar:', datosEdit);
+			console.log('datos a actualizar:', datosEditPollo);
 			$.ajax({
 				type: 'POST',
 				dataType: 'json',
 				url: 'controlador/controlador.php',
 				data: {
-					datosEdit: datosEdit
+					datosEditPollo: datosEditPollo
 				},
 				success: function(data) {
 					$('#jtable').DataTable().ajax.reload();
@@ -1728,7 +1753,6 @@ $fecha_actual = date('Y-m-d'); ?>
 					$('#destino').val('');
 					$('#conductor').val('');
 					$('#placa').val('');
-					$('#ica').val('');
 					$('#guiat').val('');
 					$('#certificadoc').val('');
 					$('#cph1').val('');
@@ -1768,6 +1792,7 @@ $fecha_actual = date('Y-m-d'); ?>
 	function validaciones() {
 		$('#fecharecE').css('display', 'none');
 		$('#fechasacE').css('display', 'none');
+		$('#especieE').css('display', 'none');
 		$('#tipoE').css('display', 'none');
 		$('#despachoE').css('display', 'none');
 		$('#canalesE').css('display', 'none');
@@ -1798,124 +1823,93 @@ $fecha_actual = date('Y-m-d'); ?>
 			$('#fechasacE').css('display', 'block').text('La fecha de vencimiento no puede ser menor o igual que la fecha de recepción');
 			return 'R3';
 		}
-		if ($("#beneficio").val() == null || $("#beneficio").val() == "") {
-			$('#beneficioE').css('display', 'block');
-			return 'R9';
+		if ($("#especie").val() == null || $("#especie").val() == "") {
+			$('#especieE').css('display', 'block');
+			return 'R4';
+		}
+		if ($("#tipo").val() == null || $("#tipo").val() == "") {
+			$('#tipoE').css('display', 'block');
+			return 'R5';
 		}
 		if ($("#canales").val() == null || $("#canales").val() == "") {
 			$('#canalesE').css('display', 'block');
-			return 'R5';
+			return 'R7';
 		}
 		if ($("#consecutivog").val() == null || $("#consecutivog").val() == "") {
 			$('#consecutivogE').css('display', 'block');
-			return 'R7';
-		}
-		if ($("#responsable").val() == null || $("#responsable").val() == "") {
-			$('#responsableE').css('display', 'block');
 			return 'R8';
 		}
 		if ($("#conductor").val() == null || $("#conductor").val() == "") {
 			$('#conductorE').css('display', 'block');
-			return 'R11';
+			return 'R10';
 		}
 		if ($("#placa").val() == null || $("#placa").val() == "") {
 			$('#placaE').css('display', 'block');
-			return 'R12';
+			return 'R11';
+		}
+		if ($("#beneficio").val() == null || $("#beneficio").val() == "") {
+			$('#beneficioE').css('display', 'block');
+			return 'R6';
+		}
+		if ($("#destino").val() == null || $("#destino").val() == "") {
+			$('#destinoE').css('display', 'block');
+			return 'R6';
+		}
+		if ($("#responsable").val() == null || $("#responsable").val() == "") {
+			$('#responsableE').css('display', 'block');
+			return 'R9';
 		}
 		if ($("#chv1").val() == null || $("#chv1").val() == "") {
 			$('#chv1E').css('display', 'block');
-			return 'R13';
+			return 'R12';
 		}
 		return "";
 	}
 
 	$('#btnEditarCriterio').click(function() {
+
+		let producto;
+		let unidades;
+		let cajas;
+
+		cajas = $('#cajas').val();
+		producto = $('#valorCriterio').val();
+		pollosxcanastilla = $('#pollosxcanastilla').val();
+		unidades = cajas * pollosxcanastilla;
+
 		validacionesCri = validacionesC();
-		//if (validacionesCri == "") {
-		if (1 == 1) {
-			infoPesoEdit = {
-				"id_recepcion_pesos": $('#id_recepcion_pesos').val(),
-				"estomago1Edicion": $('#estomago1Edicion').val(),
-				"estomago2Edicion": $('#estomago2Edicion').val(),
-				"pierna1Edicion": $('#pierna1Edicion').val(),
-				"pierna2Edicion": $('#pierna2Edicion').val(),
-				"temperaturaEdicion": $('#temperaturaEdicion').val(),
+		if (validacionesCri == "") {
+			infoCriEditPolloR = {
+				"id_criterio": $('#id_criterio').val(),
+				"item": $('#datalistValorCriterio [value="' + $('#valorCriterio').val() + '"]').data('value'),
+				"lote": $('#lotes').val(),
+				"temperatura": $('#temperatura').val(),
+				"unidades": unidades,
+				"cajas": $('#cajas').val(),
+				"peso": $('#peso').val(),
+				"base": $('#base').val(),
 			};
-			console.log('datos enviados:', infoPesoEdit);
+			console.log('datos enviados:', infoCriEditPolloR);
 			$.ajax({
 				type: 'POST',
 				dataType: 'json',
 				url: 'controlador/controlador.php',
 				data: {
-					infoPesoEdit
+					infoCriEditPolloR
 				},
 				success: function(data) {
-					/* $('#btnNuevoCriterio').css('display', 'initial');
-					$('#btnEditarCriterio').css('display', 'none');*/
-					$('#turnoE').css('display', 'none');
 					$('#btnNuevoCriterio').css('display', 'initial');
 					$('#btnEditarCriterio').css('display', 'none');
-					$('#btnCancelarEdicion').css('display', 'none');
-					$('#registrosPesos').css('display', '');
-					$('#edicionPesos').css('display', 'none');
-					$('#estomago1Edicion').val('');
-					$('#estomago2Edicion').val('');
-					$('#pierna1Edicion').val('');
-					$('#pierna2Edicion').val('');
-					$('#turnoE').val('');
-					$('#temperaturaEdicion').val('');
-					$('#jtableCriterio').DataTable().ajax.reload();
-					$('#jtable').DataTable().ajax.reload();
-					Swal.fire({
-						title: 'Turno modificado satisfactoriamente',
-						text: '',
-						icon: 'success',
-						timer: 1000,
-						showConfirmButton: false
-					});
-				}
-			});
-		}
-	});
-
-	$('#btnEditarCriterioCerdo').click(function() {
-		validacionesCri = validacionesC();
-		//if (validacionesCri == "") {
-		if (1 == 1) {
-			infoPesoEditCerdo = {
-				"id_recepcion_pesos": $('#id_recepcion_pesos').val(),
-				"peso": $('#peso').val(),
-				"temperaturap": $('#temperaturap').val(),
-			};
-			console.log('datos enviado cerdos:', infoPesoEditCerdo);
-			$.ajax({
-				type: 'POST',
-				dataType: 'json',
-				url: 'controlador/controlador.php',
-				data: {
-					infoPesoEditCerdo
-				},
-				success: function(data) {
-					/* $('#btnNuevoCriterio').css('display', 'initial');
-					$('#btnEditarCriterio').css('display', 'none');*/
-					$('#turnoE').css('display', 'none');
-					$('#btnNuevoCriterioCerdo').css('display', 'initial');
-					$('#btnEditarCriterioCerdo').css('display', 'none');
-					$('#btnCancelarEdicionCerdo').css('display', 'none');
-					$('#registrosPesos').css('display', '');
-					$('#turnoE').val('');
-					$('#turno').prop('disabled', false);
-					$('#btnNuevoCriterioCerdo').css('display', 'initial');
-					$('#registrosPesosCerdo').css('display', '');
-					$('#edicionPesosCerdo').css('display', 'none');
-
-					$('#turno').val('');
+					$('#valorCriterio').val('');
+					$('#temperatura').val('');
+					$('#unidades').val('');
+					$('#cajas').val('');
 					$('#peso').val('');
-					$('#temperaturap').val('');
+					$('#base').val('');
 					$('#jtableCriterio').DataTable().ajax.reload();
 					$('#jtable').DataTable().ajax.reload();
 					Swal.fire({
-						title: 'Turno modificado satisfactoriamente',
+						title: 'Item modificado satisfactoriamente',
 						text: '',
 						icon: 'success',
 						timer: 1000,
@@ -1957,24 +1951,35 @@ $fecha_actual = date('Y-m-d'); ?>
 		}
 	});
 
-	function validacionesC(raza) {
-		$('#turnoE').css('display', 'none');
-		$('#parteE').css('display', 'none');
+	function validacionesC() {
+		$('#itemE').css('display', 'none');
+		$('#baseE').css('display', 'none');
+		$('#canastillasE').css('display', 'none');
 		$('#pesoE').css('display', 'none');
-
-		if ($("#turno").val() == null || $("#turno").val() == "") {
-			$('#turnoE').css('display', 'block');
+		item = $('#datalistValorCriterio [value="' + $('#valorCriterio').val() + '"]').data('value');
+		if ($("#valorCriterio").val() == null || $("#valorCriterio").val() == "") {
+			$('#itemE').css('display', 'block');
 			return 'R';
 		}
-		if (raza != 'CERDO') {
-			if ($("#parte").val() == null || $("#parte").val() == "") {
-				$('#parteE').css('display', 'block');
+		if ($("#base").val() == null || $("#base").val() == "") {
+			$('#baseE').css('display', 'block');
+			return 'R';
+		}
+		if ($("#peso").val() == null || $("#peso").val() == "") {
+			if ((item != '050514') && (item != '050515') && (item != '050516') && (item != '050517') && (item != '051513')) {
+				$('#pesoE').css('display', 'block');
 				return 'R';
 			}
 		}
-		if ($("#peso").val() == null || $("#peso").val() == "") {
-			$('#pesoE').css('display', 'block');
+		if ($("#cajas").val() == null || $("#cajas").val() == "") {
+			$('#canastillasE').css('display', 'block');
 			return 'R';
+		} else if ($("#valorCriterio").val() == 'POLLO ENTERO APANADO') {
+			var cajasVal = parseInt($("#cajas").val(), 10);
+			if (cajasVal % 2 != 0) {
+				$('#canastillasE').text('El valor de cajas de POLLO APANADO no puede ser impar').css('display', 'block');
+				return 'R';
+			}
 		}
 		return "";
 	}

@@ -32,6 +32,9 @@ if(isset($_POST['idGuiaP'])){
 if(isset($_POST['idRecepcion'])){
 	echo json_encode(cargarGuiaRecepcion($_POST['idRecepcion']));
 }
+if(isset($_POST['idRecepcionPollo'])){
+	echo json_encode(cargarGuiaRecepcionPollo($_POST['idRecepcionPollo']));
+}
 if(isset($_GET['copiarDatos'])){
 	echo json_encode(cargarDatos());
 }
@@ -75,6 +78,10 @@ if(isset($_POST['idcriterioP'])){
 	echo json_encode(cargarCriterioP($_POST['idcriterioP']));
 }
 
+if(isset($_POST['idcriterioRecepcionPollo'])){
+	echo json_encode(cargarCriterioRecepcionPollo($_POST['idcriterioRecepcionPollo']));
+}
+
 if(isset($_POST['idPeso'])){
 	echo json_encode(cargarCriterioPeso($_POST['idPeso']));
 }
@@ -89,6 +96,10 @@ if(isset($_POST['infoEditP'])){
 
 if(isset($_POST['datosEdit'])){
 	echo json_encode(editarRecepcion($_POST['datosEdit']));
+}
+
+if(isset($_POST['datosEditPollo'])){
+	echo json_encode(editarRecepcionPollo($_POST['datosEditPollo']));
 }
 
 if(isset($_POST['infoEditResp'])){
@@ -132,6 +143,10 @@ if(isset($_POST['infoCriEditP'])){
 	echo json_encode(editarCriterioP($_POST['infoCriEditP']));
 }
 
+if(isset($_POST['infoCriEditPolloR'])){
+	echo json_encode(infoCriEditPolloR($_POST['infoCriEditPolloR']));
+}
+
 if(isset($_POST['infoPesoEdit'])){
 	echo json_encode(editarCriterioPeso($_POST['infoPesoEdit']));
 }
@@ -152,6 +167,10 @@ if(isset($_POST['idBloquearR'])){
 	echo json_encode(bloquearGuiaR($_POST['idBloquearR']));
 }
 
+if(isset($_POST['idBloquearRPollo'])){
+	echo json_encode(bloquearGuiaRecepcionPollo($_POST['idBloquearRPollo']));
+}
+
 if(isset($_POST['idDesbloquear'])){
 	echo json_encode(desbloquearGuia($_POST['idDesbloquear']));
 }
@@ -170,6 +189,10 @@ if(isset($_POST['datos'])){
 
 if(isset($_POST['datosP'])){
 	echo json_encode(agregarItemP($_POST['datosP']));
+}
+
+if(isset($_POST['datosItemRecepcionPollo'])){
+	echo json_encode(agregarItemRecepcionPollo($_POST['datosItemRecepcionPollo']));
 }
 
 if (isset($_POST['datosPeso'])) {
@@ -209,6 +232,10 @@ if(isset($_POST['datosE'])){
 
 if(isset($_POST['datosEP'])){
 	echo json_encode(eliminarItemP($_POST['datosEP']));
+}
+
+if(isset($_POST['datosEPolloR'])){
+	echo json_encode(eliminarItemPolloR($_POST['datosEPolloR']));
 }
 
 if(isset($_POST['datosEPeso'])){
@@ -329,4 +356,10 @@ if (isset($_POST['datosConductorD'])) {
     $resultado = agregarNuevoConductorD($_POST['datosConductorD']);
     echo json_encode($resultado);
 }
+
+if (isset($_POST['guardarTiempoRecepcionPollo'])) {
+    $resultado = guardarTiempoRecepcionPollo($_POST['guardarTiempoRecepcionPollo']);
+    echo json_encode($resultado);
+}
+
 ?>
