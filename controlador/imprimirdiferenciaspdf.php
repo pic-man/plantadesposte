@@ -22,6 +22,7 @@ include("../config.php");
 $sqlg = "SELECT id_recepcion, fecharec, remision, destino, beneficio, canales, consecutivog, fechasac, lotep, ica, guiat, certificadoc, responsable, conductor, placa, cph1, cph2, cph3, cph4, cph5, chv1, chv2, chv3, chv4, ccoh1, ccoh2, ccoh3, ccoh4, ccoh5, ccoh6, ccoh7, ccoh8, ccoh9, ccoh10, tipo, observaciones 
         FROM recepcion 
         WHERE id_recepcion = " . $id;
+
 $c2 = mysqli_query($link, $sqlg) or die("aqui 1 ".mysqli_error($link));
 $rs2 = mysqli_fetch_array($c2);
 
@@ -158,53 +159,680 @@ $pdf->Cell(190, 5, utf8_decode('PESOS CANALES'), 1, 1, 'C');
 $pdf->SetFont('Arial', '', 6);
 $granTotal = 0;
 //empieza 1
+$pdf->Cell(7.5, 5, utf8_decode('No'), 1, 0, 'C');
+$pdf->Cell(15, 5, utf8_decode('Turno'), 1, 0, 'C');
+$pdf->Cell(20, 5, utf8_decode('Peso Frigorifico'), 1, 0, 'C');
+$pdf->Cell(20, 5, utf8_decode('Recibido Planta'), 1, 0, 'C');
+$pdf->Cell(15, 5, utf8_decode('Dif. Kg.'), 1, 0, 'C');
+$pdf->Cell(12, 5, utf8_decode('Dif. %'), 1, 0, 'C');
+$pdf->Cell(11, 5, utf8_decode(''), 0, 0, 'C');
+
+$pdf->Cell(7.5, 5, utf8_decode('No'), 1, 0, 'C');
+$pdf->Cell(15, 5, utf8_decode('Turno'), 1, 0, 'C');
+$pdf->Cell(20, 5, utf8_decode('Peso Frigorifico'), 1, 0, 'C');
+$pdf->Cell(20, 5, utf8_decode('Recibido Planta'), 1, 0, 'C');
+$pdf->Cell(15, 5, utf8_decode('Dif. Kg.'), 1, 0, 'C');
+$pdf->Cell(12, 5, utf8_decode('Dif. %'), 1, 1, 'C');
+
 $r = $resultado[0];
-$pdf->Cell(7.5, 5, utf8_decode('No'), 1, 0, 'C');
-$pdf->Cell(10, 5, utf8_decode('Turno'), 1, 0, 'C');
-$pdf->Cell(10, 5, utf8_decode('Indicado'), 1, 0, 'C');
-$pdf->Cell(10, 5, utf8_decode('Pesado'), 1, 0, 'C');
-$pdf->Cell(10, 5, utf8_decode('Dif. gr.'), 1, 0, 'C');
-$pdf->Cell(10, 5, utf8_decode('Dif. %'), 1, 0, 'C');
-$pdf->Cell(9, 5, utf8_decode(''), 0, 0, 'C');
+if($r['turno']!=''){
+        $granTotal = $granTotal + (($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2'])-$r['inventario']);
+        $pdf->Cell(7.5, 5, utf8_decode('1'), 1, 0, 'C');
+        $pdf->Cell(15, 5, utf8_decode($r['turno']), 1, 0, 'C');
+        $pdf->Cell(20, 5, number_format(($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2']), 2, '.', ','), 1, 0, 'C');
+        $pdf->Cell(20, 5, utf8_decode($r['inventario']), 1, 0, 'C');
+        $pdf->Cell(15, 5, number_format((($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2'])-$r['inventario']), 2, '.', ','), 1, 0, 'C');
+        $pdf->Cell(12, 5, utf8_decode($r['diferencia']."%"), 1, 0, 'C');
+        $pdf->Cell(11, 5, utf8_decode(''), 0, 0, 'C');
+}
+$r = $resultado[1];
+if($r['turno']!=''){
+        $granTotal = $granTotal + (($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2'])-$r['inventario']);
+        $pdf->Cell(7.5, 5, utf8_decode('2'), 1, 0, 'C');
+        $pdf->Cell(15, 5, utf8_decode($r['turno']), 1, 0, 'C');
+        $pdf->Cell(20, 5, number_format(($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2']), 2, '.', ','), 1, 0, 'C');
+        $pdf->Cell(20, 5, utf8_decode($r['inventario']), 1, 0, 'C');
+        $pdf->Cell(15, 5, number_format((($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2'])-$r['inventario']), 2, '.', ','), 1, 0, 'C');
+        $pdf->Cell(12, 5, utf8_decode($r['diferencia']."%"), 1, 1, 'C');
+}
 
-$pdf->Cell(7.5, 5, utf8_decode('No'), 1, 0, 'C');
-$pdf->Cell(10, 5, utf8_decode('Turno'), 1, 0, 'C');
-$pdf->Cell(10, 5, utf8_decode('Indicado'), 1, 0, 'C');
-$pdf->Cell(10, 5, utf8_decode('Pesado'), 1, 0, 'C');
-$pdf->Cell(10, 5, utf8_decode('Dif. gr.'), 1, 0, 'C');
-$pdf->Cell(10, 5, utf8_decode('Dif. %'), 1, 0, 'C');
-$pdf->Cell(8.5, 5, utf8_decode(''), 0, 0, 'C');
+$r = $resultado[2];
+if($r['turno']!=''){
+        $granTotal = $granTotal + (($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2'])-$r['inventario']);
+        $pdf->Cell(7.5, 5, utf8_decode('3'), 1, 0, 'C');
+        $pdf->Cell(15, 5, utf8_decode($r['turno']), 1, 0, 'C');
+        $pdf->Cell(20, 5, number_format(($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2']), 2, '.', ','), 1, 0, 'C');
+        $pdf->Cell(20, 5, utf8_decode($r['inventario']), 1, 0, 'C');
+        $pdf->Cell(15, 5, number_format((($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2'])-$r['inventario']), 2, '.', ','), 1, 0, 'C');
+        $pdf->Cell(12, 5, utf8_decode($r['diferencia']."%"), 1, 0, 'C');
+        $pdf->Cell(11, 5, utf8_decode(''), 0, 0, 'C');
+}
+$r = $resultado[3];
+if($r['turno']!=''){
+        $granTotal = $granTotal + (($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2'])-$r['inventario']);
+        $pdf->Cell(7.5, 5, utf8_decode('4'), 1, 0, 'C');
+        $pdf->Cell(15, 5, utf8_decode($r['turno']), 1, 0, 'C');
+        $pdf->Cell(20, 5, number_format(($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2']), 2, '.', ','), 1, 0, 'C');
+        $pdf->Cell(20, 5, utf8_decode($r['inventario']), 1, 0, 'C');
+        $pdf->Cell(15, 5, number_format((($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2'])-$r['inventario']), 2, '.', ','), 1, 0, 'C');
+        $pdf->Cell(12, 5, utf8_decode($r['diferencia']."%"), 1, 1, 'C');
+}
 
-$pdf->Cell(7.5, 5, utf8_decode('No'), 1, 0, 'C');
-$pdf->Cell(10, 5, utf8_decode('Turno'), 1, 0, 'C');
-$pdf->Cell(10, 5, utf8_decode('Indicado'), 1, 0, 'C');
-$pdf->Cell(10, 5, utf8_decode('Pesado'), 1, 0, 'C');
-$pdf->Cell(10, 5, utf8_decode('Dif. gr.'), 1, 0, 'C');
-$pdf->Cell(10, 5, utf8_decode('Dif. %'), 1, 1, 'C');
+$r = $resultado[4];
+if($r['turno']!=''){
+        $granTotal = $granTotal + (($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2'])-$r['inventario']);
+        $pdf->Cell(7.5, 5, utf8_decode('5'), 1, 0, 'C');
+        $pdf->Cell(15, 5, utf8_decode($r['turno']), 1, 0, 'C');
+        $pdf->Cell(20, 5, number_format(($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2']), 2, '.', ','), 1, 0, 'C');
+        $pdf->Cell(20, 5, utf8_decode($r['inventario']), 1, 0, 'C');
+        $pdf->Cell(15, 5, number_format((($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2'])-$r['inventario']), 2, '.', ','), 1, 0, 'C');
+        $pdf->Cell(12, 5, utf8_decode($r['diferencia']."%"), 1, 0, 'C');
+        $pdf->Cell(11, 5, utf8_decode(''), 0, 0, 'C');
+}
+$r = $resultado[5];
+if($r['turno']!=''){
+        $granTotal = $granTotal + (($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2'])-$r['inventario']);
+        $pdf->Cell(7.5, 5, utf8_decode('6'), 1, 0, 'C');
+        $pdf->Cell(15, 5, utf8_decode($r['turno']), 1, 0, 'C');
+        $pdf->Cell(20, 5, number_format(($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2']), 2, '.', ','), 1, 0, 'C');
+        $pdf->Cell(20, 5, utf8_decode($r['inventario']), 1, 0, 'C');
+        $pdf->Cell(15, 5, number_format((($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2'])-$r['inventario']), 2, '.', ','), 1, 0, 'C');
+        $pdf->Cell(12, 5, utf8_decode($r['diferencia']."%"), 1, 1, 'C');
+}
 
-/* // 1
-$r = $resultado[0];
-$peso1 = $r['estomago1'];
-$turno1 = $r['turno'];
-$temperatura1 = $r['temperatura'];
-// 16
+$r = $resultado[6];
+if($r['turno']!=''){
+        $granTotal = $granTotal + (($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2'])-$r['inventario']);
+        $pdf->Cell(7.5, 5, utf8_decode('7'), 1, 0, 'C');
+        $pdf->Cell(15, 5, utf8_decode($r['turno']), 1, 0, 'C');
+        $pdf->Cell(20, 5, number_format(($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2']), 2, '.', ','), 1, 0, 'C');
+        $pdf->Cell(20, 5, utf8_decode($r['inventario']), 1, 0, 'C');
+        $pdf->Cell(15, 5, number_format((($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2'])-$r['inventario']), 2, '.', ','), 1, 0, 'C');
+        $pdf->Cell(12, 5, utf8_decode($r['diferencia']."%"), 1, 0, 'C');
+        $pdf->Cell(11, 5, utf8_decode(''), 0, 0, 'C');
+}
+$r = $resultado[7];
+if($r['turno']!=''){
+        $granTotal = $granTotal + (($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2'])-$r['inventario']);
+        $pdf->Cell(7.5, 5, utf8_decode('8'), 1, 0, 'C');
+        $pdf->Cell(15, 5, utf8_decode($r['turno']), 1, 0, 'C');
+        $pdf->Cell(20, 5, number_format(($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2']), 2, '.', ','), 1, 0, 'C');
+        $pdf->Cell(20, 5, utf8_decode($r['inventario']), 1, 0, 'C');
+        $pdf->Cell(15, 5, number_format((($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2'])-$r['inventario']), 2, '.', ','), 1, 0, 'C');
+        $pdf->Cell(12, 5, utf8_decode($r['diferencia']."%"), 1, 1, 'C');
+}
+
+$r = $resultado[8];
+if($r['turno']!=''){
+        $granTotal = $granTotal + (($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2'])-$r['inventario']);
+        $pdf->Cell(7.5, 5, utf8_decode('9'), 1, 0, 'C');
+        $pdf->Cell(15, 5, utf8_decode($r['turno']), 1, 0, 'C');
+        $pdf->Cell(20, 5, number_format(($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2']), 2, '.', ','), 1, 0, 'C');
+        $pdf->Cell(20, 5, utf8_decode($r['inventario']), 1, 0, 'C');
+        $pdf->Cell(15, 5, number_format((($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2'])-$r['inventario']), 2, '.', ','), 1, 0, 'C');
+        $pdf->Cell(12, 5, utf8_decode($r['diferencia']."%"), 1, 0, 'C');
+        $pdf->Cell(11, 5, utf8_decode(''), 0, 0, 'C');
+}
+$r = $resultado[9];
+if($r['turno']!=''){
+        $granTotal = $granTotal + (($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2'])-$r['inventario']);
+        $pdf->Cell(7.5, 5, utf8_decode('10'), 1, 0, 'C');
+        $pdf->Cell(15, 5, utf8_decode($r['turno']), 1, 0, 'C');
+        $pdf->Cell(20, 5, number_format(($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2']), 2, '.', ','), 1, 0, 'C');
+        $pdf->Cell(20, 5, utf8_decode($r['inventario']), 1, 0, 'C');
+        $pdf->Cell(15, 5, number_format((($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2'])-$r['inventario']), 2, '.', ','), 1, 0, 'C');
+        $pdf->Cell(12, 5, utf8_decode($r['diferencia']."%"), 1, 1, 'C');
+}
+
+$r = $resultado[10];
+if($r['turno']!=''){
+        $granTotal = $granTotal + (($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2'])-$r['inventario']);
+        $pdf->Cell(7.5, 5, utf8_decode('11'), 1, 0, 'C');
+        $pdf->Cell(15, 5, utf8_decode($r['turno']), 1, 0, 'C');
+        $pdf->Cell(20, 5, number_format(($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2']), 2, '.', ','), 1, 0, 'C');
+        $pdf->Cell(20, 5, utf8_decode($r['inventario']), 1, 0, 'C');
+        $pdf->Cell(15, 5, number_format((($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2'])-$r['inventario']), 2, '.', ','), 1, 0, 'C');
+        $pdf->Cell(12, 5, utf8_decode($r['diferencia']."%"), 1, 0, 'C');
+        $pdf->Cell(11, 5, utf8_decode(''), 0, 0, 'C');
+}
+$r = $resultado[11];
+if($r['turno']!=''){
+        $granTotal = $granTotal + (($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2'])-$r['inventario']);
+        $pdf->Cell(7.5, 5, utf8_decode('12'), 1, 0, 'C');
+        $pdf->Cell(15, 5, utf8_decode($r['turno']), 1, 0, 'C');
+        $pdf->Cell(20, 5, number_format(($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2']), 2, '.', ','), 1, 0, 'C');
+        $pdf->Cell(20, 5, utf8_decode($r['inventario']), 1, 0, 'C');
+        $pdf->Cell(15, 5, number_format((($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2'])-$r['inventario']), 2, '.', ','), 1, 0, 'C');
+        $pdf->Cell(12, 5, utf8_decode($r['diferencia']."%"), 1, 1, 'C');
+}
+
+$r = $resultado[12];
+if($r['turno']!=''){
+        $granTotal = $granTotal + (($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2'])-$r['inventario']);
+        $pdf->Cell(7.5, 5, utf8_decode('13'), 1, 0, 'C');
+        $pdf->Cell(15, 5, utf8_decode($r['turno']), 1, 0, 'C');
+        $pdf->Cell(20, 5, number_format(($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2']), 2, '.', ','), 1, 0, 'C');
+        $pdf->Cell(20, 5, utf8_decode($r['inventario']), 1, 0, 'C');
+        $pdf->Cell(15, 5, number_format((($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2'])-$r['inventario']), 2, '.', ','), 1, 0, 'C');
+        $pdf->Cell(12, 5, utf8_decode($r['diferencia']."%"), 1, 0, 'C');
+        $pdf->Cell(11, 5, utf8_decode(''), 0, 0, 'C');
+}
+$r = $resultado[13];
+if($r['turno']!=''){
+        $granTotal = $granTotal + (($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2'])-$r['inventario']);
+        $pdf->Cell(7.5, 5, utf8_decode('14'), 1, 0, 'C');
+        $pdf->Cell(15, 5, utf8_decode($r['turno']), 1, 0, 'C');
+        $pdf->Cell(20, 5, number_format(($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2']), 2, '.', ','), 1, 0, 'C');
+        $pdf->Cell(20, 5, utf8_decode($r['inventario']), 1, 0, 'C');
+        $pdf->Cell(15, 5, number_format((($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2'])-$r['inventario']), 2, '.', ','), 1, 0, 'C');
+        $pdf->Cell(12, 5, utf8_decode($r['diferencia']."%"), 1, 1, 'C');
+}
+
+$r = $resultado[14];
+if($r['turno']!=''){
+        $granTotal = $granTotal + (($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2'])-$r['inventario']);
+        $pdf->Cell(7.5, 5, utf8_decode('15'), 1, 0, 'C');
+        $pdf->Cell(15, 5, utf8_decode($r['turno']), 1, 0, 'C');
+        $pdf->Cell(20, 5, number_format(($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2']), 2, '.', ','), 1, 0, 'C');
+        $pdf->Cell(20, 5, utf8_decode($r['inventario']), 1, 0, 'C');
+        $pdf->Cell(15, 5, number_format((($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2'])-$r['inventario']), 2, '.', ','), 1, 0, 'C');
+        $pdf->Cell(12, 5, utf8_decode($r['diferencia']."%"), 1, 0, 'C');
+        $pdf->Cell(11, 5, utf8_decode(''), 0, 0, 'C');
+}
 $r = $resultado[15];
-$peso16 = $r['estomago1'];
-$turno16 = $r['turno'];
-$temperatura16 = $r['temperatura'];
-// 31
+if($r['turno']!=''){
+        $granTotal = $granTotal + (($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2'])-$r['inventario']);
+        $pdf->Cell(7.5, 5, utf8_decode('16'), 1, 0, 'C');
+        $pdf->Cell(15, 5, utf8_decode($r['turno']), 1, 0, 'C');
+        $pdf->Cell(20, 5, number_format(($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2']), 2, '.', ','), 1, 0, 'C');
+        $pdf->Cell(20, 5, utf8_decode($r['inventario']), 1, 0, 'C');
+        $pdf->Cell(15, 5, number_format((($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2'])-$r['inventario']), 2, '.', ','), 1, 0, 'C');
+        $pdf->Cell(12, 5, utf8_decode($r['diferencia']."%"), 1, 1, 'C');
+}
+
+$r = $resultado[16];
+if($r['turno']!=''){
+        $granTotal = $granTotal + (($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2'])-$r['inventario']);
+        $pdf->Cell(7.5, 5, utf8_decode('17'), 1, 0, 'C');
+        $pdf->Cell(15, 5, utf8_decode($r['turno']), 1, 0, 'C');
+        $pdf->Cell(20, 5, number_format(($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2']), 2, '.', ','), 1, 0, 'C');
+        $pdf->Cell(20, 5, utf8_decode($r['inventario']), 1, 0, 'C');
+        $pdf->Cell(15, 5, number_format((($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2'])-$r['inventario']), 2, '.', ','), 1, 0, 'C');
+        $pdf->Cell(12, 5, utf8_decode($r['diferencia']."%"), 1, 0, 'C');
+        $pdf->Cell(11, 5, utf8_decode(''), 0, 0, 'C');
+}
+$r = $resultado[17];
+if($r['turno']!=''){
+        $granTotal = $granTotal + (($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2'])-$r['inventario']);
+        $pdf->Cell(7.5, 5, utf8_decode('18'), 1, 0, 'C');
+        $pdf->Cell(15, 5, utf8_decode($r['turno']), 1, 0, 'C');
+        $pdf->Cell(20, 5, number_format(($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2']), 2, '.', ','), 1, 0, 'C');
+        $pdf->Cell(20, 5, utf8_decode($r['inventario']), 1, 0, 'C');
+        $pdf->Cell(15, 5, number_format((($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2'])-$r['inventario']), 2, '.', ','), 1, 0, 'C');
+        $pdf->Cell(12, 5, utf8_decode($r['diferencia']."%"), 1, 1, 'C');
+}
+
+$r = $resultado[18];
+if($r['turno']!=''){
+        $granTotal = $granTotal + (($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2'])-$r['inventario']);
+        $pdf->Cell(7.5, 5, utf8_decode('19'), 1, 0, 'C');
+        $pdf->Cell(15, 5, utf8_decode($r['turno']), 1, 0, 'C');
+        $pdf->Cell(20, 5, number_format(($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2']), 2, '.', ','), 1, 0, 'C');
+        $pdf->Cell(20, 5, utf8_decode($r['inventario']), 1, 0, 'C');
+        $pdf->Cell(15, 5, number_format((($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2'])-$r['inventario']), 2, '.', ','), 1, 0, 'C');
+        $pdf->Cell(12, 5, utf8_decode($r['diferencia']."%"), 1, 0, 'C');
+        $pdf->Cell(11, 5, utf8_decode(''), 0, 0, 'C');
+}
+$r = $resultado[19];
+if($r['turno']!=''){
+        $granTotal = $granTotal + (($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2'])-$r['inventario']);
+        $pdf->Cell(7.5, 5, utf8_decode('20'), 1, 0, 'C');
+        $pdf->Cell(15, 5, utf8_decode($r['turno']), 1, 0, 'C');
+        $pdf->Cell(20, 5, number_format(($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2']), 2, '.', ','), 1, 0, 'C');
+        $pdf->Cell(20, 5, utf8_decode($r['inventario']), 1, 0, 'C');
+        $pdf->Cell(15, 5, number_format((($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2'])-$r['inventario']), 2, '.', ','), 1, 0, 'C');
+        $pdf->Cell(12, 5, utf8_decode($r['diferencia']."%"), 1, 1, 'C');
+}
+
+$r = $resultado[20];
+if($r['turno']!=''){
+        $granTotal = $granTotal + (($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2'])-$r['inventario']);
+        $pdf->Cell(7.5, 5, utf8_decode('21'), 1, 0, 'C');
+        $pdf->Cell(15, 5, utf8_decode($r['turno']), 1, 0, 'C');
+        $pdf->Cell(20, 5, number_format(($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2']), 2, '.', ','), 1, 0, 'C');
+        $pdf->Cell(20, 5, utf8_decode($r['inventario']), 1, 0, 'C');
+        $pdf->Cell(15, 5, number_format((($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2'])-$r['inventario']), 2, '.', ','), 1, 0, 'C');
+        $pdf->Cell(12, 5, utf8_decode($r['diferencia']."%"), 1, 0, 'C');
+        $pdf->Cell(11, 5, utf8_decode(''), 0, 0, 'C');
+}
+$r = $resultado[21];
+if($r['turno']!=''){
+        $granTotal = $granTotal + (($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2'])-$r['inventario']);
+        $pdf->Cell(7.5, 5, utf8_decode('22'), 1, 0, 'C');
+        $pdf->Cell(15, 5, utf8_decode($r['turno']), 1, 0, 'C');
+        $pdf->Cell(20, 5, number_format(($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2']), 2, '.', ','), 1, 0, 'C');
+        $pdf->Cell(20, 5, utf8_decode($r['inventario']), 1, 0, 'C');
+        $pdf->Cell(15, 5, number_format((($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2'])-$r['inventario']), 2, '.', ','), 1, 0, 'C');
+        $pdf->Cell(12, 5, utf8_decode($r['diferencia']."%"), 1, 1, 'C');
+}
+
+$r = $resultado[22];
+if($r['turno']!=''){
+        $granTotal = $granTotal + (($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2'])-$r['inventario']);
+        $pdf->Cell(7.5, 5, utf8_decode('23'), 1, 0, 'C');
+        $pdf->Cell(15, 5, utf8_decode($r['turno']), 1, 0, 'C');
+        $pdf->Cell(20, 5, number_format(($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2']), 2, '.', ','), 1, 0, 'C');
+        $pdf->Cell(20, 5, utf8_decode($r['inventario']), 1, 0, 'C');
+        $pdf->Cell(15, 5, number_format((($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2'])-$r['inventario']), 2, '.', ','), 1, 0, 'C');
+        $pdf->Cell(12, 5, utf8_decode($r['diferencia']."%"), 1, 0, 'C');
+        $pdf->Cell(11, 5, utf8_decode(''), 0, 0, 'C');
+}
+$r = $resultado[23];
+if($r['turno']!=''){
+        $granTotal = $granTotal + (($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2'])-$r['inventario']);
+        $pdf->Cell(7.5, 5, utf8_decode('24'), 1, 0, 'C');
+        $pdf->Cell(15, 5, utf8_decode($r['turno']), 1, 0, 'C');
+        $pdf->Cell(20, 5, number_format(($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2']), 2, '.', ','), 1, 0, 'C');
+        $pdf->Cell(20, 5, utf8_decode($r['inventario']), 1, 0, 'C');
+        $pdf->Cell(15, 5, number_format((($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2'])-$r['inventario']), 2, '.', ','), 1, 0, 'C');
+        $pdf->Cell(12, 5, utf8_decode($r['diferencia']."%"), 1, 1, 'C');
+}
+
+$r = $resultado[24];
+if($r['turno']!=''){
+        $granTotal = $granTotal + (($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2'])-$r['inventario']);
+        $pdf->Cell(7.5, 5, utf8_decode('25'), 1, 0, 'C');
+        $pdf->Cell(15, 5, utf8_decode($r['turno']), 1, 0, 'C');
+        $pdf->Cell(20, 5, number_format(($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2']), 2, '.', ','), 1, 0, 'C');
+        $pdf->Cell(20, 5, utf8_decode($r['inventario']), 1, 0, 'C');
+        $pdf->Cell(15, 5, number_format((($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2'])-$r['inventario']), 2, '.', ','), 1, 0, 'C');
+        $pdf->Cell(12, 5, utf8_decode($r['diferencia']."%"), 1, 0, 'C');
+        $pdf->Cell(11, 5, utf8_decode(''), 0, 0, 'C');
+}
+$r = $resultado[25];
+if($r['turno']!=''){
+        $granTotal = $granTotal + (($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2'])-$r['inventario']);
+        $pdf->Cell(7.5, 5, utf8_decode('26'), 1, 0, 'C');
+        $pdf->Cell(15, 5, utf8_decode($r['turno']), 1, 0, 'C');
+        $pdf->Cell(20, 5, number_format(($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2']), 2, '.', ','), 1, 0, 'C');
+        $pdf->Cell(20, 5, utf8_decode($r['inventario']), 1, 0, 'C');
+        $pdf->Cell(15, 5, number_format((($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2'])-$r['inventario']), 2, '.', ','), 1, 0, 'C');
+        $pdf->Cell(12, 5, utf8_decode($r['diferencia']."%"), 1, 1, 'C');
+}
+
+$r = $resultado[26];
+if($r['turno']!=''){
+        $granTotal = $granTotal + (($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2'])-$r['inventario']);
+        $pdf->Cell(7.5, 5, utf8_decode('27'), 1, 0, 'C');
+        $pdf->Cell(15, 5, utf8_decode($r['turno']), 1, 0, 'C');
+        $pdf->Cell(20, 5, number_format(($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2']), 2, '.', ','), 1, 0, 'C');
+        $pdf->Cell(20, 5, utf8_decode($r['inventario']), 1, 0, 'C');
+        $pdf->Cell(15, 5, number_format((($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2'])-$r['inventario']), 2, '.', ','), 1, 0, 'C');
+        $pdf->Cell(12, 5, utf8_decode($r['diferencia']."%"), 1, 0, 'C');
+        $pdf->Cell(11, 5, utf8_decode(''), 0, 0, 'C');
+}
+$r = $resultado[27];
+if($r['turno']!=''){
+        $granTotal = $granTotal + (($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2'])-$r['inventario']);
+        $pdf->Cell(7.5, 5, utf8_decode('28'), 1, 0, 'C');
+        $pdf->Cell(15, 5, utf8_decode($r['turno']), 1, 0, 'C');
+        $pdf->Cell(20, 5, number_format(($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2']), 2, '.', ','), 1, 0, 'C');
+        $pdf->Cell(20, 5, utf8_decode($r['inventario']), 1, 0, 'C');
+        $pdf->Cell(15, 5, number_format((($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2'])-$r['inventario']), 2, '.', ','), 1, 0, 'C');
+        $pdf->Cell(12, 5, utf8_decode($r['diferencia']."%"), 1, 1, 'C');
+}
+
+$r = $resultado[28];
+if($r['turno']!=''){
+        $granTotal = $granTotal + (($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2'])-$r['inventario']);
+        $pdf->Cell(7.5, 5, utf8_decode('29'), 1, 0, 'C');
+        $pdf->Cell(15, 5, utf8_decode($r['turno']), 1, 0, 'C');
+        $pdf->Cell(20, 5, number_format(($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2']), 2, '.', ','), 1, 0, 'C');
+        $pdf->Cell(20, 5, utf8_decode($r['inventario']), 1, 0, 'C');
+        $pdf->Cell(15, 5, number_format((($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2'])-$r['inventario']), 2, '.', ','), 1, 0, 'C');
+        $pdf->Cell(12, 5, utf8_decode($r['diferencia']."%"), 1, 0, 'C');
+        $pdf->Cell(11, 5, utf8_decode(''), 0, 0, 'C');
+}
+$r = $resultado[29];
+if($r['turno']!=''){
+        $granTotal = $granTotal + (($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2'])-$r['inventario']);
+        $pdf->Cell(7.5, 5, utf8_decode('30'), 1, 0, 'C');
+        $pdf->Cell(15, 5, utf8_decode($r['turno']), 1, 0, 'C');
+        $pdf->Cell(20, 5, number_format(($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2']), 2, '.', ','), 1, 0, 'C');
+        $pdf->Cell(20, 5, utf8_decode($r['inventario']), 1, 0, 'C');
+        $pdf->Cell(15, 5, number_format((($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2'])-$r['inventario']), 2, '.', ','), 1, 0, 'C');
+        $pdf->Cell(12, 5, utf8_decode($r['diferencia']."%"), 1, 1, 'C');
+}
+
 $r = $resultado[30];
-$peso31 = $r['estomago1'];
-$turno31 = $r['turno'];
-$temperatura31 = $r['temperatura'];
-// 46
+if($r['turno']!=''){
+        $granTotal = $granTotal + (($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2'])-$r['inventario']);
+        $pdf->Cell(7.5, 5, utf8_decode('31'), 1, 0, 'C');
+        $pdf->Cell(15, 5, utf8_decode($r['turno']), 1, 0, 'C');
+        $pdf->Cell(20, 5, number_format(($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2']), 2, '.', ','), 1, 0, 'C');
+        $pdf->Cell(20, 5, utf8_decode($r['inventario']), 1, 0, 'C');
+        $pdf->Cell(15, 5, number_format((($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2'])-$r['inventario']), 2, '.', ','), 1, 0, 'C');
+        $pdf->Cell(12, 5, utf8_decode($r['diferencia']."%"), 1, 0, 'C');
+        $pdf->Cell(11, 5, utf8_decode(''), 0, 0, 'C');
+}
+$r = $resultado[31];
+if($r['turno']!=''){
+        $granTotal = $granTotal + (($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2'])-$r['inventario']);
+        $pdf->Cell(7.5, 5, utf8_decode('32'), 1, 0, 'C');
+        $pdf->Cell(15, 5, utf8_decode($r['turno']), 1, 0, 'C');
+        $pdf->Cell(20, 5, number_format(($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2']), 2, '.', ','), 1, 0, 'C');
+        $pdf->Cell(20, 5, utf8_decode($r['inventario']), 1, 0, 'C');
+        $pdf->Cell(15, 5, number_format((($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2'])-$r['inventario']), 2, '.', ','), 1, 0, 'C');
+        $pdf->Cell(12, 5, utf8_decode($r['diferencia']."%"), 1, 1, 'C');
+}
+
+$r = $resultado[32];
+if($r['turno']!=''){
+        $granTotal = $granTotal + (($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2'])-$r['inventario']);
+        $pdf->Cell(7.5, 5, utf8_decode('33'), 1, 0, 'C');
+        $pdf->Cell(15, 5, utf8_decode($r['turno']), 1, 0, 'C');
+        $pdf->Cell(20, 5, number_format(($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2']), 2, '.', ','), 1, 0, 'C');
+        $pdf->Cell(20, 5, utf8_decode($r['inventario']), 1, 0, 'C');
+        $pdf->Cell(15, 5, number_format((($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2'])-$r['inventario']), 2, '.', ','), 1, 0, 'C');
+        $pdf->Cell(12, 5, utf8_decode($r['diferencia']."%"), 1, 0, 'C');
+        $pdf->Cell(11, 5, utf8_decode(''), 0, 0, 'C');
+}
+$r = $resultado[33];
+if($r['turno']!=''){
+        $granTotal = $granTotal + (($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2'])-$r['inventario']);
+        $pdf->Cell(7.5, 5, utf8_decode('34'), 1, 0, 'C');
+        $pdf->Cell(15, 5, utf8_decode($r['turno']), 1, 0, 'C');
+        $pdf->Cell(20, 5, number_format(($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2']), 2, '.', ','), 1, 0, 'C');
+        $pdf->Cell(20, 5, utf8_decode($r['inventario']), 1, 0, 'C');
+        $pdf->Cell(15, 5, number_format((($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2'])-$r['inventario']), 2, '.', ','), 1, 0, 'C');
+        $pdf->Cell(12, 5, utf8_decode($r['diferencia']."%"), 1, 1, 'C');
+}
+
+$r = $resultado[34];
+if($r['turno']!=''){
+        $granTotal = $granTotal + (($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2'])-$r['inventario']);
+        $pdf->Cell(7.5, 5, utf8_decode('35'), 1, 0, 'C');
+        $pdf->Cell(15, 5, utf8_decode($r['turno']), 1, 0, 'C');
+        $pdf->Cell(20, 5, number_format(($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2']), 2, '.', ','), 1, 0, 'C');
+        $pdf->Cell(20, 5, utf8_decode($r['inventario']), 1, 0, 'C');
+        $pdf->Cell(15, 5, number_format((($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2'])-$r['inventario']), 2, '.', ','), 1, 0, 'C');
+        $pdf->Cell(12, 5, utf8_decode($r['diferencia']."%"), 1, 0, 'C');
+        $pdf->Cell(11, 5, utf8_decode(''), 0, 0, 'C');
+}
+$r = $resultado[35];
+if($r['turno']!=''){
+        $granTotal = $granTotal + (($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2'])-$r['inventario']);
+        $pdf->Cell(7.5, 5, utf8_decode('36'), 1, 0, 'C');
+        $pdf->Cell(15, 5, utf8_decode($r['turno']), 1, 0, 'C');
+        $pdf->Cell(20, 5, number_format(($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2']), 2, '.', ','), 1, 0, 'C');
+        $pdf->Cell(20, 5, utf8_decode($r['inventario']), 1, 0, 'C');
+        $pdf->Cell(15, 5, number_format((($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2'])-$r['inventario']), 2, '.', ','), 1, 0, 'C');
+        $pdf->Cell(12, 5, utf8_decode($r['diferencia']."%"), 1, 1, 'C');
+}
+
+$r = $resultado[36];
+if($r['turno']!=''){
+        $granTotal = $granTotal + (($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2'])-$r['inventario']);
+        $pdf->Cell(7.5, 5, utf8_decode('37'), 1, 0, 'C');
+        $pdf->Cell(15, 5, utf8_decode($r['turno']), 1, 0, 'C');
+        $pdf->Cell(20, 5, number_format(($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2']), 2, '.', ','), 1, 0, 'C');
+        $pdf->Cell(20, 5, utf8_decode($r['inventario']), 1, 0, 'C');
+        $pdf->Cell(15, 5, number_format((($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2'])-$r['inventario']), 2, '.', ','), 1, 0, 'C');
+        $pdf->Cell(12, 5, utf8_decode($r['diferencia']."%"), 1, 0, 'C');
+        $pdf->Cell(11, 5, utf8_decode(''), 0, 0, 'C');
+}
+$r = $resultado[37];
+if($r['turno']!=''){
+        $granTotal = $granTotal + (($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2'])-$r['inventario']);
+        $pdf->Cell(7.5, 5, utf8_decode('38'), 1, 0, 'C');
+        $pdf->Cell(15, 5, utf8_decode($r['turno']), 1, 0, 'C');
+        $pdf->Cell(20, 5, number_format(($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2']), 2, '.', ','), 1, 0, 'C');
+        $pdf->Cell(20, 5, utf8_decode($r['inventario']), 1, 0, 'C');
+        $pdf->Cell(15, 5, number_format((($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2'])-$r['inventario']), 2, '.', ','), 1, 0, 'C');
+        $pdf->Cell(12, 5, utf8_decode($r['diferencia']."%"), 1, 1, 'C');
+}
+
+$r = $resultado[38];
+if($r['turno']!=''){
+        $granTotal = $granTotal + (($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2'])-$r['inventario']);
+        $pdf->Cell(7.5, 5, utf8_decode('39'), 1, 0, 'C');
+        $pdf->Cell(15, 5, utf8_decode($r['turno']), 1, 0, 'C');
+        $pdf->Cell(20, 5, number_format(($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2']), 2, '.', ','), 1, 0, 'C');
+        $pdf->Cell(20, 5, utf8_decode($r['inventario']), 1, 0, 'C');
+        $pdf->Cell(15, 5, number_format((($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2'])-$r['inventario']), 2, '.', ','), 1, 0, 'C');
+        $pdf->Cell(12, 5, utf8_decode($r['diferencia']."%"), 1, 0, 'C');
+        $pdf->Cell(11, 5, utf8_decode(''), 0, 0, 'C');
+}
+$r = $resultado[39];
+if($r['turno']!=''){
+        $granTotal = $granTotal + (($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2'])-$r['inventario']);
+        $pdf->Cell(7.5, 5, utf8_decode('40'), 1, 0, 'C');
+        $pdf->Cell(15, 5, utf8_decode($r['turno']), 1, 0, 'C');
+        $pdf->Cell(20, 5, number_format(($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2']), 2, '.', ','), 1, 0, 'C');
+        $pdf->Cell(20, 5, utf8_decode($r['inventario']), 1, 0, 'C');
+        $pdf->Cell(15, 5, number_format((($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2'])-$r['inventario']), 2, '.', ','), 1, 0, 'C');
+        $pdf->Cell(12, 5, utf8_decode($r['diferencia']."%"), 1, 1, 'C');
+}
+
+$r = $resultado[40];
+if($r['turno']!=''){
+        $granTotal = $granTotal + (($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2'])-$r['inventario']);
+        $pdf->Cell(7.5, 5, utf8_decode('41'), 1, 0, 'C');
+        $pdf->Cell(15, 5, utf8_decode($r['turno']), 1, 0, 'C');
+        $pdf->Cell(20, 5, number_format(($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2']), 2, '.', ','), 1, 0, 'C');
+        $pdf->Cell(20, 5, utf8_decode($r['inventario']), 1, 0, 'C');
+        $pdf->Cell(15, 5, number_format((($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2'])-$r['inventario']), 2, '.', ','), 1, 0, 'C');
+        $pdf->Cell(12, 5, utf8_decode($r['diferencia']."%"), 1, 0, 'C');
+        $pdf->Cell(11, 5, utf8_decode(''), 0, 0, 'C');
+}
+$r = $resultado[41];
+if($r['turno']!=''){
+        $granTotal = $granTotal + (($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2'])-$r['inventario']);
+        $pdf->Cell(7.5, 5, utf8_decode('42'), 1, 0, 'C');
+        $pdf->Cell(15, 5, utf8_decode($r['turno']), 1, 0, 'C');
+        $pdf->Cell(20, 5, number_format(($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2']), 2, '.', ','), 1, 0, 'C');
+        $pdf->Cell(20, 5, utf8_decode($r['inventario']), 1, 0, 'C');
+        $pdf->Cell(15, 5, number_format((($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2'])-$r['inventario']), 2, '.', ','), 1, 0, 'C');
+        $pdf->Cell(12, 5, utf8_decode($r['diferencia']."%"), 1, 1, 'C');
+}
+
+$r = $resultado[42];
+if($r['turno']!=''){
+        $granTotal = $granTotal + (($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2'])-$r['inventario']);
+        $pdf->Cell(7.5, 5, utf8_decode('43'), 1, 0, 'C');
+        $pdf->Cell(15, 5, utf8_decode($r['turno']), 1, 0, 'C');
+        $pdf->Cell(20, 5, number_format(($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2']), 2, '.', ','), 1, 0, 'C');
+        $pdf->Cell(20, 5, utf8_decode($r['inventario']), 1, 0, 'C');
+        $pdf->Cell(15, 5, number_format((($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2'])-$r['inventario']), 2, '.', ','), 1, 0, 'C');
+        $pdf->Cell(12, 5, utf8_decode($r['diferencia']."%"), 1, 0, 'C');
+        $pdf->Cell(11, 5, utf8_decode(''), 0, 0, 'C');
+}
+$r = $resultado[43];
+if($r['turno']!=''){
+        $granTotal = $granTotal + (($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2'])-$r['inventario']);
+        $pdf->Cell(7.5, 5, utf8_decode('44'), 1, 0, 'C');
+        $pdf->Cell(15, 5, utf8_decode($r['turno']), 1, 0, 'C');
+        $pdf->Cell(20, 5, number_format(($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2']), 2, '.', ','), 1, 0, 'C');
+        $pdf->Cell(20, 5, utf8_decode($r['inventario']), 1, 0, 'C');
+        $pdf->Cell(15, 5, number_format((($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2'])-$r['inventario']), 2, '.', ','), 1, 0, 'C');
+        $pdf->Cell(12, 5, utf8_decode($r['diferencia']."%"), 1, 1, 'C');
+}
+
+$r = $resultado[44];
+if($r['turno']!=''){
+        $granTotal = $granTotal + (($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2'])-$r['inventario']);
+        $pdf->Cell(7.5, 5, utf8_decode('45'), 1, 0, 'C');
+        $pdf->Cell(15, 5, utf8_decode($r['turno']), 1, 0, 'C');
+        $pdf->Cell(20, 5, number_format(($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2']), 2, '.', ','), 1, 0, 'C');
+        $pdf->Cell(20, 5, utf8_decode($r['inventario']), 1, 0, 'C');
+        $pdf->Cell(15, 5, number_format((($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2'])-$r['inventario']), 2, '.', ','), 1, 0, 'C');
+        $pdf->Cell(12, 5, utf8_decode($r['diferencia']."%"), 1, 0, 'C');
+        $pdf->Cell(11, 5, utf8_decode(''), 0, 0, 'C');
+}
 $r = $resultado[45];
-$peso46 = $r['estomago1'];
-$turno46 = $r['turno'];
-$temperatura46 = $r['temperatura']; */
+if($r['turno']!=''){
+        $granTotal = $granTotal + (($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2'])-$r['inventario']);
+        $pdf->Cell(7.5, 5, utf8_decode('46'), 1, 0, 'C');
+        $pdf->Cell(15, 5, utf8_decode($r['turno']), 1, 0, 'C');
+        $pdf->Cell(20, 5, number_format(($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2']), 2, '.', ','), 1, 0, 'C');
+        $pdf->Cell(20, 5, utf8_decode($r['inventario']), 1, 0, 'C');
+        $pdf->Cell(15, 5, number_format((($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2'])-$r['inventario']), 2, '.', ','), 1, 0, 'C');
+        $pdf->Cell(12, 5, utf8_decode($r['diferencia']."%"), 1, 1, 'C');
+}
 
-$granTotal = $granTotal+$peso1+$peso16+$peso31+$peso46;
+$r = $resultado[46];
+if($r['turno']!=''){
+        $granTotal = $granTotal + (($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2'])-$r['inventario']);
+        $pdf->Cell(7.5, 5, utf8_decode('47'), 1, 0, 'C');
+        $pdf->Cell(15, 5, utf8_decode($r['turno']), 1, 0, 'C');
+        $pdf->Cell(20, 5, number_format(($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2']), 2, '.', ','), 1, 0, 'C');
+        $pdf->Cell(20, 5, utf8_decode($r['inventario']), 1, 0, 'C');
+        $pdf->Cell(15, 5, number_format((($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2'])-$r['inventario']), 2, '.', ','), 1, 0, 'C');
+        $pdf->Cell(12, 5, utf8_decode($r['diferencia']."%"), 1, 0, 'C');
+        $pdf->Cell(11, 5, utf8_decode(''), 0, 0, 'C');
+}
+$r = $resultado[47];
+if($r['turno']!=''){
+        $granTotal = $granTotal + (($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2'])-$r['inventario']);
+        $pdf->Cell(7.5, 5, utf8_decode('48'), 1, 0, 'C');
+        $pdf->Cell(15, 5, utf8_decode($r['turno']), 1, 0, 'C');
+        $pdf->Cell(20, 5, number_format(($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2']), 2, '.', ','), 1, 0, 'C');
+        $pdf->Cell(20, 5, utf8_decode($r['inventario']), 1, 0, 'C');
+        $pdf->Cell(15, 5, number_format((($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2'])-$r['inventario']), 2, '.', ','), 1, 0, 'C');
+        $pdf->Cell(12, 5, utf8_decode($r['diferencia']."%"), 1, 1, 'C');
+}
 
+$r = $resultado[48];
+if($r['turno']!=''){
+        $granTotal = $granTotal + (($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2'])-$r['inventario']);
+        $pdf->Cell(7.5, 5, utf8_decode('49'), 1, 0, 'C');
+        $pdf->Cell(15, 5, utf8_decode($r['turno']), 1, 0, 'C');
+        $pdf->Cell(20, 5, number_format(($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2']), 2, '.', ','), 1, 0, 'C');
+        $pdf->Cell(20, 5, utf8_decode($r['inventario']), 1, 0, 'C');
+        $pdf->Cell(15, 5, number_format((($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2'])-$r['inventario']), 2, '.', ','), 1, 0, 'C');
+        $pdf->Cell(12, 5, utf8_decode($r['diferencia']."%"), 1, 0, 'C');
+        $pdf->Cell(11, 5, utf8_decode(''), 0, 0, 'C');
+}
+$r = $resultado[49];
+if($r['turno']!=''){
+        $granTotal = $granTotal + (($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2'])-$r['inventario']);
+        $pdf->Cell(7.5, 5, utf8_decode('50'), 1, 0, 'C');
+        $pdf->Cell(15, 5, utf8_decode($r['turno']), 1, 0, 'C');
+        $pdf->Cell(20, 5, number_format(($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2']), 2, '.', ','), 1, 0, 'C');
+        $pdf->Cell(20, 5, utf8_decode($r['inventario']), 1, 0, 'C');
+        $pdf->Cell(15, 5, number_format((($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2'])-$r['inventario']), 2, '.', ','), 1, 0, 'C');
+        $pdf->Cell(12, 5, utf8_decode($r['diferencia']."%"), 1, 1, 'C');
+}
+
+$r = $resultado[50];
+if($r['turno']!=''){
+        $granTotal = $granTotal + (($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2'])-$r['inventario']);
+        $pdf->Cell(7.5, 5, utf8_decode('51'), 1, 0, 'C');
+        $pdf->Cell(15, 5, utf8_decode($r['turno']), 1, 0, 'C');
+        $pdf->Cell(20, 5, number_format(($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2']), 2, '.', ','), 1, 0, 'C');
+        $pdf->Cell(20, 5, utf8_decode($r['inventario']), 1, 0, 'C');
+        $pdf->Cell(15, 5, number_format((($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2'])-$r['inventario']), 2, '.', ','), 1, 0, 'C');
+        $pdf->Cell(12, 5, utf8_decode($r['diferencia']."%"), 1, 0, 'C');
+        $pdf->Cell(11, 5, utf8_decode(''), 0, 0, 'C');
+}
+$r = $resultado[51];
+if($r['turno']!=''){
+        $granTotal = $granTotal + (($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2'])-$r['inventario']);
+        $pdf->Cell(7.5, 5, utf8_decode('52'), 1, 0, 'C');
+        $pdf->Cell(15, 5, utf8_decode($r['turno']), 1, 0, 'C');
+        $pdf->Cell(20, 5, number_format(($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2']), 2, '.', ','), 1, 0, 'C');
+        $pdf->Cell(20, 5, utf8_decode($r['inventario']), 1, 0, 'C');
+        $pdf->Cell(15, 5, number_format((($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2'])-$r['inventario']), 2, '.', ','), 1, 0, 'C');
+        $pdf->Cell(12, 5, utf8_decode($r['diferencia']."%"), 1, 1, 'C');
+}
+
+$r = $resultado[52];
+if($r['turno']!=''){
+        $granTotal = $granTotal + (($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2'])-$r['inventario']);
+        $pdf->Cell(7.5, 5, utf8_decode('53'), 1, 0, 'C');
+        $pdf->Cell(15, 5, utf8_decode($r['turno']), 1, 0, 'C');
+        $pdf->Cell(20, 5, number_format(($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2']), 2, '.', ','), 1, 0, 'C');
+        $pdf->Cell(20, 5, utf8_decode($r['inventario']), 1, 0, 'C');
+        $pdf->Cell(15, 5, number_format((($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2'])-$r['inventario']), 2, '.', ','), 1, 0, 'C');
+        $pdf->Cell(12, 5, utf8_decode($r['diferencia']."%"), 1, 0, 'C');
+        $pdf->Cell(11, 5, utf8_decode(''), 0, 0, 'C');
+}
+$r = $resultado[53];
+if($r['turno']!=''){
+        $granTotal = $granTotal + (($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2'])-$r['inventario']);
+        $pdf->Cell(7.5, 5, utf8_decode('54'), 1, 0, 'C');
+        $pdf->Cell(15, 5, utf8_decode($r['turno']), 1, 0, 'C');
+        $pdf->Cell(20, 5, number_format(($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2']), 2, '.', ','), 1, 0, 'C');
+        $pdf->Cell(20, 5, utf8_decode($r['inventario']), 1, 0, 'C');
+        $pdf->Cell(15, 5, number_format((($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2'])-$r['inventario']), 2, '.', ','), 1, 0, 'C');
+        $pdf->Cell(12, 5, utf8_decode($r['diferencia']."%"), 1, 1, 'C');
+}
+
+$r = $resultado[54];
+if($r['turno']!=''){
+        $granTotal = $granTotal + (($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2'])-$r['inventario']);
+        $pdf->Cell(7.5, 5, utf8_decode('55'), 1, 0, 'C');
+        $pdf->Cell(15, 5, utf8_decode($r['turno']), 1, 0, 'C');
+        $pdf->Cell(20, 5, number_format(($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2']), 2, '.', ','), 1, 0, 'C');
+        $pdf->Cell(20, 5, utf8_decode($r['inventario']), 1, 0, 'C');
+        $pdf->Cell(15, 5, number_format((($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2'])-$r['inventario']), 2, '.', ','), 1, 0, 'C');
+        $pdf->Cell(12, 5, utf8_decode($r['diferencia']."%"), 1, 0, 'C');
+        $pdf->Cell(11, 5, utf8_decode(''), 0, 0, 'C');
+}
+$r = $resultado[55];
+if($r['turno']!=''){
+        $granTotal = $granTotal + (($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2'])-$r['inventario']);
+        $pdf->Cell(7.5, 5, utf8_decode('56'), 1, 0, 'C');
+        $pdf->Cell(15, 5, utf8_decode($r['turno']), 1, 0, 'C');
+        $pdf->Cell(20, 5, number_format(($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2']), 2, '.', ','), 1, 0, 'C');
+        $pdf->Cell(20, 5, utf8_decode($r['inventario']), 1, 0, 'C');
+        $pdf->Cell(15, 5, number_format((($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2'])-$r['inventario']), 2, '.', ','), 1, 0, 'C');
+        $pdf->Cell(12, 5, utf8_decode($r['diferencia']."%"), 1, 1, 'C');
+}
+
+$r = $resultado[56];
+if($r['turno']!=''){
+        $granTotal = $granTotal + (($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2'])-$r['inventario']);
+        $pdf->Cell(7.5, 5, utf8_decode('57'), 1, 0, 'C');
+        $pdf->Cell(15, 5, utf8_decode($r['turno']), 1, 0, 'C');
+        $pdf->Cell(20, 5, number_format(($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2']), 2, '.', ','), 1, 0, 'C');
+        $pdf->Cell(20, 5, utf8_decode($r['inventario']), 1, 0, 'C');
+        $pdf->Cell(15, 5, number_format((($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2'])-$r['inventario']), 2, '.', ','), 1, 0, 'C');
+        $pdf->Cell(12, 5, utf8_decode($r['diferencia']."%"), 1, 0, 'C');
+        $pdf->Cell(11, 5, utf8_decode(''), 0, 0, 'C');
+}
+$r = $resultado[57];
+if($r['turno']!=''){
+        $granTotal = $granTotal + (($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2'])-$r['inventario']);
+        $pdf->Cell(7.5, 5, utf8_decode('58'), 1, 0, 'C');
+        $pdf->Cell(15, 5, utf8_decode($r['turno']), 1, 0, 'C');
+        $pdf->Cell(20, 5, number_format(($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2']), 2, '.', ','), 1, 0, 'C');
+        $pdf->Cell(20, 5, utf8_decode($r['inventario']), 1, 0, 'C');
+        $pdf->Cell(15, 5, number_format((($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2'])-$r['inventario']), 2, '.', ','), 1, 0, 'C');
+        $pdf->Cell(12, 5, utf8_decode($r['diferencia']."%"), 1, 1, 'C');
+}
+
+$r = $resultado[58];
+if($r['turno']!=''){
+        $granTotal = $granTotal + (($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2'])-$r['inventario']);
+        $pdf->Cell(7.5, 5, utf8_decode('59'), 1, 0, 'C');
+        $pdf->Cell(15, 5, utf8_decode($r['turno']), 1, 0, 'C');
+        $pdf->Cell(20, 5, number_format(($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2']), 2, '.', ','), 1, 0, 'C');
+        $pdf->Cell(20, 5, utf8_decode($r['inventario']), 1, 0, 'C');
+        $pdf->Cell(15, 5, number_format((($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2'])-$r['inventario']), 2, '.', ','), 1, 0, 'C');
+        $pdf->Cell(12, 5, utf8_decode($r['diferencia']."%"), 1, 0, 'C');
+        $pdf->Cell(11, 5, utf8_decode(''), 0, 0, 'C');
+}
+$r = $resultado[59];
+if($r['turno']!=''){
+        $granTotal = $granTotal + (($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2'])-$r['inventario']);
+        $pdf->Cell(7.5, 5, utf8_decode('60'), 1, 0, 'C');
+        $pdf->Cell(15, 5, utf8_decode($r['turno']), 1, 0, 'C');
+        $pdf->Cell(20, 5, number_format(($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2']), 2, '.', ','), 1, 0, 'C');
+        $pdf->Cell(20, 5, utf8_decode($r['inventario']), 1, 0, 'C');
+        $pdf->Cell(15, 5, number_format((($r['estomago1']+$r['estomago2']+$r['piernas1']+$r['piernas2'])-$r['inventario']), 2, '.', ','), 1, 0, 'C');
+        $pdf->Cell(12, 5, utf8_decode($r['diferencia']."%"), 1, 1, 'C');
+}
 /* $pdf->Cell(7.5, 5, utf8_decode('1'), 1, 0, 'C');
 $pdf->Cell(10, 5, utf8_decode($turno1), 1, 0, 'C');
 $pdf->Cell(10, 5, utf8_decode($temperatura1), 1, 0, 'C');
@@ -226,9 +854,9 @@ $pdf->Cell(20, 5, utf8_decode($peso46), 1, 1, 'C'); */
 $pdf->ln(5);
 
 $porcentajeTotalEstomago = ($totalEstomagos/$granTotal)*100;
-$porcentajeTotalPierna= ($totalPiernas/$granTotal)*100;
+$porcentajeTotalpiernas= ($totalpiernass/$granTotal)*100;
 
-$pdf->Cell(31, 5, utf8_decode('Total diferencia: '.$granTotal.' Kg.'), 1, 0, '');
+$pdf->Cell(31, 5, utf8_decode('Total diferencia: '.number_format($granTotal, 2, '.', ',').' Kg.'), 1, 0, '');
 /* $pdf->Cell(34, 5, utf8_decode('Peso Promedio Canal: '.number_format(round($granTotal/$canales)).' Kg.'), 1, 1, '');
 $pdf->ln(5);
 $pdf->Cell(190, 5, utf8_decode('Observaciones: '.$rs2['observaciones']), 0, 1, '');
@@ -237,4 +865,4 @@ $pdf->Cell(31, 10, utf8_decode('Hora Final: '.$inicio), 0, 0, '');
 $pdf->Cell(31, 10, utf8_decode('Tiempo Total: '.$tiempoTranscurrido), 0, 0, '');
 $pdf->Cell(28, 10,'Canales: '.$canales, 0, 0, '');
 $pdf->Cell(65, 10, utf8_decode('Firma Responsable:____________________________'), 0, 1, ''); */
-$pdf->Output('formato_recepcion.pdf', 'D');
+$pdf->Output('formato_recepcion.pdf', 'I');

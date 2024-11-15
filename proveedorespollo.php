@@ -46,7 +46,7 @@ $listaMunicipios = listaMunicipios(); ?>
                       <th>Razon Social</th>
                       <th>Direccion</th>
                       <th>Municipio</th>
-                      <th>Pollos x canastillas</th>
+                      <th>Peso de Canastilla</th>
                       <th>Status</th>
                       <th>Acción</th>
                     </tr>
@@ -122,12 +122,12 @@ $listaMunicipios = listaMunicipios(); ?>
             </div>
 
             <div class="col-md-6">
-              Pollos x Canastillas
+              Peso de Canastilla
               <div class="form-group label-floating" id="conseGuiaDiv">
-                <input class="form-control" type="number" name="polloporcanastillas" autocomplete="off" id="polloporcanastillas" placeholder="Ingrese la Cantidad de Pollos por Canastilla">
+                <input class="form-control" type="number" name="polloporcanastillas" autocomplete="off" id="polloporcanastillas" placeholder="Ingrese la Cantidad de Pollos por Canastilla" step="0.1">
               </div>
               <div class="alert alert-danger" role="alert" id="polloporcanastillasE" style="display: none">
-                Debe ingresar la cantidad de pollos x canastillas
+                Debe ingresar el peso de la canastilla
               </div>
             </div>
 
@@ -164,7 +164,6 @@ $listaMunicipios = listaMunicipios(); ?>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
 <script src="assets/js/jquery.min.js"></script>
 <script src="assets/js/jquery.datatables.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
 <script>
   $(document).ready(function() {
     $(document).ready(function() {

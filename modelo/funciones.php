@@ -1225,6 +1225,7 @@ function editarRecepcion($datosEdit)
                 lotep= '" . $datosEdit['lotep'] . "',
                 ica= '" . $datosEdit['ica'] . "',
                 guiat= '" . $datosEdit['guiat'] . "',
+                certificadoc= '" . $datosEdit['certificadoc'] . "',
                 cph1= '" . $datosEdit['cph1'] . "',
                 cph2= '" . $datosEdit['cph2'] . "',
                 cph3= '" . $datosEdit['cph3'] . "',
@@ -1630,12 +1631,63 @@ function editarCriterioPeso($infoCriEdit)
     }
 }
 function guardarTiempoRecepcionPollo($datos)
-{  
+{
     include('../config.php');
     $hora = date("H:i:s");
     $sql = "UPDATE hora_temporal set 
               hora_recepcion_pollo = '" . $hora . "'
-              where id = ".$datos;
+              where id = " . $datos;
+
+    $rs_operacion = mysqli_query($link, $sql);
+
+    if (!$rs_operacion) {
+        return mysqli_error($link);
+    } else {
+        return $hora;
+    }
+}
+
+function guardarTiempoRecepcionRes($datos)
+{
+    include('../config.php');
+    $hora = date("H:i:s");
+    $sql = "UPDATE hora_temporal set 
+              hora_recepcion_carne = '" . $hora . "'
+              where id = " . $datos;
+
+    $rs_operacion = mysqli_query($link, $sql);
+
+    if (!$rs_operacion) {
+        return mysqli_error($link);
+    } else {
+        return $hora;
+    }
+}
+
+function guardarTiempoDespachoRes($datos)
+{
+    include('../config.php');
+    $hora = date("H:i:s");
+    $sql = "UPDATE hora_temporal set 
+              hora_despacho_carne = '" . $hora . "'
+              where id = " . $datos;
+
+    $rs_operacion = mysqli_query($link, $sql);
+
+    if (!$rs_operacion) {
+        return mysqli_error($link);
+    } else {
+        return $hora;
+    }
+}
+
+function guardarTiempoDespachoPollo($datos)
+{
+    include('../config.php');
+    $hora = date("H:i:s");
+    $sql = "UPDATE hora_temporal set 
+              hora_despacho_pollo = '" . $hora . "'
+              where id = " . $datos;
 
     $rs_operacion = mysqli_query($link, $sql);
 
@@ -2396,7 +2448,8 @@ function listaItemsPorProveedorP2($proveedor)
                  peso_real,
                  recepcion_pesos_pollo.status,
                  tipo,
-                 base 
+                 base,
+                 pesocanastilla 
           FROM plantilla,recepcion_pesos_pollo 
           WHERE plantilla.item=recepcion_pesos_pollo.item AND recepcion_pesos_pollo.proveedor='" . $proveedor . "'
           ORDER BY id_item_proveedor desc";
@@ -2426,7 +2479,8 @@ function listaItemsPorProveedorPPaginada($proveedor, $inicio, $fin, $busqueda)
                  id_item_proveedor,
                  peso_real,
                  item_proveedorpollo.status,
-                 tipo 
+                 tipo,
+                 pesocanastilla
           FROM plantilla,item_proveedorpollo 
           WHERE plantilla.item=item_proveedorpollo.item AND item_proveedorpollo.proveedor='" . $proveedor . "'";
 
@@ -2825,18 +2879,19 @@ function agregarItemRecepcionPollo($datos)
     include('../config.php');
     $hora = date("Y-m-d H:i:s");
     $peso_base = round($datos['base'] * 1.8);
-    $peso_real = number_format($datos['peso'] - (($datos['cajas']) * 2) - (($datos['base'] * 1.8)), 2, ",", ".");
-    $sql = " INSERT INTO recepcion_pesos_pollo(item,proveedor,lote,temperatura,unidades,cajas,base,peso,peso_real,registro) 
+    $peso_real = number_format($datos['peso'] - (($datos['cajas']) * $datos['pesocanastilla']) - (($datos['base'] * 1.8)), 2, ",", ".");
+    $sql = " INSERT INTO recepcion_pesos_pollo(item,proveedor,lote,temperatura,unidades,cajas,base,peso,peso_real,pesocanastilla,registro) 
                VALUES (
                         '" . $datos['item'] . "',
                         '" . $datos['proveedor'] . "',
-                        '" . $datos['lote'] . "',
+                        '" . $datos['consecutivog'] . "',
                         '" . $datos['temperatura'] . "',
                         '" . $datos['unidades'] . "',
                         '" . $datos['cajas'] . "',
                         '" . $datos['base'] . "',
                         '" . $datos['peso'] . "',
                         '" . $peso_real . "',
+                        '" . $datos['pesocanastilla'] . "',
                         '" . $hora . "'
                        );";
     $rs_operacion = mysqli_query($link, $sql);
@@ -3400,6 +3455,7 @@ function agregarRecepcion($datosGuia)
         lotep,
         ica,
         guiat,
+        certificadoc,
         cph1,
         cph2,
         cph3,
@@ -3437,6 +3493,7 @@ function agregarRecepcion($datosGuia)
             '" . $datosGuia['lotep'] . "',
             '" . $datosGuia['ica'] . "',
             '" . $datosGuia['guiat'] . "',
+            '" . $datosGuia['certificadoc'] . "',
             '" . $datosGuia['cph1'] . "',
             '" . $datosGuia['cph2'] . "',
             '" . $datosGuia['cph3'] . "',
@@ -3483,6 +3540,7 @@ function agregarRecepcionPollo($datosGuia)
         destino,
         conductor,
         placa,
+        guiat,
         cph1,
         cph2,
         cph3,
@@ -3511,6 +3569,7 @@ function agregarRecepcionPollo($datosGuia)
             '" . $datosGuia['destino'] . "',
             '" . $datosGuia['conductor'] . "',
             '" . $datosGuia['placa'] . "',
+            '" . $datosGuia['guiat'] . "',
             '" . $datosGuia['cph1'] . "',
             '" . $datosGuia['cph2'] . "',
             '" . $datosGuia['cph3'] . "',
@@ -3539,8 +3598,8 @@ function agregarRecepcionPollo($datosGuia)
                 WHERE id = 1";
 
         $rs_operacion = mysqli_query($link, $sql);
-        
-        if($row = mysqli_fetch_array($rs_operacion)){
+
+        if ($row = mysqli_fetch_array($rs_operacion)) {
             $sql = "UPDATE recepcionpollo set 
                 hora_inicial= '" . $row['hora_recepcion_pollo'] . "'
                 where id_recepcion = " . $id_recepcion;
@@ -3548,11 +3607,10 @@ function agregarRecepcionPollo($datosGuia)
             if (!$rs_operacion) {
                 echo "Error al ejecutar la consulta: " . mysqli_error($link);
                 exit();
-            }else{
+            } else {
                 return $id_recepcion;
             }
         }
-        
     }
 }
 
@@ -3918,6 +3976,7 @@ function calcularDiferencia($datosPesoRecepcion)
 {
     include('../config.php');
     $diferencia = $datosPesoRecepcion['total'] - $datosPesoRecepcion['peso'];
+    
     $porcentaje_cambio = number_format((($diferencia / $datosPesoRecepcion['total']) * 100), 2, '.', '');
     if ($datosPesoRecepcion['peso'] < $datosPesoRecepcion['total']) {
         $tipodiferencia = 'POSITIVA';

@@ -37,7 +37,7 @@ while ($row = mysqli_fetch_array($listaItems)) {
     $subdata[] = $row[2];
     $subdata[] = $row[3];
     $subdata[] = $row[4];
-    $subdata[] = $row[8]."Kg. <br>(".$row[5]."-".($row[4]*2)."-".(($row[11]*1.8)).")";
+    $subdata[] = $row[8]."Kg. <br>(".$row[5]."-".($row[4]*floatval($row[12]))."-".(($row[11]*1.8)).")";
     
     $subdata[] = fsalida($row[6]);
     

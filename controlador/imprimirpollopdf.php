@@ -1,7 +1,7 @@
 <?php
 session_start();
 ini_set("display_errors", false);
-
+date_default_timezone_set("America/bogota");
 function fsalida($cad2){
     $uno = substr($cad2, 11, 5);
     return $uno;
@@ -18,11 +18,31 @@ $id = (isset($_REQUEST['id'])) ? $_REQUEST['id'] : "";
 $fecha_actual = date("Y-m-d");
 include("../config.php");
 
-$sqlg = "SELECT codigog, codigoa, fechaexp, consecutivog, responsable, destino, conductor, placa, observaciones, tipo, canales, precinto  
+$sqlg = "SELECT codigog, codigoa, fechaexp, consecutivog, responsable, destino, conductor, placa, observaciones, tipo, canales, precinto, hora_inicial,hora_final  
         FROM guiaspollo 
         WHERE id_guia = " . $id;
 $c2 = mysqli_query($link, $sqlg) or die(mysqli_error($link));
 $rs2 = mysqli_fetch_array($c2);
+
+if($rs2['hora_final']=='00:00:00'){
+        $hora = date("H:i:s");
+        $sql_hora = "select hora_recepcion_carne as hora_inicial from hora_temporal";
+        $c_hora = mysqli_query($link, $sql_hora) or die("aqui 1 ".mysqli_error($link));
+        $rs_hora = mysqli_fetch_array($c_hora);
+     
+        $sql = "UPDATE guiaspollo set 
+                   hora_inicial = '" . $rs_hora['hora_inicial'] . "',
+                   hora_final = '" . $hora . "'
+                WHERE id_guia = " . $id;
+     
+         $rs_operacion = mysqli_query($link, $sql) or die(mysqli_error($link));
+     
+         $hora_i = $rs_hora['hora_inicial'];
+         $hora_f = $hora;
+     }else{
+         $hora_i = $rs2['hora_inicial'];
+         $hora_f = $rs2['hora_final'];
+     }
 
 $sql3 = "SELECT empresa, sede, direccion, municipio 
         FROM destinos 
@@ -296,7 +316,7 @@ $pdf->Cell(70, 5, utf8_decode(utf8_decode($rs4['nombres'])), 1, 0, '');
 $pdf->SetFont('Arial', 'B', 12);
 $pdf->Cell(34, 5, utf8_decode('Hora inicial'), 1, 0, 'C');
 $pdf->SetFont('Arial', '', 8);
-$pdf->Cell(32, 5, utf8_decode($horaf), 1, 1, '');
+$pdf->Cell(32, 5, utf8_decode($hora_i), 1, 1, '');
 $pdf->SetFont('Arial', 'B', 12);
 
 $pdf->Cell(54, 5, utf8_decode('Cedula Responsable'), 1, 0, 'C');
@@ -306,7 +326,7 @@ $pdf->Cell(70, 5, utf8_decode($rs2['responsable']), 1, 0, '');
 $pdf->SetFont('Arial', 'B', 12);
 $pdf->Cell(34, 5, utf8_decode('Hora final'), 1, 0, 'C');
 $pdf->SetFont('Arial', '', 8);
-$pdf->Cell(32, 5, utf8_decode($horai), 1, 1, '');
+$pdf->Cell(32, 5, utf8_decode($hora_f), 1, 1, '');
 $pdf->SetFont('Arial', 'B', 12);
 
 $pdf->Cell(54, 5, utf8_decode('Teléfono de contacto'), 1, 0, 'C');
@@ -317,20 +337,16 @@ $pdf->SetFont('Arial', 'B', 12);
 $pdf->Cell(34, 5, utf8_decode('Tiempo Total'), 1, 0, 'C');
 $pdf->SetFont('Arial', '', 8);
 
-$fecha1 = new DateTime($rs5['fin']);
-$fecha2 = new DateTime($rs5['inicio']);
-$diferencia = $fecha1->diff($fecha2);
+$inicio = date('H:i', strtotime($hora_i));
+$fin = date('H:i', strtotime($hora_f));
 
-$horas = $diferencia->h;
-$minutos = $diferencia->i;
-$segundos = $diferencia->s;
-$dias = $diferencia->d;
-if ($dias > 0) {
-    $horas += $dias * 24;
-}
-$total = $horas.":".$minutos.":".$segundos;
+$inicioDateTime = new DateTime($inicio);
+$finDateTime = new DateTime($fin);
+$diferencia = $inicioDateTime->diff($finDateTime);
 
-$pdf->Cell(32, 5, utf8_decode($total), 1, 1, '');
+$tiempoTranscurrido = $diferencia->format('%H:%I');
+
+$pdf->Cell(32, 5, utf8_decode($tiempoTranscurrido), 1, 1, '');
 
 $pdf->ln(5);
 

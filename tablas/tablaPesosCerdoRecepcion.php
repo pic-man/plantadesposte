@@ -64,7 +64,7 @@ while ($row = mysqli_fetch_array($listaItems)) {
         $subdata[] = "<font color='".$color."'>".$row[3]."     -     ".$row[4]."     -     ".$row[5]."     -     ".$row[6]."</font>";
         $subdata[] = "<font color='".$color."'>".$total."</font>";
         $subdata[] = "<font color='".$color."'>".$row[13]."</font>";
-        $subdata[] = "<font color='".$color."'>".$pesodif." gr.</font>";
+        $subdata[] = "<font color='".$color."'>".number_format((($pesodif) / 1000), 2, '.', '')." Kg.</font>";
         $subdata[] = "<font color='".$color."'>".$row[15]."%</font>";
         $estadoBtn = '<a style="z-index: 0;color:#fff" onclick="eliminarItem(\''.$row[0].'\')"><i class="bi bi-trash-fill fs-2 text-danger"></i></a>';
     }

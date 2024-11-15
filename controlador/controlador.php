@@ -357,9 +357,23 @@ if (isset($_POST['datosConductorD'])) {
     echo json_encode($resultado);
 }
 
+if (isset($_POST['guardarTiempoRecepcionRes'])) {
+    $resultado = guardarTiempoRecepcionRes($_POST['guardarTiempoRecepcionRes']);
+    echo json_encode($resultado);
+}
+
 if (isset($_POST['guardarTiempoRecepcionPollo'])) {
     $resultado = guardarTiempoRecepcionPollo($_POST['guardarTiempoRecepcionPollo']);
     echo json_encode($resultado);
 }
 
+if (isset($_POST['guardarTiempoDespachoRes'])) {
+    $resultado = guardarTiempoDespachoRes($_POST['guardarTiempoDespachoRes']);
+    echo json_encode($resultado);
+}
+
+if (isset($_POST['guardarTiempoDespachoPollo'])) {
+    $resultado = guardarTiempoDespachoPollo($_POST['guardarTiempoDespachoPollo']);
+    echo json_encode($resultado);
+}
 ?>

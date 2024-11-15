@@ -108,8 +108,8 @@ $fecha_actual = date('Y-m-d');
 							<!-- <th>Estomago 2</th>
 							<th>Piernas 1</th>
 							<th>Piernas 2</th> -->
-							<th>Total</th>
-							<th>Peso</th>
+							<th>Recibido Planta</th>
+							<th>Peso Frigorifico</th>
                             <th>Diferencia Peso</th>
 							<th>Diferencia %</th>
                             <th>Acciones</th>
@@ -394,7 +394,7 @@ function focusNextInput(currentIndex) {
 						recepcion: id_recepcion
 					}
 				},
-				"language": {
+			"language": {
             "searchPlaceholder": "Ingrese caracter",
             "sProcessing": "Procesando...",
             "sLengthMenu": "Mostrar _MENU_ registros",

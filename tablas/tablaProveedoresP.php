@@ -65,6 +65,7 @@ while ($row = mysqli_fetch_array($listaProveedores)) {
         }else{
             $upcb = $unidades;
         }
+        $tipo_pollo = 'CRUDO';
     }
 
     $sqlitem2 = ("SELECT item
@@ -151,7 +152,7 @@ while ($row = mysqli_fetch_array($listaProveedores)) {
     $c = mysqli_fetch_array($rs_operacion);
     $upeb = $c['unidades'];
 
-    $sql = ("select sum(unidades)as unidades from item_proveedorpollo where item = '051513' and proveedor = ".$row[7]."");
+    $sql = ("select sum(unidades)as unidades from item_proveedorpollo where item = '050513' and proveedor = ".$row[7]."");
     $rs_operacion = mysqli_query($link, $sql);
     $c = mysqli_fetch_array($rs_operacion);
     $upas = $c['unidades'];
@@ -160,6 +161,7 @@ while ($row = mysqli_fetch_array($listaProveedores)) {
     $btns = '';
     $subdata = array();
     
+
     //$upcc  = pollo completo campesino
     //$upcb  = pollo completo blanco
     //$upec  = pollo entero campesino
@@ -171,9 +173,15 @@ while ($row = mysqli_fetch_array($listaProveedores)) {
 
     $ut = intval($upcc) + intval($upcb) + intval($upec) + intval($upeb) + intval($upap) + intval($upas);
 
+    if ((intval($upap)==0)&&(intval($upas)==0)){
+        $tipo_pollo = "CRUDO";     
+    }else{
+        $tipo_pollo = "ASADERO";
+    }    
+
     //if($ut == ''){$ut='0';}
     
-    $subdata[] = '<center>'.$row[7].'<br>'.$row[6].'</center>';
+    $subdata[] = '<center>'.$row[7].'<br>'.$row[6].' - '.$tipo_pollo.'</center>';
     
     $subdata[] = '<center><a style="z-index: 0;color:#000" data-bs-target="#modalCriterios" onclick="abrirModal(\''.$row[7].'\',\''.$row[8].'\',\''.$row[10].'\',\''.$_SESSION['tipo'].'\'); buscarItems(\''.$row[7].'\',\''.$row[6].'\');" data-bs-toggle="modal">'.$row[1].' <br> '.$ut.'/'.$row[11].'</a></center>';
     

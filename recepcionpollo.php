@@ -91,7 +91,7 @@ $fecha_actual = date('Y-m-d'); ?>
 		<div class="modal-content">
 			<div class="modal-header" style="display: block;text-align: center;">
 				<label style="text-align: center;font-weight: bold;" id="titulo">LOTE DE RECEPCIÓN</label>
-				<a class="float-end" style="color:#000;" onclick="copiarDatos()"><i class="bi bi-clipboard-plus fs-2"></i></a>
+				<a class="float-end" style="color:#000;" onclick="copiarDatos()"><i class="bi bi-clipboard-plus fs-2" style="display:none"></i></a>
 			</div>
 			<div class="modal-body">
 				<form method="POST" id="criteriosForm">
@@ -151,14 +151,7 @@ $fecha_actual = date('Y-m-d'); ?>
 						</div>
 
 						<div class="col-md-3">
-							<center>Lote</center>
-							<div class="form-group label-floating" id="codigoAutoDiv">
-								<input type="text" class="form-control" autocomplete="off" id="consecutivog" name="consecutivog">
-								<input type="hidden" id="id_guia">
-							</div>
-							<div class="alert alert-danger" role="alert" id="consecutivogE" style="display: none">
-								Debes ingresar el lote
-							</div>
+							
 						</div>
 
 						<div class="col-md-6">
@@ -258,10 +251,13 @@ $fecha_actual = date('Y-m-d'); ?>
 						<div class="col-md-2">
 							<center>Guia Transporte</center>
 							<div class="form-group label-floating" id="codigoAutoDiv">
-								<input type="text" class="form-control" autocomplete="off" id="consecutivog" name="consecutivog">
-								<input type="hidden" id="id_guia">
+								<select class="form-control" id="guiat" name="guiat">
+									<option value="">Tiene Guia de Transporte</option>
+									<option value="SI">SI</option>
+									<option value="NO">NO</option>
+								</select>
 							</div>
-							<div class="alert alert-danger" role="alert" id="consecutivogE" style="display: none">
+							<div class="alert alert-danger" role="alert" id="guiatE" style="display: none">
 								Debes ingresar la guia de transporte
 							</div>
 						</div>
@@ -269,8 +265,15 @@ $fecha_actual = date('Y-m-d'); ?>
 						<div class="col-md-3">
 							<center>Certificado de Calidad</center>
 							<div class="form-group label-floating" id="codigoAutoDiv">
-								<input type="text" class="form-control" autocomplete="off" id="certificadoc" name="certificadoc">
+							    <select class="form-control" id="certificadoc" name="certificadoc">
+									<option value="">Tiene Certificado de Calidad</option>
+									<option value="SI">SI</option>
+									<option value="NO">NO</option>
+								</select>
 								<input type="hidden" id="id_guia">
+							</div>
+							<div class="alert alert-danger" role="alert" id="certificadocE" style="display: none">
+								Debes indicar si tiene certificado de calidad
 							</div>
 						</div>
 
@@ -402,6 +405,38 @@ $fecha_actual = date('Y-m-d'); ?>
 	</div>
 </div>
 
+<div class="modal fade" id="modalFechas" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="background-color: #00000042 !important;">
+	<div class="modal-dialog modal-dialog-centered modal-md modal-dialog-scrollable">
+		<div class="modal-content">
+			<div class="modal-header text-center">
+				<h5 class="modal-title" id="tituloC" style="font-weight: bold;">Imprimir Reporte por Rango de Fechas</h5>
+			</div>
+			<div class="modal-body">
+				<form method="POST" id="criteriosForm">
+					<div class="row">
+						<div class="col-md-6">
+							<label for="fechainicial">Fecha Inicial</label>
+							<input type="date" class="form-control" autocomplete="off" id="fechainicial" name="fechainicial" placeholder="Ingrese fecha Inicial">
+						</div>
+						
+						<div class="col-md-6">
+							<label for="fechafinal">Fecha Final</label>
+							<input type="date" class="form-control" autocomplete="off" id="fechafinal" name="fechafinal" placeholder="Ingrese fecha Final">
+						</div>
+					</div>
+				</form>
+				<div class="row">
+					<div class="col-md-12 text-center mt-3 mb-3">
+							<button type="button" class="btn btn-primary" rel="tooltip" data-placement="bottom" id="btnImprimir">Imprimir</button>
+						<button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
 <div class="modal fade" id="modalNuevoConductor" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="background-color: #00000042 !important;">
 	<div class="modal-dialog modal-dialog modal-dialog-centered modal-md modal-dialog-scrollable">
 
@@ -502,13 +537,23 @@ $fecha_actual = date('Y-m-d'); ?>
 								Debe seleccionar el item
 							</div>
 						</div>
-						<div class="col-md-4 mb-3">
+						<div class="col-md-2 mb-3">
 							<label for="base">Pollos por Canastilla</label>
 							<div class="form-group">
-								<input class="form-control" type="number" min="1" name="pollosxcanastilla" autocomplete="off" id="pollosxcanastilla" placeholder="Ingrese la cantidad de Pollos por Canastilla" disabled>
+								<input class="form-control" type="number" min="1" name="pollosxcanastilla" autocomplete="off" id="pollosxcanastilla" placeholder="Ingrese la cantidad de Pollos por Canastilla">
 							</div>
 							<div class="alert alert-danger" role="alert" id="baseE" style="display: none">
 								Debe ingresar la cantidad de pollos por canastilla
+							</div>
+						</div>
+						<div class="col-md-2">
+							<center>Lote</center>
+							<div class="form-group label-floating" id="codigoAutoDiv">
+								<input type="text" class="form-control" autocomplete="off" id="consecutivog" name="consecutivog">
+								<input type="hidden" id="id_guia">
+							</div>
+							<div class="alert alert-danger" role="alert" id="consecutivogE" style="display: none">
+								Debes ingresar el lote
 							</div>
 						</div>
 						<div class="col-md-4 mb-3">
@@ -536,13 +581,20 @@ $fecha_actual = date('Y-m-d'); ?>
 								Debe ingresar el peso del item
 							</div>
 						</div>
-						<div class="col-md-4 mb-3">
+						<div class="col-md-2 mb-3">
 							<label for="cajas">Canastillas</label>
 							<div class="form-group">
 								<input class="form-control" type="number" min="1" name="cajas" autocomplete="off" id="cajas" placeholder="Ingrese la cantidad de Canastillas del Item">
 							</div>
 							<div class="alert alert-danger" role="alert" id="canastillasE" style="display: none">
 								Debe ingresar la cantidad de canastillas del item
+							</div>
+						</div>
+
+						<div class="col-md-2 mb-3">
+							<label for="cajas">Peso Canastilla</label>
+							<div class="form-group">
+								<input class="form-control" type="number" min="1" name="pesocanastilla" autocomplete="off" id="pesocanastilla" disabled>
 							</div>
 						</div>
 					</div>
@@ -782,7 +834,7 @@ $fecha_actual = date('Y-m-d'); ?>
 
 		$('#pesoE').css('display', 'none');
 
-		$('#pollosxcanastilla').val(pc);
+		$('#pesocanastilla').val(pc);
 
 		$('#btnNuevoCriterio').css('display', 'none');
 		$('#btnEditarCriterio').css('display', 'none');
@@ -831,7 +883,7 @@ $fecha_actual = date('Y-m-d'); ?>
 				} else {
 					$('#datalistValorCriterio').append("<option data-value='059755' value='POLLO CAMPO'>POLLO CAMPO</option>");
 				}
-				$('#valorCriterio').val('');
+				//$('#valorCriterio').val('');
 			}
 		});
 
@@ -936,7 +988,7 @@ $fecha_actual = date('Y-m-d'); ?>
 		cajas = $('#cajas').val();
 		producto = $('#valorCriterio').val();
 		pollosxcanastilla = $('#pollosxcanastilla').val();
-
+        
 		unidades = cajas * pollosxcanastilla;
 
 		validacionesCri = validacionesC();
@@ -945,10 +997,12 @@ $fecha_actual = date('Y-m-d'); ?>
 				item: $('#datalistValorCriterio [value="' + $('#valorCriterio').val() + '"]').data('value'),
 				temperatura: $('#temperatura').val(),
 				unidades: unidades,
+				consecutivog: $('#consecutivog').val(),
 				cajas: $('#cajas').val(),
 				base: $('#base').val(),
 				peso: $('#peso').val(),
-				proveedor: $('#id').val()
+				proveedor: $('#id').val(),
+				pesocanastilla: $('#pesocanastilla').val()
 			};
 			console.log('datos a enviar: ', datos);
 			$.ajax({
@@ -959,7 +1013,7 @@ $fecha_actual = date('Y-m-d'); ?>
 					datosItemRecepcionPollo: datos
 				},
 				success: function(data) {
-					$('#valorCriterio').val('');
+					//$('#valorCriterio').val('');
 					$('#temperatura').val('');
 					$('#unidades').val('');
 					$('#cajas').val('');
@@ -967,7 +1021,7 @@ $fecha_actual = date('Y-m-d'); ?>
 					$('#peso').val('');
 					$('#jtableCriterio').DataTable().ajax.reload();
 					$('#jtable').DataTable().ajax.reload();
-					buscarItems($('#id').val(), $('#tipo').val());
+					//buscarItems($('#id').val(), $('#tipo').val());
 					Swal.fire({
 						title: 'Item registrado satisfactoriamente',
 						text: '',
@@ -1058,7 +1112,7 @@ $fecha_actual = date('Y-m-d'); ?>
 	$('#crearProveedor').click(function() {
 		var today = new Date();
 		var day = String(today.getDate()).padStart(2, '0');
-		var month = String(today.getMonth() + 1).padStart(2, '0'); // Enero es 0
+		var month = String(today.getMonth() + 1).padStart(2, '0');
 		var year = today.getFullYear();
 		var formattedDate = year + '-' + month + '-' + day;
 		let guardarTiempoRecepcionPollo = 1;
@@ -1076,7 +1130,6 @@ $fecha_actual = date('Y-m-d'); ?>
 		$('#fechasac').val('');
 		$('#tipo').val('');
 		$('#canales').val('');
-		$('#consecutivog').val('');
 		$('#responsable').val(<?php echo $_SESSION['usuario']; ?>);
 		$('#beneficio').val('');
 		$('#destino').val('');
@@ -1168,12 +1221,12 @@ $fecha_actual = date('Y-m-d'); ?>
 				tipo: $('#tipo').val(),
 				canales: $('#canales').val(),
 				despacho: $('#despacho').val(),
-				consecutivog: $('#consecutivog').val(),
 				responsable: $('#responsable').val(),
 				beneficio: $('#beneficio').val(),
 				destino: $('#destino').val(),
 				conductor: $('#conductor').val(),
 				placa: $('#placa').val(),
+				guiat: $('#guiat').val(),
 				chv1: $('#chv1').val(),
 				cph1: $('#cph1').is(':checked') ? 1 : 0,
 				cph2: $('#cph2').is(':checked') ? 1 : 0,
@@ -1192,7 +1245,7 @@ $fecha_actual = date('Y-m-d'); ?>
 				ccoh5: $('#ccoh5').is(':checked') ? 1 : 0,
 				observaciones: $('#observaciones').val()
 			};
-			console.log('datos a guardar:', datosRecepcionPollo);
+			console.log('datos a guardar recepcion pollo:', datosRecepcionPollo);
 			$.ajax({
 				type: 'POST',
 				dataType: 'json',
@@ -1205,7 +1258,6 @@ $fecha_actual = date('Y-m-d'); ?>
 					$('#fecharec').val('');
 					$('#fechasac').val('');
 					$('#canales').val('');
-					$('#consecutivog').val('');
 					$('#responsable').val('');
 					$('#beneficio').val('');
 					$('#destino').val('');
@@ -1358,14 +1410,13 @@ $fecha_actual = date('Y-m-d'); ?>
 				$('#tipo').val(data[0].tipo);
 				$('#canales').val(data[0].canales);
 				$('#despacho').val(data[0].recibo);
-				$('#consecutivog').val(data[0].consecutivog);
 				$('#responsable').val(data[0].responsable);
 				$('#beneficio').val(data[0].beneficio);
 				$('#destino').val(data[0].destino);
 				$('#conductor').val(data[0].conductor);
 				$('#placa').val(data[0].placa);
 				$('#guiat').val(data[0].guiat);
-				$('#certificadoc').val(data[0].conductor);
+				$('#certificadoc').val(data[0].certificadoc);
 				$('#destino').css('border', '');
 				$('#canales').css('border', '');
 				$('#certificadoc').css('border', '');
@@ -1512,7 +1563,6 @@ $fecha_actual = date('Y-m-d'); ?>
 				$('#tipo').val(data[0].tipo);
 
 				$('#despacho').val(data[0].recibo);
-				$('#consecutivog').val(data[0].consecutivog);
 				$('#responsable').val(data[0].responsable);
 				$('#beneficio').val(data[0].beneficio);
 				$('#conductor').val(data[0].conductor);
@@ -1701,7 +1751,6 @@ $fecha_actual = date('Y-m-d'); ?>
 				"remision": $('#remision').val(),
 				"canales": $('#canales').val(),
 				"despacho": $('#despacho').val(),
-				"consecutivog": $('#consecutivog').val(),
 				"responsable": $('#responsable').val(),
 				"beneficio": $('#beneficio').val(),
 				"destino": $('#destino').val(),
@@ -1747,7 +1796,6 @@ $fecha_actual = date('Y-m-d'); ?>
 					$('#tipo').val('');
 					$('#remision').val('');
 					$('#canales').val('');
-					$('#consecutivog').val('');
 					$('#responsable').val('');
 					$('#beneficio').val('');
 					$('#destino').val('');
@@ -1796,7 +1844,6 @@ $fecha_actual = date('Y-m-d'); ?>
 		$('#tipoE').css('display', 'none');
 		$('#despachoE').css('display', 'none');
 		$('#canalesE').css('display', 'none');
-		$('#consecutivogE').css('display', 'none');
 		$('#responsableE').css('display', 'none');
 		$('#beneficioE').css('display', 'none');
 		$('#destinoE').css('display', 'none');
@@ -1835,10 +1882,7 @@ $fecha_actual = date('Y-m-d'); ?>
 			$('#canalesE').css('display', 'block');
 			return 'R7';
 		}
-		if ($("#consecutivog").val() == null || $("#consecutivog").val() == "") {
-			$('#consecutivogE').css('display', 'block');
-			return 'R8';
-		}
+		
 		if ($("#conductor").val() == null || $("#conductor").val() == "") {
 			$('#conductorE').css('display', 'block');
 			return 'R10';
@@ -1854,6 +1898,14 @@ $fecha_actual = date('Y-m-d'); ?>
 		if ($("#destino").val() == null || $("#destino").val() == "") {
 			$('#destinoE').css('display', 'block');
 			return 'R6';
+		}
+		if ($("#guiat").val() == null || $("#guiat").val() == "") {
+			$('#guiatE').css('display', 'block');
+			return 'R';
+		}
+		if ($("#certificadoc").val() == null || $("#certificadoc").val() == "") {
+			$('#certificadocE').css('display', 'block');
+			return 'R';
 		}
 		if ($("#responsable").val() == null || $("#responsable").val() == "") {
 			$('#responsableE').css('display', 'block');
@@ -1966,7 +2018,7 @@ $fecha_actual = date('Y-m-d'); ?>
 			return 'R';
 		}
 		if ($("#peso").val() == null || $("#peso").val() == "") {
-			if ((item != '050514') && (item != '050515') && (item != '050516') && (item != '050517') && (item != '051513')) {
+			if ((item != '050514') && (item != '050515') && (item != '050516') && (item != '050517') && (item != '050513')) {
 				$('#pesoE').css('display', 'block');
 				return 'R';
 			}
@@ -2010,6 +2062,32 @@ $fecha_actual = date('Y-m-d'); ?>
 		}
 		return "";
 	}
+
+	$('#btnImprimir').click(function(e) {
+        e.preventDefault(); 
+
+        const fechaInicial = $('#fechainicial').val();
+        const fechaFinal = $('#fechafinal').val();
+
+        let data = {};
+        if (fechaInicial) data.fechainicial = fechaInicial;
+        if (fechaFinal) data.fechafinal = fechaFinal;
+
+        $.ajax({
+            url: 'controlador/recepcionpollopdf.php',
+            method: 'POST',
+            data: data,
+            success: function(response) {
+                window.open('controlador/imprimiringresoPollopdf.php?' + $.param(data), '_blank');
+            },
+            error: function(error) {
+                console.error("Error:", error);
+                alert("Hubo un problema al generar el reporte.");
+            }
+        });
+    });
+
+
 </script>
 
 </html>

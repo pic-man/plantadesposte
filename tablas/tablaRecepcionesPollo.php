@@ -60,7 +60,7 @@ while ($row = mysqli_fetch_array($query)) {
     $sql = ("select sum(unidades)as canales from recepcion_pesos_pollo where proveedor =".$row[0]);
     $rs_operacion = mysqli_query($link, $sql);
     $c = mysqli_fetch_array($rs_operacion);
-    
+    $estadoBtn = '';
     $canales = $c['canales'];
     if($canales ==''){
         $canales = 0;
@@ -80,7 +80,8 @@ while ($row = mysqli_fetch_array($query)) {
         $estadoBtn = '<a style="z-index: 0;color:#fff" data-bs-target="#modalNuevoProveedor" data-bs-toggle="modal" onclick="buscarGuia(\''.$row[0].'\')"><i class="bi bi-pencil-square fs-2 me-3 text-warning"></i>';
 
         if($canales == $row[3]){
-            $estadoBtn .= '<a style="z-index: 0;color:#000" onclick="bloquearEdicion(\''.$row[0].'\')" href="controlador/recepcionpollopdf.php?id='.$row[0].'" target="_blank"><i class="bi bi-printer fs-2  me-3 text-primary"></i></a>';
+            /* $estadoBtn .= '<a style="z-index: 0;color:#000" onclick="bloquearEdicion(\''.$row[0].'\')" href="controlador/recepcionpollopdf.php?id='.$row[0].'" target="_blank"><i class="bi bi-printer fs-2  me-3 text-primary"></i></a>'; */
+            $estadoBtn .= '<a style="z-index: 0;color:#000" data-bs-target="#modalFechas" data-bs-toggle="modal" ><i class="bi bi-printer fs-2  me-3 text-primary"></i></a>';
         }else{
             $estadoBtn .= '<i class="bi bi-pencil-square fs-2 me-3 text-warning" style="visibility: hidden;""></i>';
         }
@@ -92,7 +93,8 @@ while ($row = mysqli_fetch_array($query)) {
             $estadoBtn .= '<i class="bi bi-pencil-square fs-2 me-3 text-warning" style="visibility: hidden;""></i>';
         }
         if($canales == $row[3]){
-            $estadoBtn .= '<a style="z-index: 0;color:#000" onclick="bloquearEdicion(\''.$row[0].'\')" href="controlador/imprimiringresoPollopdf.php?id='.$row[0].'" target="_blank"><i class="bi bi-printer fs-2  me-3 text-primary"></i></a>';
+            /* $estadoBtn .= '<a style="z-index: 0;color:#000" onclick="bloquearEdicion(\''.$row[0].'\')" href="controlador/recepcionpollopdf.php?id='.$row[0].'" target="_blank"><i class="bi bi-printer fs-2  me-3 text-primary"></i></a>'; */
+            $estadoBtn .= '<a style="z-index: 0;color:#000" data-bs-target="#modalFechas" data-bs-toggle="modal" ><i class="bi bi-printer fs-2  me-3 text-primary"></i></a>';
         }else{
             $estadoBtn .= '<i class="bi bi-pencil-square fs-2 me-3 text-warning" style="visibility: hidden;""></i>';
         }

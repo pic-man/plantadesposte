@@ -1,6 +1,7 @@
 <?php
 session_start();
 
+date_default_timezone_set("America/bogota");
 ini_set("display_errors", false);
 
 function fsalida($cad2){
@@ -19,11 +20,31 @@ $id = (isset($_REQUEST['id'])) ? $_REQUEST['id'] : "";
 $fecha_actual = date("Y-m-d");
 include("../config.php");
 
-$sqlg = "SELECT id_recepcion, fecharec, remision, destino, beneficio, canales, consecutivog, fechasac, lotep, ica, guiat, certificadoc, responsable, conductor, placa, cph1, cph2, cph3, cph4, cph5, chv1, chv2, chv3, chv4, ccoh1, ccoh2, ccoh3, ccoh4, ccoh5, ccoh6, ccoh7, ccoh8, ccoh9, ccoh10, tipo, observaciones 
+$sqlg = "SELECT id_recepcion, fecharec, remision, destino, beneficio, canales, consecutivog, fechasac, lotep, ica, guiat, certificadoc, responsable, conductor, placa, cph1, cph2, cph3, cph4, cph5, chv1, chv2, chv3, chv4, ccoh1, ccoh2, ccoh3, ccoh4, ccoh5, ccoh6, ccoh7, ccoh8, ccoh9, ccoh10, tipo, observaciones,hora_inicial,hora_final 
         FROM recepcion 
         WHERE id_recepcion = " . $id;
 $c2 = mysqli_query($link, $sqlg) or die("aqui 1 ".mysqli_error($link));
 $rs2 = mysqli_fetch_array($c2);
+
+if($rs2['hora_final']=='00:00:00'){
+   $hora = date("H:i:s");
+   $sql_hora = "select hora_recepcion_carne as hora_inicial from hora_temporal";
+   $c_hora = mysqli_query($link, $sql_hora) or die("aqui 1 ".mysqli_error($link));
+   $rs_hora = mysqli_fetch_array($c_hora);
+
+   $sql = "UPDATE recepcion set 
+              hora_inicial = '" . $rs_hora['hora_inicial'] . "',
+              hora_final = '" . $hora . "'
+           WHERE id_recepcion = " . $id;
+
+    $rs_operacion = mysqli_query($link, $sql) or die(mysqli_error($link));
+
+    $hora_i = $rs_hora['hora_inicial'];
+    $hora_f = $hora;
+}else{
+    $hora_i = $rs2['hora_inicial'];
+    $hora_f = $rs2['hora_final'];
+}
 
 $sql3 = "SELECT empresa, sede, direccion, municipio 
          FROM destinos 
@@ -78,8 +99,8 @@ $canales = count($resultado);
 $horaInicio = $resultado[0]; 
 $horaFin = $resultado[$canales-1]; 
 
-$inicio = date('H:i', strtotime($horaInicio['registro']));
-$fin = date('H:i', strtotime($horaFin['registro']));
+$inicio = date('H:i', strtotime($hora_i));
+$fin = date('H:i', strtotime($hora_f));
 
 $inicioDateTime = new DateTime($inicio);
 $finDateTime = new DateTime($fin);
@@ -1667,20 +1688,21 @@ $pdf->Cell(28, 5, utf8_decode('% Piernas:'.number_format(round($porcentajeTotalP
 $pdf->Cell(31, 5, utf8_decode('Total Kilos: '.$granTotal.' Kg.'), 1, 0, '');
 $pdf->Cell(34, 5, utf8_decode('Peso Promedio Canal: '.number_format(round($granTotal/$canales)).' Kg.'), 1, 1, '');
 $pdf->Cell(190, 5, utf8_decode('Observaciones: '.$rs2['observaciones']), 1, 1, '');
-$pdf->Cell(35, 10, utf8_decode('Hora Inicial: '.$fin), 0, 0,'');
-$pdf->Cell(31, 10, utf8_decode('Hora Final: '.$inicio), 0, 0, '');
-$pdf->Cell(31, 10, utf8_decode('Tiempo Total: '.$tiempoTranscurrido), 0, 0, '');
-$pdf->Cell(28, 10,'Canales: '.$canales, 0, 0, '');
 
+$pdf->Cell(25, 10, utf8_decode('Hora Inicial: '.$hora_i), 1, 0,'');
+$pdf->Cell(25, 10, utf8_decode('Hora Final: '.$hora_f), 1, 0, '');
+$pdf->Cell(25, 10, utf8_decode('Tiempo Total: '.$tiempoTranscurrido), 1, 0, '');
+$pdf->Cell(15, 10,'Canales: '.$canales, 0, 0, '');
 //$pdf->Cell(65, 10, utf8_decode('Firma Responsable:____________________________'), 0, 1, '');
 
 if($rs2['responsable'] != 12345678){
         $x = $pdf->GetX();
         $y = $pdf->GetY();
         $firma = '../assets/img/firmas/'.$rs2['responsable'].'.jpg';
-        $pdf->Image($firma, $x+25, $y+1, 30, 10);
+        $pdf->Image($firma, $x+15, $y+1, 30, 10);
         $pdf->ln(5);
-        $pdf->Cell(130, 5, '', 0, 0, '');
-        $pdf->Cell(60, 5, utf8_decode('Firma Responsable:____________________________'), 0, 1, '');
+        $pdf->Cell(90, 5, '', 0, 0, '');
+        $pdf->Cell(50, 5, utf8_decode('Firma Responsable:_______________________'), 0, 0, '');
+        $pdf->Cell(60, 5, utf8_decode('Verificado por:____________________________'), 0, 1, '');
 }
 $pdf->Output('formato_recepcion.pdf', 'D');

@@ -549,7 +549,17 @@ $listaDestinos = listaDestinos(); ?>
 		var month = String(today.getMonth() + 1).padStart(2, '0'); // Enero es 0
 		var year = today.getFullYear();
 		var formattedDate = year + '-' + month + '-' + day;
-
+		let guardarTiempoDespachoPollo = 1;
+		$.ajax({
+			type: 'POST',
+			url: 'controlador/controlador.php',
+			data: {
+				guardarTiempoDespachoPollo
+			},
+			success: function(data) {
+				console.log(data);
+			}
+		});
 		$('#titulo').text('AGREGAR GUIA');
 		$('#btnNuevoProveedor').css('display', 'initial');
 		$('#btnEditProveedor').css('display', 'none');
@@ -833,7 +843,7 @@ $listaDestinos = listaDestinos(); ?>
 		} else if (producto == "POLLO BLANCO MERCAMIO MARINADO" || producto == "POLLO CAMPO MERCAMIO MARINADO") {
 			unidades = cajas * 10;
 		} else if (producto == "POLLO ENTERO ASADERO") {
-			unidades = cajas * 10;
+			unidades = cajas * 15;
 		}
 
 		validacionesCri = validacionesC();
@@ -901,7 +911,7 @@ $listaDestinos = listaDestinos(); ?>
 			return 'R';
 		}
 		if ($("#peso").val() == null || $("#peso").val() == "") {
-			if ((item != '050514') && (item != '050515') && (item != '050516') && (item != '050517') && (item != '051513')) {
+			if ((item != '050514') && (item != '050515') && (item != '050516') && (item != '050517') && (item != '050513')) {
 				$('#pesoE').css('display', 'block');
 				return 'R';
 			}

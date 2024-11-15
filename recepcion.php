@@ -298,12 +298,18 @@ $fecha_actual = date('Y-m-d');
 							</div>
 						</div>
 						<div class="col-md-3">
-							Certificado de Calidad
+							Certificado de Calidad<span class="text-danger">*</span>
 							<div class="form-group label-floating" id="codigoAutoDiv">
-								<input type="text" class="form-control" autocomplete="off" id="certificadoc" name="certificadoc" placeholder="Ingrese Certificado de Calidad">
+								<select class="form-control" id="certificadoc" name="certificadoc">
+									<option value="">Tiene Certificado de Calidad</option>
+									<option value="SI">SI</option>
+									<option value="NO">NO</option>
+								</select>
+							</div>
+							<div class="alert alert-danger" role="alert" id="certificadocE" style="display: none">
+								Debes indicar si tiene certificado de calidad
 							</div>
 						</div>
-
 						<div class="col-md-12 mt-3">
 							<center>
 								<label style="text-align: center;font-weight: bold;" id="titulo">CUMPLIMIENTO PRÁCTICAS HIGIÉNICAS PERSONAL MANIPULADOR</label>
@@ -1268,7 +1274,17 @@ $fecha_actual = date('Y-m-d');
 		var month = String(today.getMonth() + 1).padStart(2, '0'); // Enero es 0
 		var year = today.getFullYear();
 		var formattedDate = year + '-' + month + '-' + day;
-
+		let guardarTiempoRecepcionRes = 1;
+		$.ajax({
+			type: 'POST',
+			url: 'controlador/controlador.php',
+			data: {
+				guardarTiempoRecepcionRes
+			},
+			success: function(data) {
+				console.log(data);
+			}
+		});
 		$('#fecharec').val(formattedDate);
 		$('#fechasac').val('');
 		$('#tipo').val('');
@@ -1582,7 +1598,7 @@ $fecha_actual = date('Y-m-d');
 				$('#lotep').val(data[0].lotep);
 				$('#ica').val(data[0].ica);
 				$('#guiat').val(data[0].guiat);
-				$('#certificadoc').val(data[0].conductor);
+				$('#certificadoc').val(data[0].certificadoc);
 				$('#remision').css('border', '');
 				$('#destino').css('border', '');
 				$('#canales').css('border', '');
@@ -2100,6 +2116,10 @@ $fecha_actual = date('Y-m-d');
 		}
 		if ($("#guiat").val() == null || $("#guiat").val() == "") {
 			$('#guiatE').css('display', 'block');
+			return 'R';
+		}
+		if ($("#certificadoc").val() == null || $("#certificadoc").val() == "") {
+			$('#certificadocE').css('display', 'block');
 			return 'R';
 		}
 		if ($("#chv1").val() == null || $("#chv1").val() == "") {
